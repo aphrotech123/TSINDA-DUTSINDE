@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inkunga &ndash; TSINDA-DUTSINDE</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #f0f4ff, #e0ecff);
+    }
+    .glow {
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+    }
+    .bg-magic {
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    }
+    .animated-btn {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .animated-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+    }
+  </style>
+  <script>
+    function toggleAnswer(id) {
+      var answer = document.getElementById(id);
+      if (answer.style.display === "none") {
+        answer.style.display = "block";
+      } else {
+        answer.style.display = "none";
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="bg-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <img src="logo.png" alt="TSINDA-DUTSINDE Logo" class="h-10 w-10 rounded-full border-2 border-blue-400 shadow-sm" />
+        <h1 class="text-2xl font-bold text-blue-700">TSINDA-DUTSINDE</h1>
+      </div>
+      <nav class="flex space-x-6">
+        <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium">Ahabanza</a>
+        <a href="services.html" class="text-gray-700 hover:text-blue-600 font-medium">Serivisi</a>
+        <a href="about.html" class="text-gray-700 hover:text-blue-600 font-medium">Ibyerekeye</a>
+        <a href="login.html" class="text-gray-700 hover:text-blue-600 font-medium">Injira</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Support Section -->
+<section class="text-center py-20 bg-magic px-6 md:px-12">
+  <h2 class="text-4xl font-extrabold text-blue-700 mb-4">Ibibazo Bikunze Kubazwa (FAQs)</h2>
+  <p class="text-lg text-gray-700 mb-8">Turashaka ko wumva neza serivisi zacu! Muri iyi ngingo, uzasangamo ibisubizo by'ibibazo bikunze kubazwa na benshi, tukaba twizera ko bizagufasha kubona amakuru wifuza mu buryo bwihuse kandi bworoshye.</p>
+  <img src="https://cdn-icons-png.flaticon.com/512/2897/2897784.png" alt="Magical Support" class="mx-auto w-32 animate-bounce">
+</section>
+
+
+  <!-- FAQs Section -->
+  <section class="bg-white py-12 px-6 text-center">
+    <h2 class="text-3xl font-bold text-blue-700 mb-8"></h2>
+    <div class="max-w-3xl mx-auto space-y-6">
+      <!-- FAQ 1 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq1')">
+        <h3 class="text-xl font-semibold text-blue-700">Nigute nakwiyandikisha kuri TSINDA-DUTSINDE?</h3>
+        <p id="faq1" class="text-gray-600 mt-4 hidden">Kugira ngo wiyandikishe, hitamo "Register" kuri urubuga rwacu, ukoreho kuri form yawe, wemeze amakuru yawe kandi uhitemo ijambo ry’ibanga.</p>
+      </div>
+      <!-- FAQ 2 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq2')">
+        <h3 class="text-xl font-semibold text-blue-700">Niki gihe ntarengwa cyo kwinjira mu bizamini?</h3>
+        <p id="faq2" class="text-gray-600 mt-4 hidden">Igihe ntarengwa cyo kwinjira mu bizamini ni 24h mbere y'uko ibizamini bitangira. Turagira inama yo kwiyandikisha hakiri kare.</p>
+      </div>
+      <!-- FAQ 3 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq3')">
+        <h3 class="text-xl font-semibold text-blue-700">Nshobora kubona inkunga mu gihe mfite ikibazo?</h3>
+        <p id="faq3" class="text-gray-600 mt-4 hidden">Yego! Uramutse ufite ikibazo, tuzabafasha vuba. Ushobora kutwandikira kuri email cyangwa kutwandikira kuri WhatsApp.</p>
+      </div>
+      <!-- FAQ 4 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq4')">
+        <h3 class="text-xl font-semibold text-blue-700">Nigute nshobora kwiyandikisha mu kizamini?</h3>
+        <p id="faq4" class="text-gray-600 mt-4 hidden">Iyo umaze kwiyandikisha, uzajya uhabwa amahirwe yo kwiyandikisha mu kizamini ushyiraho igihe cyabyo.</p>
+      </div>
+      <!-- FAQ 5 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq5')">
+        <h3 class="text-xl font-semibold text-blue-700">Nshobora kwiga ibijyanye n'ibizamini imbere mu gihe gito?</h3>
+        <p id="faq5" class="text-gray-600 mt-4 hidden">Yego, dufite uburyo bwo gukoresha ibisubizo by'ibizamini byashize ndetse n'amakuru ajyanye n'ibyiza mu by'ubumenyi.</p>
+      </div>
+      <!-- FAQ 6 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq6')">
+        <h3 class="text-xl font-semibold text-blue-700">Ubushobozi bwo kumenya ibizami bitandukanye burashobora kugabanywa?</h3>
+        <p id="faq6" class="text-gray-600 mt-4 hidden">Yego, dufite uburyo bwo kwigisha ibizamini bitandukanye kandi dufite gahunda zigamije kubafasha kwiyungura ubushobozi.</p>
+      </div>
+      <!-- FAQ 7 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq7')">
+        <h3 class="text-xl font-semibold text-blue-700">Nkora iki mu gihe ntabonye igisubizo ku kibazo cyanjye?</h3>
+        <p id="faq7" class="text-gray-600 mt-4 hidden">Twemera ko ibibazo byose bisubizwa vuba. Wabona igisubizo cyihuse, cyangwa watura ku itsinda ryacu ritanga inkunga.</p>
+      </div>
+      <!-- FAQ 8 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq8')">
+        <h3 class="text-xl font-semibold text-blue-700">Ni iki kizanabasha gutunganya igihe cy’ibizamini?</h3>
+        <p id="faq8" class="text-gray-600 mt-4 hidden">Ibizamini bitunganywa hakurikijwe gahunda y'ikizamini ya TSINDA-DUTSINDE.</p>
+      </div>
+      <!-- FAQ 9 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq9')">
+        <h3 class="text-xl font-semibold text-blue-700">Niki nakora igihe nageze mu kizamini?</h3>
+        <p id="faq9" class="text-gray-600 mt-4 hidden">Mugihe ugeze mu kizamini, fata umwanya wo gusoma neza amategeko n’amabwiriza ajyanye n’ibizami.</p>
+      </div>
+      <!-- FAQ 10 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq10')">
+        <h3 class="text-xl font-semibold text-blue-700">Ese nshobora gukora ikizamini imbere mu gihe cyateganyijwe?</h3>
+        <p id="faq10" class="text-gray-600 mt-4 hidden">Ntabwo byemewe, ibizamini bikozwe gusa ku munsi n’igihe cyateganyijwe.</p>
+      </div>
+      <!-- FAQ 11 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq11')">
+        <h3 class="text-xl font-semibold text-blue-700">Ngiyehe kubona ibisubizo by'ibizamini?</h3>
+        <p id="faq11" class="text-gray-600 mt-4 hidden">Ibisubizo by'ibizamini bizajya bihabwa abayobozi ku rubuga rwacu kandi bizatangwa ku gihe cyateganyijwe.</p>
+      </div>
+      <!-- FAQ 12 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq12')">
+        <h3 class="text-xl font-semibold text-blue-700">Nzi gute ko nabonye igisubizo cyiza?</h3>
+        <p id="faq12" class="text-gray-600 mt-4 hidden">Ubwiza bw'ibisubizo by'ibizamini bizemezwa hakurikijwe amanota yawe no kugenzura imikorere yawe mu kizamini.</p>
+      </div>
+      <!-- FAQ 13 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq13')">
+        <h3 class="text-xl font-semibold text-blue-700">Nigute nakora igihe mbonye ikibazo n'ibisubizo?</h3>
+        <p id="faq13" class="text-gray-600 mt-4 hidden">Kuri buri kibazo cyawe, turagusaba kutwandikira tukaba twagusubiza.</p>
+      </div>
+      <!-- FAQ 14 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq14')">
+        <h3 class="text-xl font-semibold text-blue-700">Ese hari igihe tutemerewe gukora ibizamini?</h3>
+        <p id="faq14" class="text-gray-600 mt-4 hidden">Yego, bizamini bisubirwamo gusa ku gihe cyateganyijwe.</p>
+      </div>
+      <!-- FAQ 15 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq15')">
+        <h3 class="text-xl font-semibold text-blue-700">Ese ikizamini kiriho umutekano w’ibikorwa byanjye?</h3>
+        <p id="faq15" class="text-gray-600 mt-4 hidden">Yego, turagufasha gucunga ibizamini kandi turinda umutekano w'amakuru yawe.</p>
+      </div>
+      <!-- FAQ 16 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq16')">
+        <h3 class="text-xl font-semibold text-blue-700">Nzi gute ko uburyo bw'ibizamini bukoreshwa butandukanye n'ubusanzwe?</h3>
+        <p id="faq16" class="text-gray-600 mt-4 hidden">Ibizamini byacu byateguwe neza kandi bizaba mu buryo budasanzwe.</p>
+      </div>
+      <!-- FAQ 17 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq17')">
+        <h3 class="text-xl font-semibold text-blue-700">Nshobora kubona ibizamini byose mu rurimi rw'ikinyarwanda?</h3>
+        <p id="faq17" class="text-gray-600 mt-4 hidden">Yego, ibisubizo by'ibizamini bizatangwa mu rurimi rw'ikinyarwanda.</p>
+      </div>
+      <!-- FAQ 18 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq18')">
+        <h3 class="text-xl font-semibold text-blue-700">Nshobora gukora ibizamini ku buryo bworoshye?</h3>
+        <p id="faq18" class="text-gray-600 mt-4 hidden">Yego, dufite uburyo bworoshye bwo gukora ibizamini ku rubuga rwacu.</p>
+      </div>
+      <!-- FAQ 19 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq19')">
+        <h3 class="text-xl font-semibold text-blue-700">Ese nsigara ku bikorwa byanjye byose kuri TSINDA-DUTSINDE?</h3>
+        <p id="faq19" class="text-gray-600 mt-4 hidden">Yego, uzahora ubonera ibikorwa byose kuri dashboard yawe.</p>
+      </div>
+      <!-- FAQ 20 -->
+      <div class="bg-blue-50 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleAnswer('faq20')">
+        <h3 class="text-xl font-semibold text-blue-700">Nshobora kubona ibisubizo byanjye vuba?</h3>
+        <p id="faq20" class="text-gray-600 mt-4 hidden">Yego, ibizami bizagenda bitangwa mu gihe cyateganyijwe kandi uzahora ubona ibisubizo.</p>
+      </div>
+    </div>
+  </section>
+  <!-- Footer -->
+<footer class="bg-gray-100 w-full mt-0 text-center py-6 text-sm text-gray-600">
+  &copy; 2025 TSINDA-DUTSINDE Platform. All rights reserved. | Powered by Aphrodice
+</footer>
+
+</body>
+</html>

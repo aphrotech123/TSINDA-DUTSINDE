@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TSINDA-DUTSINDE - Tangira Kwitegura Permis Neza</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* General Styling */
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
+      color: #2f3640;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #2d3436;
+      color: white;
+      padding: 3rem;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    section {
+      padding: 3rem 1.5rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .feature, .plan, .testimonial, .about {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature:hover, .plan:hover, .testimonial:hover, .about:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature h2, .plan h2, .testimonial h2, .about h2 {
+      font-size: 2rem;
+      color: #2d3436;
+      margin-bottom: 1rem;
+      text-transform: capitalize;
+    }
+
+    .price {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #ff6f61;
+    }
+
+    .price span {
+      font-size: 1.2rem;
+      color: #999;
+    }
+
+    .plan ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .plan li {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      color: #34495e;
+    }
+
+    .plan li:before {
+      content: "✔";
+      color: #1abc9c;
+      margin-right: 10px;
+    }
+
+    footer {
+      background-color: #2d3436;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    footer a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: #ff7e5f;
+    }
+
+    /* Icons & Cards Section */
+    .feature-icons {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .feature-icons .icon {
+      text-align: center;
+      flex: 1;
+      min-width: 250px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-icons .icon:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-icons .icon i {
+      font-size: 3rem;
+      color: #2d3436;
+      margin-bottom: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .feature-icons .icon:hover i {
+      color: #ff7e5f;
+    }
+
+    .feature-icons .icon h3 {
+      font-size: 1.5rem;
+      margin: 0;
+      font-weight: 700;
+      color: #2d3436;
+    }
+
+    .feature-icons .icon p {
+      color: #7f8c8d;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    /* Smooth Scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Section -->
+  <header>
+    <h1>TSINDA-DUTSINDE</h1>
+    <p>Ubushobozi bwawe bwo gutsinda Permis, butangiye hano</p>
+  </header>
+
+  <!-- Features Section -->
+  <section>
+    <div class="feature">
+      <h2>Ibintu Byihariye Urubuga Rugitanga</h2>
+      <div class="feature-icons">
+        
+        <div class="icon">
+          <i class="fas fa-list-alt"></i>
+          <h3>Imyitozo Isesenguye</h3>
+          <p>Kora imyitozo yateguwe n'inzobere, ishingiye ku byakozwe mu myaka yashize.</p>
+        </div>
+
+        <div class="icon">
+          <i class="fas fa-clock"></i>
+          <h3>Igihe cy'Igerageza</h3>
+          <p>Gerageza uko uhangana n'igihe kimwe nk'aho uri mu kizamini nyacyo.</p>
+        </div>
+
+        <div class="icon">
+          <i class="fas fa-certificate"></i>
+          <h3>Kubika Amakuru yawe</h3>
+          <p>Reba uko wagize mu bizamini byashize n’amatariki wabikozemo.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Pricing Plans Section -->
+    <div class="plan">
+      <h2>Gahunda Y'Ubuntu (0 RWF)</h2>
+      <p class="price">0 RWF <span>/ Ukwezi</span></p>
+      <ul>
+        <li>Kwiyandikisha ku rubuga</li>
+        <li>Kugerageza uburyo bwo gukora</li>
+        <li>Gusoma amasomo y'icyitegererezo</li>
+      </ul>
+    </div>
+
+    <div class="plan">
+      <h2>Gahunda ya Buri Munsi</h2>
+      <p class="price">300 RWF / Umunsi</p>
+      <ul>
+        <li>Imyitozo yose irimo ibisubizo bisobanutse</li>
+        <li>Gukurikirana amanota</li>
+        <li>Amasomo yose aboneka (theory, practice, signs)</li>
+        <li>Kubika amakuru ya buri munsi</li>
+        <li>Kwiyandikisha ku bizamini</li>
+      </ul>
+    </div>
+
+    <div class="plan">
+      <h2>Gahunda ya Buri Cyumweru</h2>
+      <p class="price">500 RWF / Icyumweru</p>
+      <ul>
+        <li>Serivisi zose zifunguye iminsi 7</li>
+        <li>Ubushishozi ku masomo y'ingenzi buri munsi</li>
+        <li>Raporo y’ibyagezweho buri cyumweru</li>
+        <li>Ubufasha bwa WhatsApp buhoraho</li>
+      </ul>
+    </div>
+
+    <div class="plan">
+      <h2>Gahunda ya Buri Mwezi</h2>
+      <p class="price">1000 RWF / Ukwezi</p>
+      <ul>
+        <li>Serivisi zose mu minsi 30</li>
+        <li>Amasomo yose & imyitozo isesenguye</li>
+        <li>Kwiyandikisha no kubika amakuru ya buri kizamini</li>
+        <li>Raporo y’iterambere rya buri cyumweru</li>
+        <li>Kwigira kuri mudasobwa cyangwa telefone</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 TSINDA-DUTSINDE. Uburenganzira bwose burabitswe.</p>
+    <a href="privacy.html">Amategeko & Ibirimo</a> | <a href="contact.html">Twandikire</a>
+  </footer>
+
+</body>
+</html>

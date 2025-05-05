@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TSINDA-DUTSINDE - Amanota y'Ibizamini</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #f1faee, #a8dadc);
+      color: #333;
+    }
+
+    header {
+      background-color: #1d3557;
+      color: white;
+      padding: 1.5rem 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-container img {
+      height: 50px;
+      width: auto;
+      border-radius: 8px;
+    }
+
+    .logo-container h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    header p {
+      width: 100%;
+      text-align: center;
+      font-size: 1.1rem;
+      color: #f1faee;
+      margin-top: 0.5rem;
+    }
+
+    .user-menu {
+      position: relative;
+      z-index: 2000;
+    }
+
+    .user-icon {
+      background-color: #457b9d;
+      color: white;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: background-color 0.3s;
+    }
+
+    .user-icon:hover {
+      background-color: #e63946;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 60px;
+      right: 0;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      width: 200px;
+      overflow: hidden;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .dropdown a {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.9rem 1.2rem;
+      color: #1d3557;
+      text-decoration: none;
+      border-bottom: 1px solid #eee;
+      font-weight: 500;
+      transition: background-color 0.3s;
+    }
+
+    .dropdown a:hover {
+      background-color: #f1f1f1;
+      color: #e63946;
+    }
+
+    .dropdown a i {
+      width: 20px;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    section {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 1rem;
+    }
+
+    .results-section h2 {
+      text-align: center;
+      color: #1d3557;
+      font-size: 2rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+
+    .results-section h2::after {
+      content: "";
+      width: 80px;
+      height: 4px;
+      background-color: #e63946;
+      display: block;
+      margin: 0.5rem auto 0;
+      border-radius: 2px;
+    }
+
+    .results {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .result-card {
+      background-color: white;
+      border: 2px solid #457b9d;
+      flex: 1 1 300px;
+      padding: 1.8rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-card:hover {
+      transform: translateY(-8px);
+      border-color: #e63946;
+    }
+
+    .result-card i {
+      font-size: 3rem;
+      color: #e63946;
+      margin-bottom: 1rem;
+    }
+
+    .result-card h3 {
+      font-size: 1.5rem;
+      color: #1d3557;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-card p {
+      font-size: 1.05rem;
+      color: #333;
+      margin-bottom: 0.4rem;
+    }
+
+    .result-card strong {
+      color: #1d3557;
+    }
+
+    footer {
+      background-color: #1d3557;
+      color: white;
+      text-align: center;
+      padding: 1.2rem;
+      margin-top: 3rem;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      .result-card {
+        flex: 1 1 100%;
+      }
+
+      .logo-container {
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+
+      .user-menu {
+        margin-left: auto;
+      }
+    }
+
+    .user-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.user-links a {
+  color: #f1faee;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.user-links a:hover {
+  color: #e63946;
+}
+
+@media (max-width: 768px) {
+  .user-links {
+    display: none;
+  }
+
+  .user-menu {
+    display: block;
+  }
+}
+
+@media (min-width: 769px) {
+  .user-menu {
+    display: none;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-container">
+      <img src="logo.png" alt="Logo" />
+      <h1>TSINDA-DUTSINDE</h1>
+    </div>
+  
+    <!-- Visible on large screens -->
+    <nav class="user-links">
+      <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+      <a href="#"><i class="fas fa-user-cog"></i> Settings</a>
+      <a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </nav>
+  
+    <!-- Only visible on small screens -->
+    <div class="user-menu">
+      <div class="user-icon" onclick="toggleDropdown()">
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="dropdown" id="userDropdown">
+        <a href="#"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="#"><i class="fas fa-user-cog"></i> Settings</a>
+        <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  
+    <p>Reba Amanota wabonye</p>
+  </header>
+  
+
+  <section class="results-section">
+    <h2>Amanota Yawe</h2>
+    <div class="results">
+      <div class="result-card">
+        <i class="fas fa-file-alt"></i>
+        <h3>Ibizamini By'Ibyapa</h3>
+        <p>Amanota: <strong>86%</strong></p>
+        <p>Tariki yabonyweho: <strong>03/05/2025</strong></p>
+      </div>
+
+      <div class="result-card">
+        <i class="fas fa-car"></i>
+        <h3>Ikizamini cyo Gutwara</h3>
+        <p>Amanota: <strong>92%</strong></p>
+        <p>Tariki yabonyweho: <strong>02/05/2025</strong></p>
+      </div>
+
+      <div class="result-card">
+        <i class="fas fa-clipboard-check"></i>
+        <h3>Ikizamini Rusange</h3>
+        <p>Amanota: <strong>89%</strong></p>
+        <p>Tariki yabonyweho: <strong>28/04/2025</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 TSINDA-DUTSINDE Platforms. All rights reserved. | Powered by Aphrodice
+  </footer>
+
+  <script>
+    function toggleDropdown() {
+      const dropdown = document.getElementById('userDropdown');
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+
+    window.onclick = function(event) {
+      if (!event.target.closest('.user-menu')) {
+        document.getElementById('userDropdown').style.display = 'none';
+      }
+    };
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Sheets Data Display</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #6c9fe9, #ff7e5f);
+      color: #333;
+      padding: 40px;
+      text-align: center;
+    }
+    h1 {
+      color: #fff;
+      margin-bottom: 30px;
+      font-size: 2.5em;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+    #loading-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      color: #fff;
+    }
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid #fff;
+      border-top: 3px solid #333;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .table-container {
+      overflow-x: auto  ; /* Makes the table scrollable on small screens */
+      margin: 40px auto;
+      width: 100%; /* Full width */
+    }
+    table {
+      border-collapse: collapse;
+      margin: 0 auto; /* Center the table */
+      max-width: 800px; /* Maximum width for larger screens */    
+      width: 100%; /* Full width */
+      background-color: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    th, td {
+      padding: 12px 20px;
+      text-align: left;
+      font-size: 1.1em;
+      color: #333;
+    }
+    th {
+      background-color: #ff7e5f;
+      color: white;
+      text-transform: uppercase;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease;
+    }
+    th:hover {
+      background-color: #f6a5a1;
+    }
+    td {
+      background-color: #f9f9f9;
+      border-bottom: 1px solid #ddd;
+      color: #555;
+      transition: background-color 0.3s ease;
+    }
+    tr:nth-child(even) td {
+      background-color: #f1f1f1;
+    }
+    tr:hover td {
+      background-color: #ffe5e0;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    tr:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+    .error {
+      color: #ff4d4d;
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+    .spinner-container {
+      margin-top: 20px;
+    }
+    /* Media Queries for Responsive Design */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2em; /* Smaller font size for headings */
+      }
+      th, td {
+        padding: 10px; /* Reduce padding */
+        font-size: 1em; /* Smaller font size */
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Registered Users</h1>
+  <div id="sheet-data" class="table-container">
+    <div id="loading-container" class="spinner-container">
+      <div class="spinner"></div>
+      <span>Loading data, please wait...</span>
+    </div>
+  </div>
+  <script>
+    // Your API key and Google Sheet ID
+    const apiKey = 'AIzaSyAA6ngca_RjIgb1pY-lCg9_N5KsrlAelhA'; // <-- Replace with your API key
+    const sheetId = '19NvHO30oLDxTDble70EawtXOxzlm9hqoJIj7EbKQBWE'; // <-- Replace with your Google Sheet ID
+    const range = 'Sheet1!A2:G'; // <-- Adjust to match the range of your sheet
+    // Construct the API request URL
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+    // Fetch the data from the Google Sheet
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const entries = data.values;
+        if (!entries) {
+          throw new Error('No data found');
+        }
+        let html = '<table><thead><tr><th>Name</th><th>Marks</th><th>Location</th><th>Area</th></tr></thead><tbody>';
+        entries.forEach(entry => {
+          const name = entry[0] || '';
+          const age = entry[1] || '';
+          const city = entry[2] || '';
+          const village = entry[3] || '';
+          html += `<tr><td>${name}</td><td>${age}</td><td>${city}</td><td>${village}</td></tr>`;
+        });
+        html += '</tbody></table>';
+        document.getElementById('sheet-data').innerHTML = html;
+      })
+      .catch(error => {
+        document.getElementById('sheet-data').innerHTML = '<div class="error">No Data Found! Please try again later.</div>';
+        console.error('Error:', error);
+      });
+  </script>
+</body>
+</html>

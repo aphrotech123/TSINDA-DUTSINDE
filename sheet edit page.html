@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registered Users</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      color: #fff;
+      padding: 40px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      color: #000;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+    th {
+      background: #0072ff;
+      color: white;
+      font-weight: bold;
+    }
+    tr:nth-child(even) {
+      background: #f2f2f2;
+    }
+    td[contenteditable="true"] {
+      background-color: #fffbcc;
+    }
+    #status {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .btn {
+      background: #00c6ff;
+      color: white;
+      padding: 10px 20px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn:hover {
+      background: #005ecb;
+    }
+  </style>
+</head>
+<body>
+  <h1>Registered Users</h1>
+  <div id="status">Loading...</div>
+  <table id="dataTable" style="display:none;"></table>
+  <script>
+    const sheetAPI = "https://script.google.com/macros/s/AKfycbzNSyyOW20_7M7XbwbR-eRtjcq1Tlwsc7xfwafdAUs08uCaHbhE_QhhSts9CK2G_IwN1Q/exec";
+    fetch(sheetAPI)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (!Array.isArray(data) || data.length === 0) {
+          document.getElementById("status").innerText = "No Data Found!";
+          return;
+        }
+        const table = document.getElementById("dataTable");
+        table.style.display = "table";
+        // Create headers
+        const headerRow = document.createElement("tr");
+        Object.keys(data[0]).forEach(key => {
+          const th = document.createElement("th");
+          th.innerText = key;
+          headerRow.appendChild(th);
+        });
+        table.appendChild(headerRow);
+        // Create data rows
+        data.forEach(row => {
+          const tr = document.createElement("tr");
+          Object.values(row).forEach(cell => {
+            const td = document.createElement("td");
+            td.innerText = cell;
+            td.contentEditable = true;
+            tr.appendChild(td);
+          });
+          table.appendChild(tr);
+        });
+        document.getElementById("status").innerText = "Click on cells to edit (not saved yet)";
+      })
+      .catch(err => {
+        document.getElementById("status").innerText = "Error loading data.";
+        console.error(err);
+      });
+  </script>
+</body>
+</html>

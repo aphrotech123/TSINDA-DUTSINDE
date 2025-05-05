@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exams Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    /* Ensure the body takes the full height of the viewport */
+    html, body {
+      height: 100%;
+    }
+    /* Flexbox to position the footer correctly */
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+    main {
+      flex: 1; /* Allow the main content to grow and fill the space */
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <!-- Header -->
+  <header class="bg-blue-600 text-white p-4 flex justify-between items-center">
+    <div class="flex items-center space-x-3">
+      <img src="logo.png" alt="Logo" class="h-10 w-10">
+      <div>
+        <h1 class="text-3xl font-bold">Ibizamini</h1>
+    
+      </div>
+    </div>
+    <div class="text-right">
+      <p id="currentTime" class="text-xl">Isaha:</p>
+      <button onclick="window.location.href='dashboard.html'" class="px-4 py-2 bg-black text-white rounded hover:bg-red-700">Ahabanza</button>
+    </div>
+  </header>
+  
+  <!-- Controls -->
+  <main class="max-w-4xl mx-auto p-6 space-y-4">
+    <div class="flex flex-wrap justify-between items-center mb-4">
+      <div class="space-x-2">
+        <button onclick="filterExams('all')" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Byose</button>
+        <button onclick="filterExams('completed')" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Ibyarangiye</button>
+        <button onclick="filterExams('uncompleted')" class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">Ibitarangiye</button>
+        <button onclick="resetProgress()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Siba byose</button>
+      </div>
+    
+    </div>
+    <!-- Exams List -->
+    <div id="exams-list" class="space-y-3"></div>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="bg-blue-800 text-white text-center py-4 mt-10">
+    <p class="text-sm">© 2025 TSINDA-DUTSINDE Platform | Powered by Aphrodice</p>
+  </footer>
+  
+  <script>
+    const exams = [ /* Exams List as you have it already */ 
+    { title: "Ikizamini 1", url: "https://forms.gle/pSJZtyAVho6QJSii8" },
+      { title: "Ikizamini 2", url: "https://forms.gle/iaw645UkFUxk3eLw5" },
+      { title: "Ikizamini 3", url: "https://forms.gle/pSJZtyAVho6QJSii8" },
+      { title: "Ikizamini 4", url: "https://forms.gle/iaw645UkFUxk3eLw5" },
+      { title: "Ikizamini 5", url: "https://forms.gle/pSJZtyAVho6QJSii8" },
+      { title: "Ikizamini 6", url: "https://forms.gle/iaw645UkFUxk3eLw5" },
+      { title: "Ikizamini 7", url: "https://forms.gle/pSJZtyAVho6QJSii8" },
+      { title: "Ikizamini 8", url: "https://forms.gle/iaw645UkFUxk3eLw5" },
+      { title: "Ikizamini 9", url: "https://forms.gle/pSJZtyAVho6QJSii8" },
+      { title: "Ikizamini 10", url: "https://forms.gle/iaw645UkFUxk3eLw5" },
+      { title: "Ikizamini 11", url: "https://forms.gle/pSJZtyAVho6QJSii8" },
+      { title: "Ikizamini 12", url: "https://forms.gle/iaw645UkFUxk3eLw5" },
+      { title: "Ikizamini 13", url: "https://forms.gle/pSJZtyAVho6QJSii8" },
+      { title: "Ikizamini 14", url: "https://forms.gle/iaw645UkFUxk3eLw5" },
+      { title: "Ikizamini 15", url: "https://forms.gle/pSJZtyAVho6QJSii8" },
+      { title: "Ikizamini 6", url: "https://forms.gle/iaw645UkFUxk3eLw5" },
+      { title: "Ikizamini 17", url: "https://forms.gle/pSJZtyAVho6QJSii8" },
+      { title: "Ikizamini 8", url: "https://forms.gle/iaw645UkFUxk3eLw5" },
+      { title: "Ikizamini 19", url: "https://forms.gle/pSJZtyAVho6QJSii8" },
+      { title: "Ikizamini 20", url: "https://forms.gle/iaw645UkFUxk3eLw5" },
+      // ... keep the rest as you had them
+    ];
+    
+    let completed = JSON.parse(localStorage.getItem("completedExams") || "[]");
+    const examsListContainer = document.getElementById("exams-list");
+    
+    function renderExams(filter = "all") {
+      examsListContainer.innerHTML = "";
+      exams.forEach(exam => {
+        const isCompleted = completed.some(entry => entry.title === exam.title);
+        if (
+          (filter === "completed" && !isCompleted) ||
+          (filter === "uncompleted" && isCompleted)
+        ) return;
+        const examButton = document.createElement("button");
+        const completedEntry = completed.find(entry => entry.title === exam.title);
+        examButton.className = `
+          w-full bg-white border rounded-lg p-4 shadow-md hover:bg-blue-50 flex justify-between items-center
+          ${isCompleted ? 'opacity-60' : ''}
+        `;
+        examButton.innerHTML = `
+          <span class="text-lg font-medium">${exam.title}</span>
+          ${isCompleted ? '<span class="text-green-600 font-bold text-xl">✅</span>' : ''}
+        `;
+        if (isCompleted) {
+          const dateCompleted = new Date(completedEntry.date);
+          examButton.innerHTML += `
+            <p class="text-sm text-gray-500">Cyakozwe: ${dateCompleted.toLocaleString()}</p>
+          `;
+        }
+        examButton.onclick = () => {
+          if (isCompleted) {
+            const retry = confirm("Wamaze gukora iri suzuma. Urashaka kongera kurikora?");
+            if (!retry) return;
+          }
+          markAsCompleted(exam.title);
+          localStorage.setItem("selectedExamURL", exam.url);
+          localStorage.setItem("selectedExamTitle", exam.title);
+          window.location.href = "template.html"; // template.html should handle the 20-minute timer
+        };
+        if (isCompleted) {
+          const resetButton = document.createElement("button");
+          resetButton.className = "px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm mt-2";
+          resetButton.innerText = "Siba aho ugeze";
+          resetButton.onclick = (e) => {
+            e.stopPropagation();
+            resetSingleExam(exam.title);
+          };
+          examButton.appendChild(resetButton);
+        }
+        examsListContainer.appendChild(examButton);
+      });
+    }
+    
+    function resetSingleExam(examTitle) {
+      const reset = confirm(`Urashaka gusiba ibisubizo byo kuri "${examTitle}"?`);
+      if (reset) {
+        completed = completed.filter(entry => entry.title !== examTitle);
+        localStorage.setItem("completedExams", JSON.stringify(completed));
+        renderExams();
+      }
+    }
+    
+    function resetProgress() {
+      if (confirm("Urashaka gusiba ibisubizo byose?")) {
+        localStorage.removeItem("completedExams");
+        completed = [];
+        renderExams();
+      }
+    }
+    
+    function filterExams(type) {
+      renderExams(type);
+    }
+    
+    function markAsCompleted(examTitle) {
+      const completedEntry = {
+        title: examTitle,
+        date: new Date().toISOString(),
+      };
+      completed.push(completedEntry);
+      localStorage.setItem("completedExams", JSON.stringify(completed));
+      renderExams();
+    }
+    
+    function displayTime() {
+      const currentTime = new Date().toLocaleString();
+      document.getElementById("currentTime").textContent = ` ${currentTime}`;
+    }
+    
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html"; // Or your login page
+    }
+    
+    setInterval(displayTime, 1000);
+    displayTime();
+    renderExams();
+  </script>
+</body>
+</html>

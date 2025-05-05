@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exams Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #2b6777, #52ab98);
+      color: #120331;
+      margin: 0;
+    }
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+    header h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+    }
+    header p {
+      font-size: 1.2em;
+      font-weight: 300;
+    }
+    .form-container {
+      background: #ffffff;
+      border-radius: 20px;
+      max-width: auto;
+      margin: 30px auto;
+      padding: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+    .exam-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+    .exam-button {
+      background-color: #2b6777;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      text-align: center;
+      width: 200px;
+      transition: background-color 0.3s;
+    }
+    .exam-button:hover {
+      background-color: #52ab98;
+    }
+    footer {
+      background-color: #2b6777;
+      color: #D3D3D3;
+      text-align: center;
+      padding: 20px 0;
+    }
+    footer p {
+      font-size: 16px;
+    }
+    footer a {
+      color: #feb47b;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    header, footer {
+      background-color: rgba(0, 0, 0, 0.2);
+      text-align: center;
+      padding: 20px;
+      
+    }
+    
+
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <header>
+      <div class="flex justify-start items-left space-x-4">
+        <a href="user-dashboard.html"><img src="logo.png" class="h-12 w-12 rounded-full" alt="Logo"></a>
+        <a href="user-dashboard.html"><h1 class="text-3xl font-bold text-white">TSINDA-DUTSINDE</h1></a>
+      </div>
+    
+    </header>
+    <h1>Ibizamini bikunze kubazwa</h1>
+    <p>Hitamo ikizamini wifuza gukora.</p>
+  </header>
+ <!-- Exit Exam Button -->
+ <button class="absolute right-5 top-5 font-bold transition duration-300 transform hover:scale-105 hover:bg-red-500 z-10"
+ style="background: #ffffff; 
+        top: 35px;
+        border: 2px solid #1425c0;
+        border-radius: 10px;
+        padding: 10px 6px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        color: #0bcf63; /* Red text */
+        font-size: 20px;"
+ onclick="exitExam()"> <!-- Added onclick event -->
+ Home
+</button>
+
+</div>
+  <!-- Exam Buttons -->
+  <div class="form-container">
+    <div class="exam-buttons">
+  
+      <!-- Add your forms as buttons -->
+      <button onclick="openExam('exam1')" class="exam-button">Exam 1</button>
+      <button onclick="openExam('exam2')" class="exam-button">Exam 2</button>
+      <button onclick="openExam('exam3')" class="exam-button">Exam 3</button>
+      <button onclick="openExam('exam4')" class="exam-button">Exam 4</button>
+      <button onclick="openExam('exam5')" class="exam-button">Exam 5</button>
+      <button onclick="openExam('exam6')" class="exam-button">Exam 6</button>
+      <button onclick="openExam('exam7')" class="exam-button">Exam 7</button>
+      <button onclick="openExam('exam8')" class="exam-button">Exam 8</button>
+      <button onclick="openExam('exam9')" class="exam-button">Exam 9</button>
+      <button onclick="openExam('exam10')" class="exam-button">Exam 10</button>
+      <button onclick="openExam('exam11')" class="exam-button">Exam 11</button>
+      <button onclick="openExam('exam12')" class="exam-button">Exam 12</button>
+      <button onclick="openExam('exam13')" class="exam-button">Exam 13</button>
+      <button onclick="openExam('exam14')" class="exam-button">Exam 14</button>
+      <button onclick="openExam('exam15')" class="exam-button">Exam 15</button>
+      <button onclick="openExam('exam16')" class="exam-button">Exam 16</button>
+      <button onclick="openExam('exam17')" class="exam-button">Exam 17</button>
+      <button onclick="openExam('exam18')" class="exam-button">Exam 18</button>
+      <button onclick="openExam('exam19')" class="exam-button">Exam 19</button>
+      <button onclick="openExam('exam20')" class="exam-button">Exam 20</button>
+      
+    </div>
+  </div>
+
+   <!-- Footer -->
+   <footer>
+    <p>© 2025 TSINDA-DUTSINDE. All rights reserved.</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    function loadExam(url) {
+      const confirmStart = confirm("Ese wemeza ko ushaka gutangira iki kizamini?");
+      if (confirmStart) {
+        localStorage.setItem("selectedExamURL", url);
+        location.reload();
+      }
+    }
+  
+    function openExam(examId) {
+      // Redirect to template with query string
+      window.location.href = `exam-template.html?exam=${examId}`;
+    }
+    
+    function exitExam() {
+  window.location.href = "dashboard.html"; // or "user-dashboard.html" depending on your flow
+}
+
+  </script>
+  
+</body>
+</html>

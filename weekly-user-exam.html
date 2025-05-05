@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Choose Your Exam - TSINDA-DUTSINDE</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #2b6777, #52ab98);
+      color: #120331;
+    }
+
+    header, footer {
+      background-color: rgba(0, 0, 0, 0.2);
+      text-align: center;
+      padding: 20px;
+    }
+
+    #exam-buttons {
+      text-align: center;
+      margin: 30px auto;
+    }
+
+    #exam-buttons button {
+      margin: 10px;
+      padding: 15px 25px;
+      background-color: #2b6777;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    #exam-buttons button:hover {
+      background-color: #52ab98;
+    }
+
+    .form-container {
+      background: white;
+      border-radius: 20px;
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    iframe {
+      width: 100%;
+      height: 950px;
+      border: none;
+      border-radius: 12px;
+    }
+
+    #timer-container {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 2px solid #c41434;
+      border-radius: 10px;
+      padding: 10px 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="flex justify-center items-center space-x-4">
+      <a href="user-dashboard.html"><img src="logo.png" class="h-12 w-12 rounded-full" alt="Logo"></a>
+      <a href="user-dashboard.html"><h1 class="text-3xl font-bold text-white">TSINDA-DUTSINDE</h1></a>
+    </div>
+  </header>
+
+  <!-- Timer -->
+  <div id="timer-container">
+    <h2>Igihe usigaje</h2>
+    <div id="timer" style="font-size: 2em; font-weight: bold; color: #c41434;"></div>
+  </div>
+  <script>
+    let countdown = 20 * 60;
+    function updateTimer() {
+      const minutes = Math.floor(countdown / 60);
+      const seconds = countdown % 60;
+      document.getElementById('timer').textContent =
+        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      if (countdown > 0) {
+        countdown--;
+        setTimeout(updateTimer, 1000);
+      } else {
+        document.getElementById('timer').textContent = "Time's up!";
+      }
+    }
+    updateTimer();
+  </script>
+
+  <!-- Buttons -->
+  <div id="exam-buttons">
+    <button onclick="loadExam('https://docs.google.com/forms/d/e/1FAIpQLSd_jtj_T6M2iPqbsFZmcVyLAISr4HbDY1vGV3A8IDrBy1qS4w/viewform')">Exam 1</button>
+    <button onclick="loadExam('https://docs.google.com/forms/d/e/1FAIpQLSdLIjo3k5-pxfX8aHgD_n6mosx786ZFY-8X9KqbTtkGp9oT0A/viewform')">Exam 2</button>
+    <button onclick="loadExam('https://docs.google.com/forms/d/e/1FAIpQLSfv0whsPAyn7zV4Wh5RRbyRcbJFCJugHGAWgJKw5OApCjI7Zg/viewform')">Exam 3</button>
+  </div>
+
+  <!-- Form Container -->
+  <div class="form-container" id="form-frame">
+    <iframe id="examFrame" src="" loading="lazy">Loading…</iframe>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 TSINDA-DUTSINDE. All rights reserved.</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    function loadExam(url) {
+  const confirmStart = confirm("Ese wemeza ko ushaka gutangira iki kizamini?");
+  if (confirmStart) {
+    localStorage.setItem("selectedExamURL", url);
+    location.reload();
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const storedURL = localStorage.getItem("selectedExamURL");
+  if (storedURL) {
+    document.getElementById("examFrame").src = storedURL;
+    localStorage.removeItem("selectedExamURL");
+  }
+});
+
+  </script>
+
+</body>
+</html>

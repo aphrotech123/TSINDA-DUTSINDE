@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard - TSINDA-DUTSINDE</title>
+</head>
+<body>
+  <h2>Welcome to your Dashboard</h2>
+  <p id="welcomeMsg"></p>
+  <button onclick="logout()">Logout</button>
+
+  <script>
+    const token = localStorage.getItem("sessionToken");
+    const name = localStorage.getItem("name");
+
+    if (!token) {
+      window.location.href = "login.html"; // Redirect if not logged in
+    } else {
+      document.getElementById("welcomeMsg").innerText = `Welcome, ${name}`;
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

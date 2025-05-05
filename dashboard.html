@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="/logo.png" type="image/x-icon">
+  <title>My Dashboard</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0f172a',
+            accent: '#00c9ff',
+            card: '#1e293b',
+          },
+          fontFamily: {
+            fancy: ['"Courier New"', 'monospace']
+          }
+        },
+      }
+    }
+  </script>
+
+
+
+</head>
+<body class="bg-gradient-to-br from-primary via-slate-700 to-slate-900 text-white min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="flex items-center justify-between px-6 py-4 bg-black bg-opacity-50 shadow-md w-full z-50">
+    <div class="flex items-center gap-4">
+      <img src="/logo.png" alt="Logo" class="w-10 h-10 rounded-full" />
+      <h1 class="text-2xl font-bold text-accent">TSINDA-DUTSINDE</h1>
+    </div>
+    <div id="current-time" class="text-sm font-fancy text-accent bg-slate-800 px-4 py-2 rounded-xl shadow-lg"></div>
+  
+  </nav>
+
+  <!-- Main Container -->
+  <div class="flex flex-1 pt-20">
+    <!-- Main Content -->
+    <main class="flex-1 p-6 w-full">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl font-semibold">Welcome <span id="username"></span> 👋</h2>
+        <button id="logout-btn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-xl flex items-center gap-2 transition transform hover:scale-105">
+          🔓 <span>Sohoka kurubuga</span>
+        </button>
+      </div>
+
+      <!-- Cards Section -->
+      <section class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <a href="exams.html" class="bg-card p-6 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <h3 class="text-xl text-accent font-bold mb-2">Ibizamini</h3>
+          <p>Practice driving theory questions to sharpen your knowledge.</p>
+        </a>
+        <a href="notes.html" class="bg-card p-6 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <h3 class="text-xl text-accent font-bold mb-2">Igazeti ya Leta</h3>
+          <p>Access summarized notes for quick learning and revision.</p>
+        </a>
+        <a href="roadsigns.html" class="bg-card p-6 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <h3 class="text-xl text-accent font-bold mb-2">Ibyapa byingenzi</h3>
+          <p>Learn road signs with images and explanations.</p>
+        </a>
+        <a href="exam-registration.html" class="bg-card p-6 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <h3 class="text-xl text-accent font-bold mb-2">Saba kode</h3>
+          <p>Register online for your upcoming driving test with ease.</p>
+        </a>
+        <a href="resources.html" class="bg-card p-6 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <h3 class="text-xl text-accent font-bold mb-2">Ibindi byagufasha</h3>
+          <p>Download PDFs and other learning materials anytime.</p>
+        </a>
+        <a href="#" class="bg-card p-6 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <h3 class="text-xl text-accent font-bold mb-2">Konti yanjye</h3>
+          <p>Manage your account settings and personal information.</p>
+        </a>
+        <a href="marks.html" class="bg-card p-6 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <h3 class="text-xl text-accent font-bold mb-2">Amanota</h3>
+          <p>View your marks and the dates you obtained them.</p>
+        </a>
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 bg-black bg-opacity-60 mt-auto text-sm">
+    &copy; 2025 TSINDA-DUTSINDE. All rights reserved. | Powered by Aphrodice
+  </footer>
+
+  <!-- Script -->
+  <script>
+    // Check if the user is logged in
+    const userEmail = localStorage.getItem("loggedInEmail");
+    const username = localStorage.getItem("username");
+
+    if (!userEmail) {
+      window.location.href = "login.html"; // Redirect to login if not authenticated
+    } else {
+      document.getElementById("username").textContent = username || "User"; // Display username if available
+    }
+
+    document.getElementById("logout-btn").addEventListener("click", function() {
+      // Clear local storage and redirect to login page on logout
+      localStorage.removeItem("loggedInEmail");
+      localStorage.removeItem("username");
+      window.location.href = "login.html";
+    });
+
+    // Display current time fancy
+    function updateTime() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+      const day = now.toLocaleDateString();
+      const timeString = `🕒 ${hours}:${minutes}:${seconds} | 📅 ${day}`;
+      document.getElementById('current-time').textContent = timeString;
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+  </script>
+</body>
+</html>

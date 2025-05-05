@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Urupapuro rw'Ikizamini</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html, body {
+      height: 100%;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      font-family: 'Inter', sans-serif;
+    }
+    main {
+      flex: 1;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Header -->
+  <header class="bg-white shadow-md w-full">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <img src="logo.png" alt="TSINDA-DUTSINDE Logo" class="h-12 w-12 rounded-full border-2 border-blue-500 shadow-sm" />
+        <h1 class="text-2xl font-semibold text-blue-800">TSINDA-DUTSINDE</h1>
+      </div>
+      <nav class="flex items-center space-x-6">
+        <a href="/" class="text-blue-700 hover:text-blue-900 transition">Ahabanza</a>
+        <a href="/about.html" class="text-blue-700 hover:text-blue-900 transition">Ibyerekeye</a>
+        <a href="/services.html" class="text-blue-700 hover:text-blue-900 transition">Serivisi</a>
+        <a href="/contact.html" class="text-blue-700 hover:text-blue-900 transition">Twandikire</a>
+        <a href="/support.html" class="text-blue-700 hover:text-blue-900 transition">Ubufasha</a>
+        <span id="username" class="text-blue-700 font-medium"></span>
+        <button id="logout-btn" class="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">Sohoka</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="p-6 flex flex-col items-center justify-center space-y-8">
+    <div class="w-full max-w-3xl bg-white shadow-lg rounded-lg p-6">
+      <header class="flex justify-between items-center mb-4">
+        <div>
+          <h2 id="examTitle" class="text-3xl font-semibold text-gray-800">Izina ry’Ikizamini</h2>
+          <p class="text-sm text-gray-600">Witegure gukora ikizamini kandi ukirangize mbere y'uko igihe kirangira!</p>
+        </div>
+        <div class="text-right">
+          <p id="timer" class="text-xl text-red-600 font-semibold">Igihe gisigaye: 20:00</p>
+        </div>
+      </header>
+      
+      <iframe id="examFrame" class="w-full rounded-lg border-2 border-gray-300 shadow-md" style="height:500px;" frameborder="0"></iframe>
+
+      <div class="mt-6 text-center">
+        <button onclick="exitExam()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded shadow-lg transition duration-300">
+          Soza Ikizamini
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-blue-800 text-white text-center py-4 mt-6">
+    <p class="text-sm">&copy; 2025 TSINDA-DUTSINDE Platform | Byakozwe na Aphrodice</p>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    // Kugenzura niba umukoresha yinjiye
+    const userEmail = localStorage.getItem("loggedInEmail");
+    const username = localStorage.getItem("username");
+
+    if (!userEmail) {
+      window.location.href = "login-page.html"; // Ohereza ku rupapuro rwo kwinjira
+    } else {
+      document.getElementById("username").textContent = username || "Umukoresha";
+    }
+
+    document.getElementById("logout-btn").addEventListener("click", function() {
+      localStorage.removeItem("loggedInEmail");
+      localStorage.removeItem("username");
+      window.location.href = "login-page.html";
+    });
+
+    let timer;
+    let timeRemaining = 20 * 60; // Iminota 20
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const storedURL = localStorage.getItem("selectedExamURL");
+      const examTitle = localStorage.getItem("selectedExamTitle");
+
+      if (storedURL) {
+        document.getElementById("examFrame").src = storedURL;
+      }
+      if (examTitle) {
+        document.getElementById("examTitle").textContent = examTitle;
+        sessionStorage.setItem("currentExamTitle", examTitle);
+      }
+
+      startTimer();
+      localStorage.removeItem("selectedExamURL");
+      localStorage.removeItem("selectedExamTitle");
+    });
+
+    function startTimer() {
+      timer = setInterval(() => {
+        if (timeRemaining <= 0) {
+          clearInterval(timer);
+          exitExam();
+        } else {
+          let minutes = Math.floor(timeRemaining / 60);
+          let seconds = timeRemaining % 60;
+          document.getElementById("timer").textContent = 
+            `Igihe gisigaye: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+          timeRemaining--;
+        }
+      }, 1000);
+    }
+
+    function exitExam() {
+      const examTitle = sessionStorage.getItem("currentExamTitle");
+      if (examTitle) {
+        const completedExams = JSON.parse(localStorage.getItem("completedExams") || "[]");
+        const currentDateTime = new Date().toLocaleString();
+        const examCompletionData = {
+          title: examTitle,
+          completedAt: currentDateTime,
+        };
+
+        if (!completedExams.some(exam => exam.title === examTitle)) {
+          completedExams.push(examCompletionData);
+          localStorage.setItem("completedExams", JSON.stringify(completedExams));
+        }
+
+        sessionStorage.removeItem("currentExamTitle");
+      }
+
+      alert("Soza ikizamini!");
+      window.location.href = "exams.html";
+    }
+  </script>
+</body>
+</html>

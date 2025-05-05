@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logged Out - TSINDA-DUTSINDE</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-200 via-white to-teal-200 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <img src="logo.png" alt="TSINDA-DUTSINDE Logo" class="h-10 w-10 rounded-full border-2 border-blue-400 shadow-sm" />
+        <h1 class="text-2xl font-extrabold text-blue-800 tracking-wide">TSINDA-DUTSINDE</h1>
+      </div>
+      <nav class="flex space-x-6">
+        <a href="/" class="text-blue-700 font-medium hover:underline transition">Ahabanza</a>
+        <a href="/about.html" class="text-blue-700 font-medium hover:underline transition">About</a>
+        <a href="/services.html" class="text-blue-700 font-medium hover:underline transition">Services</a>
+        <a href="/contact.html" class="text-blue-700 font-medium hover:underline transition">Contact</a>
+        <a href="/support.html" class="text-blue-700 font-medium hover:underline transition">Support</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow flex items-center justify-center p-6">
+    <div class="glass shadow-2xl rounded-3xl p-10 max-w-2xl w-full text-center space-y-6">
+      
+      <!-- Logo and Branding -->
+      <div class="flex flex-col items-center space-y-3">
+        <img src="logo.png" alt="TSINDA-DUTSINDE Logo" class="h-24 w-24 rounded-full border-4 border-blue-300 shadow-xl" />
+        <h1 class="text-5xl font-extrabold text-blue-900">TSINDA-DUTSINDE</h1>
+        <p class="text-gray-700 text-lg italic">Your smart partner for driving license exam success.</p>
+      </div>
+
+      <!-- Session Expired Message -->
+      <div class="bg-blue-100 border-l-4 border-blue-500 text-left rounded-lg p-5 shadow">
+        <h2 class="text-2xl font-semibold text-blue-800">Murakaza neza kurubuga!</h2>
+        <p class="text-gray-700 mt-2">Niba uri mushya fungura konti. Niba uyisanganywe injira kugirango ubashe gukomeza.</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="login-page.html" class="bg-blue-700 text-white px-6 py-3 rounded-full font-semibold text-lg hover:bg-blue-800 transition transform hover:scale-105 shadow-lg flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H3m0 0l4-4m-4 4l4 4m13 4h-4m0 0V8m0 8l4-4-4-4" />
+          </svg>
+          <span>Kwinjira</span>
+        </a>
+        <a href="register.html" class="border-2 border-blue-600 text-blue-700 px-6 py-3 rounded-full font-semibold text-lg hover:bg-blue-100 transition transform hover:scale-105 shadow flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          <span>Gufungura Konti</span>
+        </a>
+      </div>
+
+      <!-- Help Info -->
+      <p class="text-sm text-gray-600 mt-4">
+        Ukeneye ubufasha? <a href="/contact.html" class="text-blue-600 underline hover:text-blue-800">Kanda hano</a>
+      </p>
+      <p class="text-gray-700 font-medium">Tel: 0788370558</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 mt-12 text-center py-6 text-sm text-gray-600">
+    &copy; 2025 TSINDA-DUTSINDE Platform. All rights reserved. | Powered by Aphrodice
+  </footer>
+
+</body>
+</html>

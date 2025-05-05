@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exams Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #2b6777, #52ab98);
+      color: white;
+      margin: 0;
+    }
+    header, footer {
+      background-color: rgba(0, 0, 0, 0.2);
+      text-align: center;
+      padding: 20px;
+    }
+    header h1 {
+      font-size: 2.5em;
+      color: white;
+    }
+    .form-container {
+      background: #ffffff;
+      border-radius: 20px;
+      margin: 30px auto;
+      padding: 20px;
+      max-width: 90%;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+    iframe {
+      width: 100%;
+      height: 1000px;
+      border: none;
+      border-radius: 10px;
+    }
+    footer {
+      color: #D3D3D3;
+    }
+    #timer-container {
+      position: absolute;
+      top: 16px;
+      right: 15px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 2px solid #c41434;
+      border-radius: 10px;
+      padding: 6px 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="flex justify-start items-center space-x-4"></div>
+      <a href="user-dashboard.html"><img src="logo.png" class="h-16 w-16 rounded-full" alt="Logo"></a>
+    </div>
+  
+    <!-- Timer -->
+  <div id="timer-container">
+    <p>    </p>
+    <div id="timer" style="font-size: 2em; font-weight: bold; color: #c41434;"></div>
+  </div>
+
+  <script>
+    function exitExam() {
+      if (confirm("Ese koko urashaka gusohoka mukizamini? Ntabwo urabasha kubona amakuru y'aho wari ugeze.")) {
+        window.location.href = "premium-user.html"; // Replace with your actual exams dashboard URL
+      }
+    }
+
+    let countdown = 20 * 60;
+    function updateTimer() {
+      const minutes = Math.floor(countdown / 60);
+      const seconds = countdown % 60;
+      document.getElementById('timer').textContent =
+        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      if (countdown > 0) {
+        countdown--;
+        setTimeout(updateTimer, 1000);
+      } else {
+        document.getElementById('timer').textContent = "Igihe cyarangiye!";
+      }
+    }
+    updateTimer();
+  </script>
+
+    <h1>🧑‍💻</h1>
+    <p>IKIZAMINI KIGIZWE N'IBIBAZO MAKUMYABIRI (20) BIKORWA MUMINOTA 20</p> 
+  
+  </header>
+
+ <!-- Embedded Form -->
+<div class="form-container relative">
+  <iframe id="examFrame" src="about:blank"></iframe>
+  <!-- Exit Exam Button -->
+  <button class="absolute left-5 bottom-5 font-bold transition duration-300 transform hover:scale-105 hover:bg-red-500 z-10"
+      style="background: #ffffff; 
+             border: 2px solid #c41434;
+             border-radius: 10px;
+             padding: 10px 6px;
+             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+             color: #c41434; /* Red text */
+             font-size: 20px;"
+      onclick="exitExam()"> <!-- Added onclick event -->
+      Gusohoka Mukizamini
+  </button>
+</div>
+  
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 TSINDA-DUTSINDE Platform. All rights reserved. | Powered by Aphrodice</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Mapping exams to Google Form URLs
+    const examForms = {
+        exam1: 'https://forms.gle/S6RjhSsuhSM9TkGA7',
+        exam2: 'https://forms.gle/S6RjhSsuhSM9TkGA7',
+        exam3: 'https://forms.gle/S6RjhSsuhSM9TkGA7',
+        exam4: 'https://forms.gle/S6RjhSsuhSM9TkGA7',
+        exam5: 'https://forms.gle/S6RjhSsuhSM9TkGA7'
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const examId = urlParams.get('exam');
+    const frame = document.getElementById('examFrame');
+
+    if (examId && examForms[examId]) {
+        frame.src = examForms[examId];
+    } else {
+        frame.src = 'about:blank';
+        
+        frame.onload = () => {
+            const iframeDoc = frame.contentDocument || frame.contentWindow.document;
+            iframeDoc.open();
+            iframeDoc.write(`
+                <style>
+                    body {
+                        margin: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        background: #f8f9fa;
+                        font-family: Arial, sans-serif;
+                    }
+                    .error-box {
+                        background: white;
+                        border: 2px solid #dc3545;
+                        padding: 30px 40px;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                        color: #dc3545;
+                        font-size: 20px;
+                        text-align: center;
+                    }
+                </style>
+                <div class="error-box">
+                    🚫 Mukiriya wacu! Ifatabuguzi waguze ntabwo rikwemerera gufungura iki kizamini.
+                </div>
+            `);
+            iframeDoc.close();
+        };
+    }
+  </script>
+</body>
+</html>
