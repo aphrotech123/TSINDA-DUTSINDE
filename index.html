@@ -55,25 +55,57 @@
     .error {
       color: #f90303;
     }
+
+
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+
+
+
+    
   </style>
 </head>
 <body>
-  <!-- Header -->
   <header class="bg-white shadow-lg w-full">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <img src="/logo.png" alt="TSINDA-DUTSINDE Logo" class="h-10 w-10 rounded-full border-2 border-blue-400 shadow-sm" />
-        <h1 class="text-2xl font-extrabold text-blue-800 tracking-wide">TSINDA-DUTSINDE</h1>
-      </div>
-      <nav class="flex space-x-6">
-        <a href="index.html" class="text-blue-700 font-medium hover:underline transition">Ahabanza</a>
-        <a href="about.html" class="text-blue-700 font-medium hover:underline transition">About</a>
-        <a href="services.html" class="text-blue-700 font-medium hover:underline transition">Services</a>
-        <a href="contact.html" class="text-blue-700 font-medium hover:underline transition">Contact</a>
-        <a href="support.html" class="text-blue-700 font-medium hover:underline transition">Support</a>
-      </nav>
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <img src="/logo.png" alt="TSINDA-DUTSINDE Logo" class="h-10 w-10 rounded-full border-2 border-blue-400 shadow-sm" />
+      <h1 class="text-2xl font-extrabold text-blue-800 tracking-wide">TSINDA-DUTSINDE</h1>
     </div>
-  </header>
+
+    <!-- Hamburger button (mobile only) -->
+    <button id="hamburger" class="md:hidden flex flex-col space-y-1 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <span class="w-6 h-0.5 bg-blue-800"></span>
+      <span class="w-6 h-0.5 bg-blue-800"></span>
+      <span class="w-6 h-0.5 bg-blue-800"></span>
+    </button>
+
+    <!-- Desktop nav -->
+    <nav class="hidden md:flex space-x-6">
+      <a href="index.html" class="text-blue-700 font-medium hover:underline transition">Ahabanza</a>
+      <a href="about.html" class="text-blue-700 font-medium hover:underline transition">About</a>
+      <a href="services.html" class="text-blue-700 font-medium hover:underline transition">Services</a>
+      <a href="contact.html" class="text-blue-700 font-medium hover:underline transition">Contact</a>
+      <a href="support.html" class="text-blue-700 font-medium hover:underline transition">Support</a>
+    </nav>
+  </div>
+
+  <!-- Mobile nav (hidden by default) -->
+  <div id="mobileMenu" class="md:hidden hidden px-6 pb-4">
+    <nav class="flex flex-col space-y-3">
+      <a href="index.html" class="text-blue-700 font-medium hover:underline transition">Ahabanza</a>
+      <a href="about.html" class="text-blue-700 font-medium hover:underline transition">About</a>
+      <a href="services.html" class="text-blue-700 font-medium hover:underline transition">Services</a>
+      <a href="contact.html" class="text-blue-700 font-medium hover:underline transition">Contact</a>
+      <a href="support.html" class="text-blue-700 font-medium hover:underline transition">Support</a>
+    </nav>
+  </div>
+</header>
+
   <!-- Main Content -->
   <main class="flex-grow flex items-center justify-center p-6 w-full">
     <div class="card shadow-2xl rounded-3xl p-10 w-full text-center space-y-6">
