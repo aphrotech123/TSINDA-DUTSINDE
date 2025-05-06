@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="/logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
   <title>Login - TSINDA-DUTSINDE</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
@@ -56,12 +58,11 @@
   </style>
 </head>
 <body>
-
   <!-- Header -->
   <header class="bg-white shadow-lg w-full">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <img src="logo.png" alt="TSINDA-DUTSINDE Logo" class="h-10 w-10 rounded-full border-2 border-blue-400 shadow-sm" />
+        <img src="/logo.png" alt="TSINDA-DUTSINDE Logo" class="h-10 w-10 rounded-full border-2 border-blue-400 shadow-sm" />
         <h1 class="text-2xl font-extrabold text-blue-800 tracking-wide">TSINDA-DUTSINDE</h1>
       </div>
       <nav class="flex space-x-6">
@@ -73,52 +74,46 @@
       </nav>
     </div>
   </header>
-
   <!-- Main Content -->
   <main class="flex-grow flex items-center justify-center p-6 w-full">
     <div class="card shadow-2xl rounded-3xl p-10 w-full text-center space-y-6">
-      <h2 class="text-2xl font-bold text-blue-800">Login</h2>
+      <!-- Logo inserted here -->
+      <img src="/logo.png" alt="TSINDA-DUTSINDE Logo" class="h-20 w-20 rounded-full border-2 border-blue-400 shadow-sm mx-auto" />
+        
       <form id="loginForm">
         <input type="email" name="email" placeholder="Email Address" required>
         <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
         <p id="loginMsg"></p>
       </form>
-      
       <div class="flex justify-between text-sm text-gray-600 mt-4">
         <a href="forgot-password.html" class="hover:text-blue-600">Forgot Password?</a>
         <a href="register.html" class="hover:text-blue-600">Create an Account</a>
       </div>
     </div>
   </main>
-
   <!-- Footer -->
   <footer class="bg-gray-100 w-full mt-12 text-center py-6 text-sm text-gray-600">
     &copy; 2025 TSINDA-DUTSINDE Platform. All rights reserved. | Powered by Aphrodice
   </footer>
-
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbw9-mpoN5isZdxqiS7BN56kxhx4AJm3o2dymDVOvQZZWyTt-w6sPk-dPv5ZANWZWwz2/exec'; // Ensure this URL is correct and the script is deployed with public access.
-    
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const form = new FormData(e.target);
       form.append("type", "login");
-
       try {
         const response = await fetch(scriptURL, {
           method: "POST",
           body: new URLSearchParams(form)
         });
         const result = await response.json();
-
         document.getElementById("loginMsg").textContent = result.message;
-
         if (result.success) {
           // Store user session data on successful login
           localStorage.setItem("loggedInEmail", form.get("email")); 
           localStorage.setItem("sessionToken", result.token); // Store session token
-          window.location.href = "dashboard"; // Redirect to dashboard page
+          window.location.href = "dashboard.html"; // Redirect to dashboard page
         }
       } catch (error) {
         document.getElementById("loginMsg").textContent = "An error occurred. Please try again.";
@@ -126,6 +121,5 @@
       }
     });
   </script>
-
 </body>
 </html>
