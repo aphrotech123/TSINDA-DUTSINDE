@@ -49,19 +49,18 @@
     }
     /* Short Hamburger Button */
     #hamburger {
-      width: 50px; /* Set a very short width for the button */
-      padding: 8; /* Remove padding */
+      width: 50px;
+      padding: 8px;
       display: flex;
-      flex-direction: column; /* Fixed the typo from 'column' to 'column' */
-      justify-content: space-around; /* Space out the spans */
+      flex-direction: column;
+      justify-content: space-around;
     }
     #hamburger span {
-      width: 100%; /* Full width of the button */
-      height: 2px; /* Adjust height */
-      background-color: #333; /* Color of the lines */
-      transition: all 0.3s ease; /* Smooth transition for hover effect */
+      width: 100%;
+      height: 2px;
+      background-color: #333;
+      transition: all 0.3s ease;
     }
-    /* Hamburger animation */
     .line {
       transition: all 0.3s ease-in-out;
     }
@@ -112,6 +111,7 @@
       </nav>
     </div>
   </header>
+
   <!-- Main Content -->
   <main class="flex items-center justify-center p-6 w-full flex-grow">
     <div class="card shadow-2xl rounded-3xl p-10 w-full text-center space-y-6">
@@ -128,18 +128,22 @@
       </div>
     </div>
   </main>
-   <!-- Footer -->
-   <footer class="bg-gray-100 w-full text-center py-6 text-sm text-gray-600">
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 w-full text-center py-6 text-sm text-gray-600">
     &copy; 2025 TSINDA-DUTSINDE Platform. All rights reserved. | Powered by Aphrodice
   </footer>
+
   <!-- Scripts -->
   <script>
-    // Toggle Mobile Menu
+    // Toggle Mobile Menu and Hamburger Animation
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
     hamburger.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
+      hamburger.classList.toggle('open'); // This enables the cross animation
     });
+
     // Login Form Submission
     const scriptURL = 'https://script.google.com/macros/s/AKfycbw9-mpoN5isZdxqiS7BN56kxhx4AJm3o2dymDVOvQZZWyTt-w6sPk-dPv5ZANWZWwz2/exec';
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
