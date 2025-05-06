@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="/logo.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
   <title>Login - TSINDA-DUTSINDE</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
@@ -51,65 +51,67 @@
       margin-top: 10px;
       color: #555;
     }
-    /* Added styles for error messages */
     .error {
       color: #f90303;
     }
 
-
-  const hamburger = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobileMenu');
-
-  hamburger.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
-  });
-
-
-
-    
+    /* Hamburger animation */
+    .line {
+      transition: all 0.3s ease-in-out;
+    }
+    .open .line-1 {
+      transform: rotate(45deg) translateY(0.5rem);
+    }
+    .open .line-2 {
+      opacity: 0;
+    }
+    .open .line-3 {
+      transform: rotate(-45deg) translateY(-0.5rem);
+    }
   </style>
 </head>
-<body>
-  <header class="bg-white shadow-lg w-full">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-    <div class="flex items-center space-x-3">
-      <img src="/logo.png" alt="TSINDA-DUTSINDE Logo" class="h-10 w-10 rounded-full border-2 border-blue-400 shadow-sm" />
-      <h1 class="text-2xl font-extrabold text-blue-800 tracking-wide">TSINDA-DUTSINDE</h1>
+<body class="w-full">
+
+  <!-- Header with Responsive Navbar -->
+  <header class="bg-white shadow-lg w-full fixed top-0 left-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <img src="/logo.png" alt="TSINDA-DUTSINDE Logo" class="h-10 w-10 rounded-full border-2 border-blue-400 shadow-sm" />
+        <h1 class="text-2xl font-extrabold text-blue-800 tracking-wide">TSINDA-DUTSINDE</h1>
+      </div>
+
+      <!-- Hamburger Button -->
+      <button id="hamburger" class="md:hidden flex flex-col space-y-1 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <span class="w-6 h-0.5 bg-blue-800 line line-1"></span>
+        <span class="w-6 h-0.5 bg-blue-800 line line-2"></span>
+        <span class="w-6 h-0.5 bg-blue-800 line line-3"></span>
+      </button>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex space-x-6">
+        <a href="index.html" class="text-blue-700 font-medium hover:underline transition">Ahabanza</a>
+        <a href="about.html" class="text-blue-700 font-medium hover:underline transition">About</a>
+        <a href="services.html" class="text-blue-700 font-medium hover:underline transition">Services</a>
+        <a href="contact.html" class="text-blue-700 font-medium hover:underline transition">Contact</a>
+        <a href="support.html" class="text-blue-700 font-medium hover:underline transition">Support</a>
+      </nav>
     </div>
 
-    <!-- Hamburger button (mobile only) -->
-    <button id="hamburger" class="md:hidden flex flex-col space-y-1 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-      <span class="w-6 h-0.5 bg-blue-800"></span>
-      <span class="w-6 h-0.5 bg-blue-800"></span>
-      <span class="w-6 h-0.5 bg-blue-800"></span>
-    </button>
-
-    <!-- Desktop nav -->
-    <nav class="hidden md:flex space-x-6">
-      <a href="index.html" class="text-blue-700 font-medium hover:underline transition">Ahabanza</a>
-      <a href="about.html" class="text-blue-700 font-medium hover:underline transition">About</a>
-      <a href="services.html" class="text-blue-700 font-medium hover:underline transition">Services</a>
-      <a href="contact.html" class="text-blue-700 font-medium hover:underline transition">Contact</a>
-      <a href="support.html" class="text-blue-700 font-medium hover:underline transition">Support</a>
-    </nav>
-  </div>
-
-  <!-- Mobile nav (hidden by default) -->
-  <div id="mobileMenu" class="md:hidden hidden px-6 pb-4">
-    <nav class="flex flex-col space-y-3">
-      <a href="index.html" class="text-blue-700 font-medium hover:underline transition">Ahabanza</a>
-      <a href="about.html" class="text-blue-700 font-medium hover:underline transition">About</a>
-      <a href="services.html" class="text-blue-700 font-medium hover:underline transition">Services</a>
-      <a href="contact.html" class="text-blue-700 font-medium hover:underline transition">Contact</a>
-      <a href="support.html" class="text-blue-700 font-medium hover:underline transition">Support</a>
-    </nav>
-  </div>
-</header>
+    <!-- Mobile Navigation -->
+    <div id="mobileMenu" class="md:hidden hidden px-6 pb-4">
+      <nav class="flex flex-col space-y-3">
+        <a href="index.html" class="text-blue-700 font-medium hover:underline transition">Ahabanza</a>
+        <a href="about.html" class="text-blue-700 font-medium hover:underline transition">About</a>
+        <a href="services.html" class="text-blue-700 font-medium hover:underline transition">Services</a>
+        <a href="contact.html" class="text-blue-700 font-medium hover:underline transition">Contact</a>
+        <a href="support.html" class="text-blue-700 font-medium hover:underline transition">Support</a>
+      </nav>
+    </div>
+  </header>
 
   <!-- Main Content -->
-  <main class="flex-grow flex items-center justify-center p-6 w-full">
+  <main class="flex-grow flex items-center justify-center p-6 w-full pt-32">
     <div class="card shadow-2xl rounded-3xl p-10 w-full text-center space-y-6">
-      <!-- Logo inserted here -->
       <img src="/logo.png" alt="TSINDA-DUTSINDE Logo" class="h-20 w-20 rounded-full border-2 border-blue-400 shadow-sm mx-auto" />
         
       <form id="loginForm">
@@ -124,12 +126,15 @@
       </div>
     </div>
   </main>
+
   <!-- Footer -->
   <footer class="bg-gray-100 w-full mt-12 text-center py-6 text-sm text-gray-600">
     &copy; 2025 TSINDA-DUTSINDE Platform. All rights reserved. | Powered by Aphrodice
   </footer>
+
+  <!-- JS: Google Script Login + Hamburger Toggle -->
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbw9-mpoN5isZdxqiS7BN56kxhx4AJm3o2dymDVOvQZZWyTt-w6sPk-dPv5ZANWZWwz2/exec'; // Ensure this URL is correct and the script is deployed with public access.
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbw9-mpoN5isZdxqiS7BN56kxhx4AJm3o2dymDVOvQZZWyTt-w6sPk-dPv5ZANWZWwz2/exec';
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const form = new FormData(e.target);
@@ -142,16 +147,25 @@
         const result = await response.json();
         document.getElementById("loginMsg").textContent = result.message;
         if (result.success) {
-          // Store user session data on successful login
           localStorage.setItem("loggedInEmail", form.get("email")); 
-          localStorage.setItem("sessionToken", result.token); // Store session token
-          window.location.href = "dashboard.html"; // Redirect to dashboard page
+          localStorage.setItem("sessionToken", result.token); 
+          window.location.href = "dashboard.html"; 
         }
       } catch (error) {
         document.getElementById("loginMsg").textContent = "An error occurred. Please try again.";
         console.error('Error during login:', error);
       }
     });
+
+    // Hamburger toggle
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      hamburger.classList.toggle('open');
+    });
   </script>
+
 </body>
 </html>
