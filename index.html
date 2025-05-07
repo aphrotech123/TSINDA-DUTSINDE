@@ -1,172 +1,532 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="/logo.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - TSINDA-DUTSINDE</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #e0eafc, #cfdef3);
-      margin: 0;
-      padding-top: 80px; /* for fixed header */
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh; /* Ensures the body takes full height */
-    }
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      max-width: 400px;
-      margin: auto;
-    }
-    input, button {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      font-size: 14px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-    .error {
-      color: #f90303;
-    }
-    footer {
-      margin-top: auto; /* Pushes footer to the bottom */
-    }
-    /* Short Hamburger Button */
-    #hamburger {
-      width: 50px;
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-    }
-    #hamburger span {
-      width: 100%;
-      height: 2px;
-      background-color: #333;
-      transition: all 0.3s ease;
-    }
-    .line {
-      transition: all 0.3s ease-in-out;
-    }
-    .open .line-1 {
-      transform: rotate(45deg) translateY(0.5rem);
-    }
-    .open .line-2 {
-      opacity: 0;
-    }
-    .open .line-3 {
-      transform: rotate(-45deg) translateY(-0.5rem);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantastic Quiz!</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arial:wght@400;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Updated CSS for radio buttons, improved layout, and modern design */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .quiz-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 95%;
+            margin: 20px auto;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .quiz-title {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 26px;
+            color: #007bff;
+        }
+        #question-container {
+            margin-bottom: 25px;
+        }
+        #question {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        #options-container {
+            margin-bottom: 25px;
+        }
+        .option-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            transition: background-color 0.2s ease;
+            border-radius: 6px;
+            padding: 8px;
+        }
+        .option-item:hover {
+            background-color: #f5f5f5;
+        }
+        .option-input {
+            margin-right: 12px;
+        }
+        .option-label {
+            font-size: 16px;
+            color: #34495e;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .option-input:checked + .option-label {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+        .controls button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            font-size: 17px;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .controls button:hover {
+            background-color: #0056b3;
+            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
+        }
+        .controls button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .controls button:disabled:hover {
+            background-color: #bdc3c7;
+            box-shadow: none;
+        }
+        #results-container {
+            display: none;
+            padding: 30px;
+            margin-top: 30px;
+            border-radius: 12px;
+            background-color: #f9f9f9;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            animation: slideIn 0.5s ease-in-out;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        #results-container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #007bff;
+        }
+        #results-container p {
+            font-size: 18px;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        #correct-answers {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+        #correct-answers li {
+            margin-bottom: 12px;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(20, 17, 186, 0.05);
+            font-size: 16px;
+            color: #3498db;
+            border-left: 3px solid #3498db;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Space between text and button */
+            gap: 10px;
+        }
+        #correct-answers li:hover {
+            background-color: #f0f0f0;
+            transform: translateX(5px);
+        }
+        .correct-icon {
+            color: #2ecc71;
+            font-size: 20px;
+        }
+        .incorrect-icon {
+            color: #e74c3c;
+            font-size: 20px;
+        }
+        .view-options-button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            background-color: #3498db;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 14px;
+            margin-left: auto; /* Push button to the right */
+        }
+        .view-options-button:hover {
+            background-color: #2980b9;
+        }
+        .options-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .options-modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .options-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .options-modal-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #3498db;
+        }
+        .close-modal-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #aaa;
+            font-size: 24px;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+        .close-modal-button:hover {
+            color: #333;
+        }
+        .options-modal-body {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        .options-modal-body ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options-modal-body li {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+        }
+        .options-modal-body li.selected-option {
+            background-color: #e0f7fa;
+            border-left: 4px solid #00b0ff;
+            font-weight: bold;
+        }
+        .retake-button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            font-size: 17px;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            align-self: center;
+        }
+        .retake-button:hover {
+            background-color: #0056b3;
+            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
+        }
+    </style>
 </head>
 <body>
-  <!-- Header -->
-  <header class="bg-white shadow-lg w-full fixed top-0 left-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-      <div class="flex items-center space-x-2 md:space-x-3">
-        <img src="/logo.png" alt="TSINDA-DUTSINDE Logo" class="h-10 w-10 rounded-full border-2 border-blue-400 shadow-sm" />
-        <h1 class="text-sm md:text-2xl font-extrabold text-blue-800 tracking-wide whitespace-nowrap">
-          TSINDA-DUTSINDE
-        </h1>
-      </div>
-      <!-- Hamburger Button -->
-      <button id="hamburger" class="md:hidden flex flex-col space-y-1 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <span class="w-6 h-0.5 bg-blue-800 line line-1"></span>
-        <span class="w-6 h-0.5 bg-blue-800 line line-2"></span>
-        <span class="w-6 h-0.5 bg-blue-800 line line-3"></span>
-      </button>
-      <!-- Desktop Navigation -->
-      <nav class="hidden md:flex space-x-6">
-        <a href="index.html" class="text-blue-700 font-medium hover:underline transition">Ahabanza</a>
-        <a href="about.html" class="text-blue-700 font-medium hover:underline transition">About</a>
-        <a href="services.html" class="text-blue-700 font-medium hover:underline transition">Services</a>
-        <a href="contact.html" class="text-blue-700 font-medium hover:underline transition">Contact</a>
-        <a href="support.html" class="text-blue-700 font-medium hover:underline transition">Support</a>
-      </nav>
+    <div class="quiz-container">
+        <h1 class="quiz-title">The Ultimate Quiz</h1>
+        <div id="question-container">
+            <h2 id="question">Question will go here</h2>
+            <div id="options-container">
+                </div>
+        </div>
+        <div class="controls">
+            <button id="next-button" disabled>Next</button>
+            <button id="submit-button" style="display: none;">Submit Quiz</button>
+        </div>
+        <div id="results-container" style="display: none;">
+            <h2>Quiz Results</h2>
+            <p id="score"></p>
+            <ul id="correct-answers"></ul>
+            <button class="retake-button">Retake Quiz</button>
+        </div>
+        <div class="options-modal" id="options-modal">
+            <div class="options-modal-content">
+                <div class="options-modal-header">
+                    <h2>Question Options</h2>
+                    <button class="close-modal-button" id="close-modal">&times;</button>
+                </div>
+                <div class="options-modal-body" id="modal-options-container">
+                    <ul>
+                        </ul>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- Mobile Navigation -->
-    <div id="mobileMenu" class="md:hidden hidden px-4 pb-4">
-      <nav class="flex flex-col space-y-3">
-        <a href="index.html" class="text-blue-700 font-medium hover:underline transition">Ahabanza</a>
-        <a href="about.html" class="text-blue-700 font-medium hover:underline transition">About</a>
-        <a href="services.html" class="text-blue-700 font-medium hover:underline transition">Services</a>
-        <a href="contact.html" class="text-blue-700 font-medium hover:underline transition">Contact</a>
-        <a href="support.html" class="text-blue-700 font-medium hover:underline transition">Support</a>
-      </nav>
-    </div>
-  </header>
+    <script>
+        const SHEET_ID = 'fxuh8jvlbyi1m';  //  Replace with your actual SheetDB API ID
+        const SHEETDB_URL = `https://sheetdb.io/api/v1/${SHEET_ID}?sheet=Sheet2`; // Replace with your SheetDB URL
 
-  <!-- Main Content -->
-  <main class="flex items-center justify-center p-6 w-full flex-grow">
-    <div class="card shadow-2xl rounded-3xl p-10 w-full text-center space-y-6">
-      <img src="/logo.png" alt="TSINDA-DUTSINDE Logo" class="h-20 w-20 rounded-full border-2 border-blue-400 shadow-sm mx-auto" />
-      <form id="loginForm">
-        <input type="email" name="email" placeholder="Email Address" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-        <p id="loginMsg"></p>
-      </form>
-      <div class="flex justify-between text-sm text-gray-600 mt-4">
-        <a href="forgot-password.html" class="hover:text-blue-600">Forgot Password?</a>
-        <a href="register.html" class="hover:text-blue-600">Create an Account</a>
-      </div>
-    </div>
-  </main>
+        const questionContainer = document.getElementById('question');
+        const optionsContainer = document.getElementById('options-container');
+        const nextButton = document.getElementById('next-button');
+        const submitButton = document.getElementById('submit-button');
+        const resultsContainer = document.getElementById('results-container');
+        const scoreDisplay = document.getElementById('score');
+        const correctAnswersList = document.getElementById('correct-answers');
+        const retakeButton = document.querySelector('.retake-button');
+        const optionsModal = document.getElementById('options-modal');
+        const modalOptionsContainer = document.getElementById('modal-options-container');
+        const closeModalButton = document.getElementById('close-modal');
 
-  <!-- Footer -->
-  <footer class="bg-gray-100 w-full text-center py-6 text-sm text-gray-600">
-    &copy; 2025 TSINDA-DUTSINDE Platform. All rights reserved. | Powered by Aphrodice
-  </footer>
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let shuffledQuestions = [];
+        let selectedQuestion;
 
-  <!-- Scripts -->
-  <script>
-    // Toggle Mobile Menu and Hamburger Animation
-    const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobileMenu');
-    hamburger.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-      hamburger.classList.toggle('open'); // This enables the cross animation
-    });
+        async function fetchQuestions() {
+            try {
+                const response = await fetch(SHEETDB_URL);
+                const data = await response.json();
 
-    // Login Form Submission
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbw9-mpoN5isZdxqiS7BN56kxhx4AJm3o2dymDVOvQZZWyTt-w6sPk-dPv5ZANWZWwz2/exec';
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const form = new FormData(e.target);
-      form.append("type", "login");
-      try {
-        const response = await fetch(scriptURL, {
-          method: "POST",
-          body: new URLSearchParams(form)
-        });
-        const result = await response.json();
-        document.getElementById("loginMsg").textContent = result.message;
-        if (result.success) {
-          localStorage.setItem("loggedInEmail", form.get("email"));
-          localStorage.setItem("sessionToken", result.token);
-          window.location.href = "dashboard.html";
+                questions = data.map(item => ({
+                    question: item.Question,
+                    options: [item['Option 1'], item['Option 2'], item['Option 3'], item['Option 4']],
+                    correctAnswer: item['Correct Answer']
+                }));
+
+                if (questions.length > 0) {
+                    shuffledQuestions = shuffleArray(questions);
+                    displayQuestion();
+                } else {
+                    questionContainer.textContent = "Failed to load questions. No data found or incorrect sheet structure.";
+                }
+            } catch (error) {
+                console.error("Error fetching questions:", error);
+                questionContainer.textContent = "Error loading questions.";
+            }
         }
-      } catch (error) {
-        document.getElementById("loginMsg").textContent = "An error occurred. Please try again.";
-        console.error('Error during login:', error);
-      }
-    });
-  </script>
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [
+                    array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        function displayQuestion() {
+            if (currentQuestionIndex < shuffledQuestions.length) {
+                const currentQuestion = shuffledQuestions[currentQuestionIndex];
+                questionContainer.textContent = currentQuestion.question;
+                optionsContainer.innerHTML = '';
+
+                currentQuestion.options.forEach((option, index) => {
+                    const optionItem = document.createElement('div');
+                    optionItem.className = 'option-item';
+
+                    const optionInput = document.createElement('input');
+                    optionInput.type = 'radio';
+                    optionInput.name = 'question-options';
+                    optionInput.id = `option-${index}`;
+                    optionInput.value = option;
+                    optionInput.className = 'option-input';
+                    optionInput.addEventListener('change', () => {
+                        selectAnswer(option);
+                        nextButton.disabled = false;
+                    });
+
+                    const optionLabel = document.createElement('label');
+                    optionLabel.textContent = option;
+                    optionLabel.setAttribute('for', `option-${index}`);
+                    optionLabel.className = 'option-label';
+
+                    optionItem.appendChild(optionInput);
+                    optionItem.appendChild(optionLabel);
+                    optionsContainer.appendChild(optionItem);
+                });
+
+                nextButton.disabled = true;
+                if (currentQuestionIndex === shuffledQuestions.length - 1) {
+                    nextButton.style.display = 'none';
+                    submitButton.style.display = 'block';
+                } else {
+                    nextButton.style.display = 'block';
+                    submitButton.style.display = 'none';
+                }
+            } else {
+                console.log("End of questions unexpectedly reached.");
+            }
+        }
+
+        function selectAnswer(answer) {
+            userAnswers[currentQuestionIndex] = answer;
+            const options = document.querySelectorAll('.option-item');
+            options.forEach(optionItem => {
+                const input = optionItem.querySelector('.option-input');
+                const label = optionItem.querySelector('.option-label');
+                if (input.checked) {
+                    label.classList.add('selected');
+                } else {
+                    label.classList.remove('selected');
+                }
+            });
+
+        }
+
+        function nextQuestion() {
+            if (userAnswers[currentQuestionIndex] === undefined) {
+                alert("Please select an answer before proceeding.");
+                return;
+            }
+            currentQuestionIndex++;
+            displayQuestion();
+        }
+
+        function showResults() {
+            let score = 0;
+            resultsContainer.style.display = 'block';
+            questionContainer.style.display = 'none';
+            optionsContainer.style.display = 'none';
+            nextButton.style.display = 'none';
+            submitButton.style.display = 'none';
+
+            correctAnswersList.innerHTML = '';
+            shuffledQuestions.forEach((question, index) => {
+                const userAnswer = userAnswers[index];
+                const isCorrect = userAnswer === question.correctAnswer;
+                if (isCorrect) {
+                    score++;
+                }
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `<i class="fas ${isCorrect ? 'fa-check-circle correct-icon' : 'fa-times-circle incorrect-icon'}"></i> ${question.question} 
+                                    <button class="view-options-button" data-question-index="${index}">View Options</button>`;
+                correctAnswersList.appendChild(listItem);
+            });
+
+            scoreDisplay.textContent = `You scored ${score} out of ${shuffledQuestions.length}!`;
+        }
+
+        function showQuestionOptions(questionIndex) {
+            selectedQuestion = shuffledQuestions[questionIndex];
+            modalOptionsContainer.innerHTML = '<ul>';
+            selectedQuestion.options.forEach(option => {
+                const listItem = document.createElement('li');
+                listItem.textContent = option;
+                if (userAnswers[questionIndex] === option) {
+                    listItem.classList.add('selected-option');
+                }
+                modalOptionsContainer.querySelector('ul').appendChild(listItem);
+            });
+            const correctAnswerItem = document.createElement('li');
+            correctAnswerItem.textContent = `Correct Answer: ${selectedQuestion.correctAnswer}`;
+            correctAnswerItem.classList.add('correct-answer');
+            modalOptionsContainer.querySelector('ul').appendChild(correctAnswerItem);
+            optionsModal.style.display = 'flex';
+        }
+
+        nextButton.addEventListener('click', nextQuestion);
+        submitButton.addEventListener('click', showResults);
+        retakeButton.addEventListener('click', () => {
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            shuffledQuestions = shuffleArray(questions);
+            resultsContainer.style.display = 'none';
+            questionContainer.style.display = 'block';
+            optionsContainer.style.display = 'block';
+            nextButton.style.display = 'block';
+            submitButton.style.display = 'none';
+            fetchQuestions();
+        });
+
+        closeModalButton.addEventListener('click', () => {
+            optionsModal.style.display = 'none';
+        });
+
+        optionsContainer.addEventListener('click', (event) => {
+            const target = event.target;
+            if (target.classList.contains('option-label')) {
+                const optionInput = target.previousElementSibling;
+                if (optionInput && optionInput.type === 'radio') {
+                    optionInput.checked = true;
+                    // Trigger the change event to update the selection
+                    const changeEvent = new Event('change');
+                    optionInput.dispatchEvent(changeEvent);
+                }
+            }
+        });
+
+        resultsContainer.addEventListener('click', (event) => {
+            const target = event.target;
+            if (target.classList.contains('view-options-button')) {
+                const questionIndex = target.dataset.questionIndex;
+                showQuestionOptions(questionIndex);
+            }
+        });
+
+        fetchQuestions();
+    </script>
 </body>
 </html>
