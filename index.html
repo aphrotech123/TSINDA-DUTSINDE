@@ -1,532 +1,440 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fantastic Quiz!</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arial:wght@400;600&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ikizamini</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Updated CSS for radio buttons, improved layout, and modern design */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .quiz-container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 95%;
-            margin: 20px auto;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
+        /* Custom Tailwind Configuration (optional, but good for custom animations) */
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+
+        /* Define custom animations */
+        @layer utilities {
+            .animate-gradient-shift {
+                animation: gradientShift 15s ease infinite;
+                background-size: 200% 200%;
             }
-            to {
+
+            @keyframes gradientShift {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+
+            .animate-pulse-effect {
+                animation: pulseEffect 1.8s infinite alternate;
+            }
+
+            @keyframes pulseEffect {
+                from { opacity: 0.7; transform: scale(1); }
+                to { opacity: 1; transform: scale(1.03); }
+            }
+
+            .text-shadow-lg {
+                text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            }
+
+            .shadow-inner-lg {
+                box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+            }
+
+            /* Custom radio button styling */
+            .custom-radio-label input[type="radio"] {
+                /* Hide default radio button */
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                border: 2px solid #00ffff; /* Cyan border */
+                background-color: transparent;
+                margin-right: 12px;
+                position: relative;
+                top: 2px; /* Adjust vertical alignment */
+                cursor: pointer;
+                transition: all 0.2s ease-in-out;
+            }
+
+            .custom-radio-label input[type="radio"]:checked {
+                background-color: #00ffff; /* Cyan fill when checked */
+                border-color: #00ffff;
+                box-shadow: 0 0 0 4px rgba(0, 255, 255, 0.3); /* Outer glow */
+            }
+
+            .custom-radio-label input[type="radio"]:checked::before {
+                content: '';
+                display: block;
+                width: 10px;
+                height: 10px;
+                background-color: #141e30; /* Dark center dot */
+                border-radius: 50%;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .custom-radio-label:hover input[type="radio"] {
+                border-color: #00e6e6; /* Lighter cyan on hover */
+            }
+
+            /* Spinner animation */
+            .spinner {
+                border: 4px solid rgba(255, 255, 255, 0.3);
+                border-top: 4px solid #00ffff;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            /* Modal specific styles */
+            .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.7);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
+            }
+
+            .modal-overlay.show {
                 opacity: 1;
+                visibility: visible;
             }
-        }
-        .quiz-title {
-            text-align: center;
-            margin-bottom: 25px;
-            font-size: 26px;
-            color: #007bff;
-        }
-        #question-container {
-            margin-bottom: 25px;
-        }
-        #question {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #2c3e50;
-            font-weight: 600;
-            line-height: 1.5;
-        }
-        #options-container {
-            margin-bottom: 25px;
-        }
-        .option-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            transition: background-color 0.2s ease;
-            border-radius: 6px;
-            padding: 8px;
-        }
-        .option-item:hover {
-            background-color: #f5f5f5;
-        }
-        .option-input {
-            margin-right: 12px;
-        }
-        .option-label {
-            font-size: 16px;
-            color: #34495e;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-        .option-input:checked + .option-label {
-            font-weight: bold;
-            color: #007bff;
-        }
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 30px;
-        }
-        .controls button {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 6px;
-            background-color: #007bff;
-            color: #fff;
-            cursor: pointer;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            font-size: 17px;
-            font-weight: 600;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .controls button:hover {
-            background-color: #0056b3;
-            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
-        }
-        .controls button:disabled {
-            background-color: #bdc3c7;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-        .controls button:disabled:hover {
-            background-color: #bdc3c7;
-            box-shadow: none;
-        }
-        #results-container {
-            display: none;
-            padding: 30px;
-            margin-top: 30px;
-            border-radius: 12px;
-            background-color: #f9f9f9;
-            text-align: center;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-            animation: slideIn 0.5s ease-in-out;
-        }
-        @keyframes slideIn {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
+
+            .modal-content {
+                background-color: #1a202c; /* Dark background for modal */
+                padding: 2.5rem;
+                border-radius: 1.5rem;
+                box-shadow: 0 10px 25px rgba(0, 255, 255, 0.2); /* Cyan shadow */
+                text-align: center;
+                max-width: 90%;
+                width: 400px;
+                transform: translateY(-20px);
+                transition: transform 0.3s ease;
             }
-            to {
+
+            .modal-overlay.show .modal-content {
                 transform: translateY(0);
-                opacity: 1;
             }
-        }
-        #results-container h2 {
-            margin-bottom: 20px;
-            font-size: 24px;
-            color: #007bff;
-        }
-        #results-container p {
-            font-size: 18px;
-            margin-bottom: 25px;
-            color: #2c3e50;
-            font-weight: bold;
-        }
-        #correct-answers {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            text-align: left;
-        }
-        #correct-answers li {
-            margin-bottom: 12px;
-            padding: 15px;
-            background-color: #ffffff;
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(20, 17, 186, 0.05);
-            font-size: 16px;
-            color: #3498db;
-            border-left: 3px solid #3498db;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Space between text and button */
-            gap: 10px;
-        }
-        #correct-answers li:hover {
-            background-color: #f0f0f0;
-            transform: translateX(5px);
-        }
-        .correct-icon {
-            color: #2ecc71;
-            font-size: 20px;
-        }
-        .incorrect-icon {
-            color: #e74c3c;
-            font-size: 20px;
-        }
-        .view-options-button {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 4px;
-            background-color: #3498db;
-            color: #fff;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            font-size: 14px;
-            margin-left: auto; /* Push button to the right */
-        }
-        .view-options-button:hover {
-            background-color: #2980b9;
-        }
-        .options-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-        }
-        .options-modal-content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 500px;
-            width: 90%;
-            position: relative;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            animation: fadeIn 0.3s;
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        .options-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-        .options-modal-header h2 {
-            margin: 0;
-            font-size: 20px;
-            color: #3498db;
-        }
-        .close-modal-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #aaa;
-            font-size: 24px;
-            cursor: pointer;
-            border: none;
-            background: none;
-        }
-        .close-modal-button:hover {
-            color: #333;
-        }
-        .options-modal-body {
-            margin-bottom: 20px;
-            font-size: 16px;
-            color: #2c3e50;
-        }
-        .options-modal-body ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .options-modal-body li {
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-        }
-        .options-modal-body li.selected-option {
-            background-color: #e0f7fa;
-            border-left: 4px solid #00b0ff;
-            font-weight: bold;
-        }
-        .retake-button {
-            margin-top: 20px;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 6px;
-            background-color: #007bff;
-            color: #fff;
-            cursor: pointer;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            font-size: 17px;
-            font-weight: 600;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            align-self: center;
-        }
-        .retake-button:hover {
-            background-color: #0056b3;
-            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
-<body>
-    <div class="quiz-container">
-        <h1 class="quiz-title">The Ultimate Quiz</h1>
-        <div id="question-container">
-            <h2 id="question">Question will go here</h2>
-            <div id="options-container">
-                </div>
-        </div>
-        <div class="controls">
-            <button id="next-button" disabled>Next</button>
-            <button id="submit-button" style="display: none;">Submit Quiz</button>
-        </div>
-        <div id="results-container" style="display: none;">
-            <h2>Quiz Results</h2>
-            <p id="score"></p>
-            <ul id="correct-answers"></ul>
-            <button class="retake-button">Retake Quiz</button>
-        </div>
-        <div class="options-modal" id="options-modal">
-            <div class="options-modal-content">
-                <div class="options-modal-header">
-                    <h2>Question Options</h2>
-                    <button class="close-modal-button" id="close-modal">&times;</button>
-                </div>
-                <div class="options-modal-body" id="modal-options-container">
-                    <ul>
-                        </ul>
-                </div>
+<body class="bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-950 min-h-screen flex flex-col items-center justify-center text-white font-inter animate-gradient-shift p-4">
+
+    <div class="container bg-white/10 p-8 md:p-12 rounded-3xl shadow-2xl backdrop-blur-xl border border-white/20 text-center w-11/12 max-w-3xl">
+        <h1 class="text-cyan-400 text-5xl md:text-6xl font-extrabold mb-8 text-shadow-lg">IKIZAMINI</h1>
+        <div id="timer" class="text-yellow-300 text-4xl font-extrabold mb-8 animate-pulse-effect" style="display:none;"> Ikizamini kigizwe n'ibibazo 20 bikorwa muminota 20 gusa!</div>
+        <div id="quiz-content">
+            <button id="start-btn" onclick="startQuiz()" class="py-3 px-10 text-xl font-bold rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/50">
+                Tangira Ikizamini
+            </button>
+            <div id="loading-indicator" class="hidden flex flex-col items-center justify-center mt-8">
+                <div class="spinner mb-4"></div>
+                <p class="text-xl text-gray-300">Ikizamini kiri kuza...</p>
             </div>
         </div>
     </div>
+
+    <div id="confirm-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 class="text-3xl font-bold text-cyan-300 mb-6">Emeza Gusoza Ikizamini</h3>
+            <p class="text-xl text-gray-200 mb-8">Emeza ko ushaka gusoza ikizamini? Ntushobora guhindura ibisubizo nyuma yo kubyohereza.</p>
+            <div class="flex justify-center space-x-6">
+                <button onclick="submitQuizLogic()" class="py-3 px-8 text-lg font-semibold rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-500/50">
+                    Yego, Soza!
+                </button>
+                <button onclick="hideConfirmModal()" class="py-3 px-8 text-lg font-semibold rounded-2xl bg-gradient-to-r from-red-500 to-rose-600 text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-red-500/50">
+                    Oya
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        const SHEET_ID = 'fxuh8jvlbyi1m';  //  Replace with your actual SheetDB API ID
-        const SHEETDB_URL = `https://sheetdb.io/api/v1/${SHEET_ID}?sheet=Sheet2`; // Replace with your SheetDB URL
+        // Backend URL for fetching questions and submitting answers
+        const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbz2SJ0sMeSRYUrAs3FZvMfE0SB6o1n1bEPYKc9YMv1awHhWF50gBCgCR5fWP2wO3LIKBA/exec';
 
-        const questionContainer = document.getElementById('question');
-        const optionsContainer = document.getElementById('options-container');
-        const nextButton = document.getElementById('next-button');
-        const submitButton = document.getElementById('submit-button');
-        const resultsContainer = document.getElementById('results-container');
-        const scoreDisplay = document.getElementById('score');
-        const correctAnswersList = document.getElementById('correct-answers');
-        const retakeButton = document.querySelector('.retake-button');
-        const optionsModal = document.getElementById('options-modal');
-        const modalOptionsContainer = document.getElementById('modal-options-container');
-        const closeModalButton = document.getElementById('close-modal');
+        // Global variables to store quiz data and state
+        let questions = []; // Stores the fetched quiz questions
+        let answers = [];   // Stores the user's selected answers
+        let currentIndex = 0; // Current question index
+        let timerInterval;     // Variable to hold the timer interval ID
 
-        let questions = [];
-        let currentQuestionIndex = 0;
-        let userAnswers = [];
-        let shuffledQuestions = [];
-        let selectedQuestion;
+        /**
+         * Initiates the quiz by hiding the start button, showing the timer,
+         * displaying the loading indicator, and fetching the questions.
+         */
+        function startQuiz() {
+            document.getElementById('start-btn').classList.add('hidden'); // Hide start button
+            document.getElementById('timer').style.display = 'block';     // Show timer
+            
+            // Show loading indicator
+            const loadingIndicator = document.getElementById('loading-indicator');
+            loadingIndicator.classList.remove('hidden'); 
 
-        async function fetchQuestions() {
-            try {
-                const response = await fetch(SHEETDB_URL);
-                const data = await response.json();
-
-                questions = data.map(item => ({
-                    question: item.Question,
-                    options: [item['Option 1'], item['Option 2'], item['Option 3'], item['Option 4']],
-                    correctAnswer: item['Correct Answer']
-                }));
-
-                if (questions.length > 0) {
-                    shuffledQuestions = shuffleArray(questions);
-                    displayQuestion();
-                } else {
-                    questionContainer.textContent = "Failed to load questions. No data found or incorrect sheet structure.";
+            // Clear quiz content area, but ensure loading indicator remains visible
+            const quizContent = document.getElementById('quiz-content');
+            // Remove all children except the loading indicator
+            Array.from(quizContent.children).forEach(child => {
+                if (child.id !== 'loading-indicator') {
+                    quizContent.removeChild(child);
                 }
-            } catch (error) {
-                console.error("Error fetching questions:", error);
-                questionContainer.textContent = "Error loading questions.";
-            }
-        }
-        function shuffleArray(array) {
-            let currentIndex = array.length, randomIndex;
-            while (currentIndex != 0) {
-                randomIndex = Math.floor(Math.random() * currentIndex);
-                currentIndex--;
-                [array[currentIndex], array[randomIndex]] = [
-                    array[randomIndex], array[currentIndex]];
-            }
-            return array;
+            });
+
+            console.log("Starting quiz and fetching questions...");
+            getQuestions(); // Fetch quiz questions
         }
 
-        function displayQuestion() {
-            if (currentQuestionIndex < shuffledQuestions.length) {
-                const currentQuestion = shuffledQuestions[currentQuestionIndex];
-                questionContainer.textContent = currentQuestion.question;
-                optionsContainer.innerHTML = '';
+        /**
+         * Fetches questions from the backend URL, shuffles them,
+         * initializes the answers array, renders the first question, and starts the timer.
+         */
+        async function getQuestions() {
+            try {
+                console.log(`Attempting to fetch from: ${BACKEND_URL}`);
+                const res = await fetch(BACKEND_URL);
 
-                currentQuestion.options.forEach((option, index) => {
-                    const optionItem = document.createElement('div');
-                    optionItem.className = 'option-item';
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
 
-                    const optionInput = document.createElement('input');
-                    optionInput.type = 'radio';
-                    optionInput.name = 'question-options';
-                    optionInput.id = `option-${index}`;
-                    optionInput.value = option;
-                    optionInput.className = 'option-input';
-                    optionInput.addEventListener('change', () => {
-                        selectAnswer(option);
-                        nextButton.disabled = false;
-                    });
+                const data = await res.json();
+                console.log("Fetched data:", data);
 
-                    const optionLabel = document.createElement('label');
-                    optionLabel.textContent = option;
-                    optionLabel.setAttribute('for', `option-${index}`);
-                    optionLabel.className = 'option-label';
+                // Ensure data is an array before proceeding
+                if (!Array.isArray(data) || data.length === 0) {
+                    console.error("Fetched data is not an array or is empty:", data);
+                    document.getElementById('quiz-content').innerHTML = "<p class='text-red-400'>Ntabwo byashobotse kureba ibibazo: Ifishi y'amakuru ntiribyo cyangwa nta bibazo bihari. Nyamuneka reba script ya backend.</p>";
+                    document.getElementById('loading-indicator').classList.add('hidden'); // Hide loading indicator on error
+                    return;
+                }
 
-                    optionItem.appendChild(optionInput);
-                    optionItem.appendChild(optionLabel);
-                    optionsContainer.appendChild(optionItem);
+                questions = data;
+                shuffleArray(questions); // Shuffle the order of questions
+
+                // Shuffle options for each question
+                questions.forEach(q => {
+                    if (Array.isArray(q.options)) {
+                        shuffleArray(q.options);
+                    }
                 });
 
-                nextButton.disabled = true;
-                if (currentQuestionIndex === shuffledQuestions.length - 1) {
-                    nextButton.style.display = 'none';
-                    submitButton.style.display = 'block';
+                // Initialize answers array with null for each question
+                answers = Array(questions.length).fill(null);
+                currentIndex = 0; // Reset current index to 0 for a fresh start
+
+                document.getElementById('loading-indicator').classList.add('hidden'); // Hide loading indicator
+                renderQuestion(); // Display the first question
+                startTimer();     // Start the quiz timer
+                console.log("Questions loaded successfully and quiz started.");
+            } catch (error) {
+                console.error("Error fetching questions:", error);
+                let errorMessage = "Ntabwo byashobotse kureba ibibazo. ";
+                if (error.message.includes("HTTP error")) {
+                    errorMessage += `Ikibazo cya network: ${error.message}. Nyamuneka reba URL ya backend n'uburenganzira bwayo bwo gukora.`;
+                } else if (error instanceof SyntaxError) {
+                    errorMessage += "Ibisubizo bya JSON bitari byo bivuye kuri backend. Menya neza ko backend yawe isubiza JSON yemewe.";
                 } else {
-                    nextButton.style.display = 'block';
-                    submitButton.style.display = 'none';
+                    errorMessage += "Habaye ikibazo kitari cyitezwe. Nyamuneka reba internet yawe cyangwa script ya backend.";
                 }
-            } else {
-                console.log("End of questions unexpectedly reached.");
+                document.getElementById('quiz-content').innerHTML = `<p class='text-red-400'>${errorMessage}</p>`;
+                document.getElementById('loading-indicator').classList.add('hidden'); // Hide loading indicator on error
             }
         }
 
-        function selectAnswer(answer) {
-            userAnswers[currentQuestionIndex] = answer;
-            const options = document.querySelectorAll('.option-item');
-            options.forEach(optionItem => {
-                const input = optionItem.querySelector('.option-input');
-                const label = optionItem.querySelector('.option-label');
-                if (input.checked) {
-                    label.classList.add('selected');
-                } else {
-                    label.classList.remove('selected');
-                }
-            });
-
-        }
-
-        function nextQuestion() {
-            if (userAnswers[currentQuestionIndex] === undefined) {
-                alert("Please select an answer before proceeding.");
+        /**
+         * Renders the current question and its options to the quiz content area.
+         * Also handles navigation buttons (Previous/Next/Submit).
+         */
+        function renderQuestion() {
+            // Check if questions array is valid and current index is within bounds
+            if (!Array.isArray(questions) || questions.length === 0 || currentIndex < 0 || currentIndex >= questions.length) {
+                document.getElementById('quiz-content').innerHTML = "<p class='text-red-400'>Nta bibazo bihari cyangwa habayeho ikibazo mu kwerekana.</p>";
                 return;
             }
-            currentQuestionIndex++;
-            displayQuestion();
+
+            const q = questions[currentIndex]; // Get the current question object
+
+            // Determine if it's the last question (20th question if questions.length is 20)
+            const isLastQuestion = currentIndex === questions.length - 1;
+            // Determine if it's the first question
+            const isFirstQuestion = currentIndex === 0;
+
+            // Generate HTML for the question and its options
+            const html = `
+                <div class="question bg-white/15 p-6 rounded-2xl shadow-inner-lg mb-8 border border-white/10 animate-fade-in">
+                    <h2 class="text-cyan-300 text-3xl font-bold mb-6">Ikibazo ${currentIndex + 1}/${questions.length}</h2>
+                    <p class="text-xl mb-8">${q.question}</p>
+                    <div class="options text-left">
+                        ${q.options.map((opt, i) => `
+                            <label class="custom-radio-label flex items-center bg-teal-700/70 py-3 px-4 rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-teal-600/90 hover:scale-[1.02] shadow-md mb-3">
+                                <input type="radio" name="option" value="${opt}" class="form-radio h-5 w-5 text-blue-600"
+                                    ${answers[currentIndex] === opt ? 'checked' : ''}>
+                                <span class="text-lg ml-2">${String.fromCharCode(65 + i)}. ${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div class="mt-8 flex justify-between items-center w-full">
+                        ${isFirstQuestion ? '<div class="w-24"></div>' : `
+                            <button onclick="prevQuestion()" class="py-2.5 px-8 text-lg font-semibold rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/50">
+                                Icyatambutse
+                            </button>
+                        `}
+                        ${isLastQuestion
+                            ? `
+                            <button onclick="showConfirmModal()" class="py-2.5 px-8 text-lg font-semibold rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-500/50">
+                                Soza Ikizamini
+                            </button>`
+                            : `
+                            <button onclick="nextQuestion()" class="py-2.5 px-8 text-lg font-semibold rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/50">
+                                Ibikurikira
+                            </button>`}
+                    </div>
+                </div>
+            `;
+            document.getElementById('quiz-content').innerHTML = html;
+
+            // Add event listeners to radio buttons to record answers
+            document.querySelectorAll('input[name="option"]').forEach(input => {
+                input.addEventListener('change', () => {
+                    answers[currentIndex] = input.value; // Store the selected answer
+                });
+            });
         }
 
-        function showResults() {
-            let score = 0;
-            resultsContainer.style.display = 'block';
-            questionContainer.style.display = 'none';
-            optionsContainer.style.display = 'none';
-            nextButton.style.display = 'none';
-            submitButton.style.display = 'none';
+        /**
+         * Moves to the next question and renders it.
+         */
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                renderQuestion();
+            }
+        }
 
-            correctAnswersList.innerHTML = '';
-            shuffledQuestions.forEach((question, index) => {
-                const userAnswer = userAnswers[index];
-                const isCorrect = userAnswer === question.correctAnswer;
-                if (isCorrect) {
+        /**
+         * Moves to the previous question and renders it.
+         */
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion();
+            }
+        }
+
+        /**
+         * Shows the confirmation modal.
+         */
+        function showConfirmModal() {
+            document.getElementById('confirm-modal').classList.add('show');
+        }
+
+        /**
+         * Hides the confirmation modal.
+         */
+        function hideConfirmModal() {
+            document.getElementById('confirm-modal').classList.remove('show');
+        }
+
+        /**
+         * Starts a countdown timer for the quiz.
+         * The quiz automatically submits when the timer runs out.
+         */
+        function startTimer() {
+            let seconds = 20 * 60; // 20 minutes in seconds
+            clearInterval(timerInterval); // Clear any existing timer to prevent multiple timers running
+            timerInterval = setInterval(() => {
+                const min = Math.floor(seconds / 60);
+                const sec = seconds % 60;
+                // Format time with leading zero for seconds if less than 10
+                document.getElementById('timer').textContent = `${min}:${sec < 10 ? '0' + sec : sec}`;
+                if (--seconds < 0) {
+                    clearInterval(timerInterval); // Stop the timer
+                    submitQuizLogic(); // Automatically submit the quiz
+                }
+            }, 1000); // Update every second
+        }
+
+        /**
+         * Shuffles the elements of an array randomly.
+         * @param {Array} array - The array to shuffle.
+         */
+        function shuffleArray(array) {
+            if (!Array.isArray(array)) return; // Ensure it's an array
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                // Swap elements
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        /**
+         * Calculates the score, displays the results, and submits the data to the backend.
+         * This function is called after the user confirms submission.
+         */
+        async function submitQuizLogic() {
+            hideConfirmModal(); // Hide the modal after confirmation
+            clearInterval(timerInterval); // Stop the timer
+            let score = 0;
+            // Calculate score by comparing user answers with correct answers
+            for (let i = 0; i < questions.length; i++) {
+                if (answers[i] === questions[i].answer) {
                     score++;
                 }
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `<i class="fas ${isCorrect ? 'fa-check-circle correct-icon' : 'fa-times-circle incorrect-icon'}"></i> ${question.question} 
-                                    <button class="view-options-button" data-question-index="${index}">View Options</button>`;
-                correctAnswersList.appendChild(listItem);
-            });
-
-            scoreDisplay.textContent = `You scored ${score} out of ${shuffledQuestions.length}!`;
-        }
-
-        function showQuestionOptions(questionIndex) {
-            selectedQuestion = shuffledQuestions[questionIndex];
-            modalOptionsContainer.innerHTML = '<ul>';
-            selectedQuestion.options.forEach(option => {
-                const listItem = document.createElement('li');
-                listItem.textContent = option;
-                if (userAnswers[questionIndex] === option) {
-                    listItem.classList.add('selected-option');
-                }
-                modalOptionsContainer.querySelector('ul').appendChild(listItem);
-            });
-            const correctAnswerItem = document.createElement('li');
-            correctAnswerItem.textContent = `Correct Answer: ${selectedQuestion.correctAnswer}`;
-            correctAnswerItem.classList.add('correct-answer');
-            modalOptionsContainer.querySelector('ul').appendChild(correctAnswerItem);
-            optionsModal.style.display = 'flex';
-        }
-
-        nextButton.addEventListener('click', nextQuestion);
-        submitButton.addEventListener('click', showResults);
-        retakeButton.addEventListener('click', () => {
-            currentQuestionIndex = 0;
-            userAnswers = [];
-            shuffledQuestions = shuffleArray(questions);
-            resultsContainer.style.display = 'none';
-            questionContainer.style.display = 'block';
-            optionsContainer.style.display = 'block';
-            nextButton.style.display = 'block';
-            submitButton.style.display = 'none';
-            fetchQuestions();
-        });
-
-        closeModalButton.addEventListener('click', () => {
-            optionsModal.style.display = 'none';
-        });
-
-        optionsContainer.addEventListener('click', (event) => {
-            const target = event.target;
-            if (target.classList.contains('option-label')) {
-                const optionInput = target.previousElementSibling;
-                if (optionInput && optionInput.type === 'radio') {
-                    optionInput.checked = true;
-                    // Trigger the change event to update the selection
-                    const changeEvent = new Event('change');
-                    optionInput.dispatchEvent(changeEvent);
-                }
             }
-        });
 
-        resultsContainer.addEventListener('click', (event) => {
-            const target = event.target;
-            if (target.classList.contains('view-options-button')) {
-                const questionIndex = target.dataset.questionIndex;
-                showQuestionOptions(questionIndex);
+            // Determine pass/fail status
+            const status = score >= 12 ? 'Watsinze' : 'Watsinzwe';
+            const totalQuestions = questions.length;
+            
+            // Display quiz results
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="result-summary p-8 rounded-2xl bg-white/15 shadow-inner-lg border border-white/10 animate-fade-in">
+                    <h2 class="text-cyan-300 text-4xl font-bold mb-4">Ikizamini Cyarangiye!</h2>
+                    <p class="text-2xl mb-2">Amanota yawe: <span class="text-yellow-300 font-bold">${score}/${totalQuestions}</span></p>
+                    <p class="text-3xl font-extrabold mt-4">Uko byagenze: <strong class="${status === 'Watsinze' ? 'text-green-500' : 'text-red-500'}">${status}</strong></p>
+                    <button onclick="window.location.reload()" class="mt-8 py-2.5 px-8 text-lg font-semibold rounded-2xl bg-gradient-to-r from-purple-500 to-pink-600 text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-500/50">
+                        Ongera Ukore Ikizamini
+                    </button>
+                </div>
+            `;
+
+            // Submit results to the backend
+            try {
+                await fetch(BACKEND_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: 'Anonymous', // Can be made dynamic if user input is added
+                        answers,
+                        score,
+                        totalQuestions // Include total questions for context in backend
+                    })
+                });
+                console.log("Quiz results submitted successfully!");
+            } catch (error) {
+                console.error("Error submitting quiz results:", error);
             }
-        });
-
-        fetchQuestions();
+        }
     </script>
 </body>
 </html>
