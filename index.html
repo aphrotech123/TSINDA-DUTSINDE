@@ -1,440 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ikizamini</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register New Account - TSINDA DUTSINDE</title>
+
     <style>
-        /* Custom Tailwind Configuration (optional, but good for custom animations) */
-        @tailwind base;
-        @tailwind components;
-        @tailwind utilities;
-
-        /* Define custom animations */
-        @layer utilities {
-            .animate-gradient-shift {
-                animation: gradientShift 15s ease infinite;
-                background-size: 200% 200%;
-            }
-
-            @keyframes gradientShift {
-                0% { background-position: 0% 50%; }
-                50% { background-position: 100% 50%; }
-                100% { background-position: 0% 50%; }
-            }
-
-            .animate-pulse-effect {
-                animation: pulseEffect 1.8s infinite alternate;
-            }
-
-            @keyframes pulseEffect {
-                from { opacity: 0.7; transform: scale(1); }
-                to { opacity: 1; transform: scale(1.03); }
-            }
-
-            .text-shadow-lg {
-                text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            }
-
-            .shadow-inner-lg {
-                box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
-            }
-
-            /* Custom radio button styling */
-            .custom-radio-label input[type="radio"] {
-                /* Hide default radio button */
-                appearance: none;
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                border: 2px solid #00ffff; /* Cyan border */
-                background-color: transparent;
-                margin-right: 12px;
-                position: relative;
-                top: 2px; /* Adjust vertical alignment */
-                cursor: pointer;
-                transition: all 0.2s ease-in-out;
-            }
-
-            .custom-radio-label input[type="radio"]:checked {
-                background-color: #00ffff; /* Cyan fill when checked */
-                border-color: #00ffff;
-                box-shadow: 0 0 0 4px rgba(0, 255, 255, 0.3); /* Outer glow */
-            }
-
-            .custom-radio-label input[type="radio"]:checked::before {
-                content: '';
-                display: block;
-                width: 10px;
-                height: 10px;
-                background-color: #141e30; /* Dark center dot */
-                border-radius: 50%;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-
-            .custom-radio-label:hover input[type="radio"] {
-                border-color: #00e6e6; /* Lighter cyan on hover */
-            }
-
-            /* Spinner animation */
-            .spinner {
-                border: 4px solid rgba(255, 255, 255, 0.3);
-                border-top: 4px solid #00ffff;
-                border-radius: 50%;
-                width: 40px;
-                height: 40px;
-                animation: spin 1s linear infinite;
-            }
-
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-
-            /* Modal specific styles */
-            .modal-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.7);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-                opacity: 0;
-                visibility: hidden;
-                transition: opacity 0.3s ease, visibility 0.3s ease;
-            }
-
-            .modal-overlay.show {
-                opacity: 1;
-                visibility: visible;
-            }
-
-            .modal-content {
-                background-color: #1a202c; /* Dark background for modal */
-                padding: 2.5rem;
-                border-radius: 1.5rem;
-                box-shadow: 0 10px 25px rgba(0, 255, 255, 0.2); /* Cyan shadow */
-                text-align: center;
-                max-width: 90%;
-                width: 400px;
-                transform: translateY(-20px);
-                transition: transform 0.3s ease;
-            }
-
-            .modal-overlay.show .modal-content {
-                transform: translateY(0);
-            }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #e0f2f7; /* Light blue background */
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .register-container {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        h2 {
+            color: #007bff; /* Primary blue */
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+        .input-group input {
+            width: calc(100% - 20px); /* Adjust for padding */
+            padding: 12px 10px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        .input-group input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #007bff; /* Primary blue */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        .link-text {
+            margin-top: 20px;
+            font-size: 0.95em;
+            color: #666;
+        }
+        .link-text a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .link-text a:hover {
+            text-decoration: underline;
+        }
+        #message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            display: none; /* Hidden by default */
+        }
+        #message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        #message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-950 min-h-screen flex flex-col items-center justify-center text-white font-inter animate-gradient-shift p-4">
-
-    <div class="container bg-white/10 p-8 md:p-12 rounded-3xl shadow-2xl backdrop-blur-xl border border-white/20 text-center w-11/12 max-w-3xl">
-        <h1 class="text-cyan-400 text-5xl md:text-6xl font-extrabold mb-8 text-shadow-lg">IKIZAMINI</h1>
-        <div id="timer" class="text-yellow-300 text-4xl font-extrabold mb-8 animate-pulse-effect" style="display:none;"> Ikizamini kigizwe n'ibibazo 20 bikorwa muminota 20 gusa!</div>
-        <div id="quiz-content">
-            <button id="start-btn" onclick="startQuiz()" class="py-3 px-10 text-xl font-bold rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/50">
-                Tangira Ikizamini
-            </button>
-            <div id="loading-indicator" class="hidden flex flex-col items-center justify-center mt-8">
-                <div class="spinner mb-4"></div>
-                <p class="text-xl text-gray-300">Ikizamini kiri kuza...</p>
+<body>
+    <div class="register-container">
+        <h2>Register New Account</h2>
+        <form id="registerForm">
+            <div class="input-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" required>
             </div>
-        </div>
-    </div>
-
-    <div id="confirm-modal" class="modal-overlay">
-        <div class="modal-content">
-            <h3 class="text-3xl font-bold text-cyan-300 mb-6">Emeza Gusoza Ikizamini</h3>
-            <p class="text-xl text-gray-200 mb-8">Emeza ko ushaka gusoza ikizamini? Ntushobora guhindura ibisubizo nyuma yo kubyohereza.</p>
-            <div class="flex justify-center space-x-6">
-                <button onclick="submitQuizLogic()" class="py-3 px-8 text-lg font-semibold rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-500/50">
-                    Yego, Soza!
-                </button>
-                <button onclick="hideConfirmModal()" class="py-3 px-8 text-lg font-semibold rounded-2xl bg-gradient-to-r from-red-500 to-rose-600 text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-red-500/50">
-                    Oya
-                </button>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
             </div>
-        </div>
+            <div class="input-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+        <div id="message" class="message"></div>
+        <p class="link-text">Already have an account? <a href="login.html">Login here</a></p>
     </div>
 
     <script>
-        // Backend URL for fetching questions and submitting answers
-        const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbz2SJ0sMeSRYUrAs3FZvMfE0SB6o1n1bEPYKc9YMv1awHhWF50gBCgCR5fWP2wO3LIKBA/exec';
+        // IMPORTANT: Replace with your actual deployed Google Apps Script Web App URL
+        const API_URL = 'https://script.google.com/macros/s/AKfycby7xRdLls8syQLdmtKyWimIHwihscDtHa6PE1xXtEXFyI4abtvq3hntprvIPeWy_H6anA/exec'; // e.g., 'https://script.google.com/macros/s/AKfycbzz.../exec'
 
-        // Global variables to store quiz data and state
-        let questions = []; // Stores the fetched quiz questions
-        let answers = [];   // Stores the user's selected answers
-        let currentIndex = 0; // Current question index
-        let timerInterval;     // Variable to hold the timer interval ID
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerForm = document.getElementById('registerForm');
+            const messageDiv = document.getElementById('message');
 
-        /**
-         * Initiates the quiz by hiding the start button, showing the timer,
-         * displaying the loading indicator, and fetching the questions.
-         */
-        function startQuiz() {
-            document.getElementById('start-btn').classList.add('hidden'); // Hide start button
-            document.getElementById('timer').style.display = 'block';     // Show timer
-            
-            // Show loading indicator
-            const loadingIndicator = document.getElementById('loading-indicator');
-            loadingIndicator.classList.remove('hidden'); 
+            function showMessage(msg, type) {
+                messageDiv.textContent = msg;
+                messageDiv.className = 'message ' + type; // Adds 'success' or 'error' class
+                messageDiv.style.display = 'block'; // Make it visible
+            }
 
-            // Clear quiz content area, but ensure loading indicator remains visible
-            const quizContent = document.getElementById('quiz-content');
-            // Remove all children except the loading indicator
-            Array.from(quizContent.children).forEach(child => {
-                if (child.id !== 'loading-indicator') {
-                    quizContent.removeChild(child);
-                }
-            });
+            registerForm.addEventListener('submit', async function(event) {
+                event.preventDefault(); // Prevent default form submission
 
-            console.log("Starting quiz and fetching questions...");
-            getQuestions(); // Fetch quiz questions
-        }
+                const fullName = document.getElementById('fullName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const phoneNumber = document.getElementById('phoneNumber').value.trim();
+                const password = document.getElementById('password').value;
 
-        /**
-         * Fetches questions from the backend URL, shuffles them,
-         * initializes the answers array, renders the first question, and starts the timer.
-         */
-        async function getQuestions() {
-            try {
-                console.log(`Attempting to fetch from: ${BACKEND_URL}`);
-                const res = await fetch(BACKEND_URL);
-
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
-                }
-
-                const data = await res.json();
-                console.log("Fetched data:", data);
-
-                // Ensure data is an array before proceeding
-                if (!Array.isArray(data) || data.length === 0) {
-                    console.error("Fetched data is not an array or is empty:", data);
-                    document.getElementById('quiz-content').innerHTML = "<p class='text-red-400'>Ntabwo byashobotse kureba ibibazo: Ifishi y'amakuru ntiribyo cyangwa nta bibazo bihari. Nyamuneka reba script ya backend.</p>";
-                    document.getElementById('loading-indicator').classList.add('hidden'); // Hide loading indicator on error
+                // Simple client-side validation
+                if (!fullName || !email || !phoneNumber || !password) {
+                    showMessage('Please fill in all fields.', 'error');
                     return;
                 }
 
-                questions = data;
-                shuffleArray(questions); // Shuffle the order of questions
+                showMessage('Registering...', ''); // Clear previous message, display loading
 
-                // Shuffle options for each question
-                questions.forEach(q => {
-                    if (Array.isArray(q.options)) {
-                        shuffleArray(q.options);
+                try {
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            action: 'register', // Tell Apps Script what action to perform
+                            fullName: fullName,
+                            email: email,
+                            phoneNumber: phoneNumber,
+                            password: password
+                        })
+                    });
+
+                    const data = await response.json(); // Parse the JSON response
+
+                    if (data.status === 'success') {
+                        showMessage(data.message + ' Redirecting to login...', 'success');
+                        // Optionally, store UserID if needed immediately, though login page will handle it.
+                        // localStorage.setItem('userId', data.userId);
+                        setTimeout(() => {
+                            window.location.href = 'login.html'; // Redirect to login page
+                        }, 2000); // Redirect after 2 seconds
+                    } else {
+                        showMessage('Registration failed: ' + data.message, 'error');
                     }
-                });
-
-                // Initialize answers array with null for each question
-                answers = Array(questions.length).fill(null);
-                currentIndex = 0; // Reset current index to 0 for a fresh start
-
-                document.getElementById('loading-indicator').classList.add('hidden'); // Hide loading indicator
-                renderQuestion(); // Display the first question
-                startTimer();     // Start the quiz timer
-                console.log("Questions loaded successfully and quiz started.");
-            } catch (error) {
-                console.error("Error fetching questions:", error);
-                let errorMessage = "Ntabwo byashobotse kureba ibibazo. ";
-                if (error.message.includes("HTTP error")) {
-                    errorMessage += `Ikibazo cya network: ${error.message}. Nyamuneka reba URL ya backend n'uburenganzira bwayo bwo gukora.`;
-                } else if (error instanceof SyntaxError) {
-                    errorMessage += "Ibisubizo bya JSON bitari byo bivuye kuri backend. Menya neza ko backend yawe isubiza JSON yemewe.";
-                } else {
-                    errorMessage += "Habaye ikibazo kitari cyitezwe. Nyamuneka reba internet yawe cyangwa script ya backend.";
+                } catch (error) {
+                    console.error('Network or server error during registration:', error);
+                    showMessage('An unexpected error occurred. Please try again later.', 'error');
                 }
-                document.getElementById('quiz-content').innerHTML = `<p class='text-red-400'>${errorMessage}</p>`;
-                document.getElementById('loading-indicator').classList.add('hidden'); // Hide loading indicator on error
-            }
-        }
-
-        /**
-         * Renders the current question and its options to the quiz content area.
-         * Also handles navigation buttons (Previous/Next/Submit).
-         */
-        function renderQuestion() {
-            // Check if questions array is valid and current index is within bounds
-            if (!Array.isArray(questions) || questions.length === 0 || currentIndex < 0 || currentIndex >= questions.length) {
-                document.getElementById('quiz-content').innerHTML = "<p class='text-red-400'>Nta bibazo bihari cyangwa habayeho ikibazo mu kwerekana.</p>";
-                return;
-            }
-
-            const q = questions[currentIndex]; // Get the current question object
-
-            // Determine if it's the last question (20th question if questions.length is 20)
-            const isLastQuestion = currentIndex === questions.length - 1;
-            // Determine if it's the first question
-            const isFirstQuestion = currentIndex === 0;
-
-            // Generate HTML for the question and its options
-            const html = `
-                <div class="question bg-white/15 p-6 rounded-2xl shadow-inner-lg mb-8 border border-white/10 animate-fade-in">
-                    <h2 class="text-cyan-300 text-3xl font-bold mb-6">Ikibazo ${currentIndex + 1}/${questions.length}</h2>
-                    <p class="text-xl mb-8">${q.question}</p>
-                    <div class="options text-left">
-                        ${q.options.map((opt, i) => `
-                            <label class="custom-radio-label flex items-center bg-teal-700/70 py-3 px-4 rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-teal-600/90 hover:scale-[1.02] shadow-md mb-3">
-                                <input type="radio" name="option" value="${opt}" class="form-radio h-5 w-5 text-blue-600"
-                                    ${answers[currentIndex] === opt ? 'checked' : ''}>
-                                <span class="text-lg ml-2">${String.fromCharCode(65 + i)}. ${opt}</span>
-                            </label>
-                        `).join('')}
-                    </div>
-                    <div class="mt-8 flex justify-between items-center w-full">
-                        ${isFirstQuestion ? '<div class="w-24"></div>' : `
-                            <button onclick="prevQuestion()" class="py-2.5 px-8 text-lg font-semibold rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/50">
-                                Icyatambutse
-                            </button>
-                        `}
-                        ${isLastQuestion
-                            ? `
-                            <button onclick="showConfirmModal()" class="py-2.5 px-8 text-lg font-semibold rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-500/50">
-                                Soza Ikizamini
-                            </button>`
-                            : `
-                            <button onclick="nextQuestion()" class="py-2.5 px-8 text-lg font-semibold rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/50">
-                                Ibikurikira
-                            </button>`}
-                    </div>
-                </div>
-            `;
-            document.getElementById('quiz-content').innerHTML = html;
-
-            // Add event listeners to radio buttons to record answers
-            document.querySelectorAll('input[name="option"]').forEach(input => {
-                input.addEventListener('change', () => {
-                    answers[currentIndex] = input.value; // Store the selected answer
-                });
             });
-        }
-
-        /**
-         * Moves to the next question and renders it.
-         */
-        function nextQuestion() {
-            if (currentIndex < questions.length - 1) {
-                currentIndex++;
-                renderQuestion();
-            }
-        }
-
-        /**
-         * Moves to the previous question and renders it.
-         */
-        function prevQuestion() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                renderQuestion();
-            }
-        }
-
-        /**
-         * Shows the confirmation modal.
-         */
-        function showConfirmModal() {
-            document.getElementById('confirm-modal').classList.add('show');
-        }
-
-        /**
-         * Hides the confirmation modal.
-         */
-        function hideConfirmModal() {
-            document.getElementById('confirm-modal').classList.remove('show');
-        }
-
-        /**
-         * Starts a countdown timer for the quiz.
-         * The quiz automatically submits when the timer runs out.
-         */
-        function startTimer() {
-            let seconds = 20 * 60; // 20 minutes in seconds
-            clearInterval(timerInterval); // Clear any existing timer to prevent multiple timers running
-            timerInterval = setInterval(() => {
-                const min = Math.floor(seconds / 60);
-                const sec = seconds % 60;
-                // Format time with leading zero for seconds if less than 10
-                document.getElementById('timer').textContent = `${min}:${sec < 10 ? '0' + sec : sec}`;
-                if (--seconds < 0) {
-                    clearInterval(timerInterval); // Stop the timer
-                    submitQuizLogic(); // Automatically submit the quiz
-                }
-            }, 1000); // Update every second
-        }
-
-        /**
-         * Shuffles the elements of an array randomly.
-         * @param {Array} array - The array to shuffle.
-         */
-        function shuffleArray(array) {
-            if (!Array.isArray(array)) return; // Ensure it's an array
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                // Swap elements
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-
-        /**
-         * Calculates the score, displays the results, and submits the data to the backend.
-         * This function is called after the user confirms submission.
-         */
-        async function submitQuizLogic() {
-            hideConfirmModal(); // Hide the modal after confirmation
-            clearInterval(timerInterval); // Stop the timer
-            let score = 0;
-            // Calculate score by comparing user answers with correct answers
-            for (let i = 0; i < questions.length; i++) {
-                if (answers[i] === questions[i].answer) {
-                    score++;
-                }
-            }
-
-            // Determine pass/fail status
-            const status = score >= 12 ? 'Watsinze' : 'Watsinzwe';
-            const totalQuestions = questions.length;
-            
-            // Display quiz results
-            document.getElementById('quiz-content').innerHTML = `
-                <div class="result-summary p-8 rounded-2xl bg-white/15 shadow-inner-lg border border-white/10 animate-fade-in">
-                    <h2 class="text-cyan-300 text-4xl font-bold mb-4">Ikizamini Cyarangiye!</h2>
-                    <p class="text-2xl mb-2">Amanota yawe: <span class="text-yellow-300 font-bold">${score}/${totalQuestions}</span></p>
-                    <p class="text-3xl font-extrabold mt-4">Uko byagenze: <strong class="${status === 'Watsinze' ? 'text-green-500' : 'text-red-500'}">${status}</strong></p>
-                    <button onclick="window.location.reload()" class="mt-8 py-2.5 px-8 text-lg font-semibold rounded-2xl bg-gradient-to-r from-purple-500 to-pink-600 text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-500/50">
-                        Ongera Ukore Ikizamini
-                    </button>
-                </div>
-            `;
-
-            // Submit results to the backend
-            try {
-                await fetch(BACKEND_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        username: 'Anonymous', // Can be made dynamic if user input is added
-                        answers,
-                        score,
-                        totalQuestions // Include total questions for context in backend
-                    })
-                });
-                console.log("Quiz results submitted successfully!");
-            } catch (error) {
-                console.error("Error submitting quiz results:", error);
-            }
-        }
+        });
     </script>
 </body>
 </html>
