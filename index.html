@@ -1,1555 +1,409 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <title>Tsinda Dutsinde - Dashboard</title>
+    <title>Tsinda Dutsinde - Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root {
-            --primary-color: #4A90E2; /* A vibrant blue */
-            --secondary-color: #6C7A89; /* Muted gray for secondary text */
-            --accent-color: #50B84D; /* A fresh green for success/completion */
-            --danger-color: #E74C3C; /* Red for warnings/logout */
-
-            /* Light Mode */
-            --background-light: #F8F9FA;
-            --card-background-light: #FFFFFF;
-            --text-light: #34495E; /* Darker text for readability */
-            --border-light: #E0E6EB;
-            --sidebar-background-light: #FFFFFF;
-            --sidebar-text-light: #34495E;
-            --shadow-light: rgba(0, 0, 0, 0.08);
-
-            /* Dark Mode */
-            --background-dark: #2C3E50; /* Deep blue-gray */
-            --card-background-dark: #34495E;
-            --text-dark: #ECF0F1; /* Light text */
-            --border-dark: #4A6070;
-            --sidebar-background-dark: #253340;
-            --sidebar-text-dark: #ECF0F1;
-            --shadow-dark: rgba(0, 0, 0, 0.35);
-
-            --transition-speed: 0.3s ease-in-out;
-            --border-radius: 12px;
-        }
-
-        /* Base Styles */
         body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--background-light);
-            color: var(--text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             margin: 0;
-            line-height: 1.6;
-            display: flex; /* Use flexbox for main layout */
-            min-height: 100vh; /* Full viewport height */
-            transition: background var(--transition-speed), color var(--transition-speed);
+            color: #333;
+            transition: background 0.3s, color 0.3s;
         }
-
-        /* Dark Mode Toggle */
         body.dark-mode {
-            background: var(--background-dark);
-            color: var(--text-dark);
+            background: #121212;
+            color: #ddd;
         }
 
-        /* Layout Container */
-        .dashboard-container {
-            display: flex;
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
             width: 100%;
+            max-width: 400px;
+            transition: background 0.3s, box-shadow 0.3s, color 0.3s;
+            position: relative; /* For alert positioning */
         }
 
-        /* Sidebar Navigation */
-        .sidebar {
-            width: 250px; /* Default expanded width */
-            background-color: var(--sidebar-background-light);
-            padding: 30px 20px;
-            box-shadow: 2px 0 10px var(--shadow-light);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: width var(--transition-speed), background var(--transition-speed), box-shadow var(--transition-speed);
-            position: sticky;
-            top: 20px;
-            align-self: flex-start;
-            height: calc(100vh - 40px);
-            border-radius: var(--border-radius);
-            margin-left: 20px;
-            flex-shrink: 0; /* Prevent sidebar from shrinking below its width */
+        body.dark-mode .container {
+            background: #222;
+            color: #ddd;
+            box-shadow: 0 4px 20px rgba(255,255,255,0.1);
         }
 
-        body.dark-mode .sidebar {
-            background-color: var(--sidebar-background-dark);
-            box-shadow: 2px 0 10px var(--shadow-dark);
+        h1 {
+            color: #007BFF;
+            margin-bottom: 30px;
         }
 
-        /* Sidebar Header and Logo */
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 40px;
-            position: relative; /* For toggle button positioning */
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--primary-color);
-            font-size: 1.8em;
-            font-weight: 700;
-            white-space: nowrap;
-            overflow: hidden; /* Hide overflow when text shrinks */
-        }
-
-        .logo-icon {
-            font-size: 1.5em; /* Adjust icon size */
-            color: var(--primary-color);
-        }
-
-        .logo-text {
-            transition: opacity var(--transition-speed);
-        }
-
-        /* Sidebar Toggle Button (Desktop) */
-        .sidebar-toggle {
-            background: none;
-            border: none;
-            color: var(--secondary-color);
-            font-size: 1.2em;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 50%;
-            transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-            position: absolute;
-            right: -30px; /* Position it outside the sidebar */
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 10;
-            background-color: var(--card-background-light);
-            box-shadow: 0 2px 5px var(--shadow-light);
-        }
-
-        body.dark-mode .sidebar-toggle {
-            background-color: var(--card-background-dark);
-            box-shadow: 0 2px 5px var(--shadow-dark);
-            color: var(--text-dark);
-        }
-
-        .sidebar-toggle:hover {
-            background-color: var(--primary-color);
-            color: white;
-            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
-        }
-
-        /* Collapsed Sidebar Styles */
-        body.sidebar-collapsed .sidebar {
-            width: 80px; /* Collapsed width */
-            padding: 30px 10px;
-            align-items: center; /* Center items when collapsed */
-        }
-
-        body.sidebar-collapsed .sidebar-header {
-            justify-content: center; /* Center logo when collapsed */
-            margin-bottom: 40px; /* Maintain spacing */
-        }
-
-        body.sidebar-collapsed .logo-text {
-            width: 0;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        body.sidebar-collapsed .logo-area {
-            gap: 0; /* Remove gap */
-        }
-
-        body.sidebar-collapsed .sidebar nav ul li a {
-            justify-content: center; /* Center icons */
-            padding: 12px 0; /* Adjust padding */
-        }
-
-        body.sidebar-collapsed .sidebar nav ul li a i {
-            margin-right: 0; /* Remove margin from icon */
-        }
-
-        body.sidebar-collapsed .sidebar nav ul li a span {
-            display: none; /* Hide text labels */
-        }
-
-        body.sidebar-collapsed .sidebar-toggle i {
-            transform: rotate(180deg); /* Rotate icon */
-        }
-
-        /* Main Content Area adjustments when sidebar is collapsed */
-        body.sidebar-collapsed .main-content {
-            margin-left: calc(80px + 40px); /* Adjust for collapsed sidebar + its margin */
-            max-width: calc(100% - 80px - 40px);
-        }
-
-
-        .sidebar nav ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar nav ul li {
-            margin-bottom: 15px;
-        }
-
-        .sidebar nav ul li a {
-            display: flex;
-            align-items: center;
-            color: var(--sidebar-text-light);
-            text-decoration: none;
-            padding: 12px 15px;
-            border-radius: var(--border-radius);
-            transition: background-color var(--transition-speed), color var(--transition-speed), transform 0.2s ease;
-            font-weight: 500;
-        }
-
-        body.dark-mode .sidebar nav ul li a {
-            color: var(--sidebar-text-dark);
-        }
-
-        .sidebar nav ul li a i {
-            margin-right: 10px;
-            font-size: 1.2em;
-        }
-
-        .sidebar nav ul li a:hover {
-            background-color: rgba(74, 144, 226, 0.1); /* Primary color with transparency */
-            color: var(--primary-color);
-            transform: translateX(5px);
-        }
-
-        .sidebar nav ul li a.active {
-            background-color: var(--primary-color);
-            color: white;
-            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
-        }
-
-        /* Main Content Area */
-        .main-content {
-            flex-grow: 1; /* Takes remaining space */
-            padding: 30px;
-            max-width: calc(100% - 250px - 40px); /* Adjust for sidebar width and its margins */
-            transition: margin-left var(--transition-speed), max-width var(--transition-speed);
-        }
-
-        /* Dashboard Header */
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px; /* Default for larger screens */
-            flex-wrap: wrap; /* Allow wrapping on small screens */
-            gap: 15px; /* Spacing between header elements */
-        }
-
-        .dashboard-header h1 {
-            color: var(--primary-color);
-            margin: 0;
-            font-size: 2.5em;
-            font-weight: 800;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            flex-grow: 1; /* Allow to take available space */
-        }
-
-        /* Current Time Display */
-        .current-time-display {
-            font-size: 0.95em;
-            font-weight: 500;
-            color: var(--secondary-color);
-            white-space: nowrap;
-        }
-        body.dark-mode .current-time-display {
-            color: #C0C0C0;
-        }
-
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-avatar { /* Changed from img to div for custom content */
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background-color: var(--primary-color); /* Background for the text */
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2em;
-            font-weight: 600;
-            border: 2px solid var(--primary-color);
-            text-transform: uppercase;
-        }
-
-        .user-info {
-            font-size: 1em;
-            font-weight: 600;
-            text-align: right;
-        }
-
-        .user-info small {
-            display: block;
-            font-size: 0.85em;
-            color: var(--secondary-color);
-        }
-
-        body.dark-mode .user-info small {
-            color: #B0B0B0;
-        }
-
-        /* Main Grid for Cards */
-        .main-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        /* Card Styles */
-        .card {
-            background: var(--card-background-light);
-            padding: 30px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 8px 25px var(--shadow-light);
-            transition: background var(--transition-speed), color var(--transition-speed), transform 0.2s ease-in-out, box-shadow var(--transition-speed);
-            border: 1px solid var(--border-light);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 35px var(--shadow-light);
-        }
-
-        body.dark-mode .card {
-            background: var(--card-background-dark);
-            color: var(--text-dark);
-            box-shadow: 0 8px 25px var(--shadow-dark);
-            border: 1px solid var(--border-dark);
-        }
-        body.dark-mode .card:hover {
-             box-shadow: 0 12px 35px var(--shadow-dark);
-        }
-
-
-        .card h2 {
-            color: var(--primary-color);
-            margin-top: 0;
+        .form-group {
             margin-bottom: 20px;
-            font-size: 1.8em;
-            font-weight: 700;
+            text-align: left;
         }
 
-        .card-content {
-            flex-grow: 1; /* Allows content to take available space */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; /* Space out content within the card */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
         }
 
-        /* Buttons */
+        input,
+        input::placeholder {
+            color: #333; /* Default text color */
+        }
+
+        body.dark-mode input,
+        body.dark-mode input::placeholder {
+            color: #ddd; /* Dark mode text color */
+        }
+
+        input {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s, background 0.3s, color 0.3s;
+            background: #fdfdfd;
+        }
+
+        body.dark-mode input {
+            background: #333;
+            border-color: #555;
+        }
+
+        input:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+
         button {
-            cursor: pointer;
-            background: var(--primary-color);
+            width: 100%;
+            padding: 12px 20px;
+            background: #007BFF;
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            transition: background var(--transition-speed), transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            justify-content: center;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background 0.3s, transform 0.2s;
+            margin-top: 10px;
+            position: relative; /* For loader positioning */
+            overflow: hidden; /* Clip the loader */
         }
 
         button:hover {
-            background: #3A7BBF; /* Slightly darker primary */
+            background: #0056b3;
             transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
         }
 
-        button i {
-            font-size: 1.1em;
+        button.loading {
+            color: transparent !important; /* Hide text while loading */
+            pointer-events: none; /* Disable button during loading */
         }
 
-        .logout-btn {
-            background: var(--danger-color);
-        }
-        .logout-btn:hover {
-            background: #C0392B; /* Darker red */
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: auto; /* Pushes buttons to the bottom of the card */
-            padding-top: 20px; /* Space from content above */
-            border-top: 1px solid var(--border-light); /* Separator */
-            justify-content: flex-end;
-        }
-
-        body.dark-mode .action-buttons {
-            border-top: 1px solid var(--border-dark);
-        }
-
-        /* Lists (Exam History, etc.) */
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        ul li {
-            background: var(--background-light);
-            margin-bottom: 15px;
-            padding: 15px 20px;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background var(--transition-speed), transform 0.2s ease;
-            border: 1px solid var(--border-light);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        body.dark-mode ul li {
-            background: #3A5060; /* Slightly lighter than card background in dark mode */
-            border: 1px solid var(--border-dark);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        ul li:last-child {
-            margin-bottom: 0;
-        }
-
-        ul li:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        body.dark-mode ul li:hover {
-             box-shadow: 0 4px 12px var(--shadow-dark);
-        }
-
-        .item-details {
-            flex-grow: 1;
-        }
-
-        .item-title {
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 5px;
-            font-size: 1.1em;
-        }
-
-        body.dark-mode .item-title {
-            color: var(--primary-color);
-        }
-
-        small {
-            color: var(--secondary-color);
-            font-size: 0.9em;
-        }
-
-        body.dark-mode small {
-            color: #C0C0C0;
-        }
-
-        .tag {
-            background: var(--accent-color);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.75em;
-            font-weight: 600;
-            white-space: nowrap;
-            margin-left: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        .tag.fail {
-            background: var(--danger-color);
-        }
-
-        /* Progress Bar */
-        .progress-bar-container {
-            width: 100%;
-            background-color: var(--border-light);
-            border-radius: 8px;
-            height: 12px;
-            overflow: hidden;
-            margin-top: 15px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        body.dark-mode .progress-bar-container {
-            background-color: var(--border-dark);
-        }
-
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background-color: var(--accent-color);
-            border-radius: 8px;
-            transition: width 0.7s ease-in-out;
-            background-image: linear-gradient(to right, var(--accent-color), #72C56F); /* Subtle gradient */
-        }
-
-        /* Chart Specific Styles */
-        .chart-container {
-            position: relative;
-            height: 320px; /* Defines the height for Chart.js to fill */
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .no-data-message {
-            text-align: center;
-            color: var(--secondary-color);
-            padding: 20px;
-            font-style: italic;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1000; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            background-color: rgba(0,0,0,0.5); /* Darker overlay */
-            backdrop-filter: blur(8px); /* More prominent blur */
-            -webkit-backdrop-filter: blur(8px);
-            justify-content: center;
-            align-items: center;
-            padding: 20px; /* Padding for small screens */
-        }
-
-        .modal-content {
-            background-color: var(--card-background-light);
-            padding: 30px;
-            border-radius: var(--border-radius);
-            width: 95%;
-            max-width: 700px; /* Slightly wider modal */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            position: relative;
-            animation: fadeIn 0.4s ease-out; /* Slightly longer animation */
-            max-height: 90vh; /* More height for content */
-            overflow-y: auto; /* Add scroll to modal content */
-            border: 1px solid var(--border-light);
-        }
-
-        body.dark-mode .modal-content {
-            background-color: var(--card-background-dark);
-            border: 1px solid var(--border-dark);
-        }
-
-        .close-button {
-            color: var(--secondary-color);
+        .loader {
             position: absolute;
-            top: 15px;
-            right: 25px;
-            font-size: 32px; /* Larger close button */
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .switch-mode {
+            margin-top: 25px;
+            color: #555;
+        }
+
+        body.dark-mode .switch-mode {
+            color: #bbb;
+        }
+
+        .switch-mode a {
+            color: #007BFF;
+            text-decoration: none;
             font-weight: bold;
-            cursor: pointer;
-            transition: color 0.2s;
+            transition: color 0.3s;
         }
 
-        .close-button:hover,
-        .close-button:focus {
-            color: var(--primary-color);
+        .switch-mode a:hover {
+            color: #0056b3;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .error-message {
+            color: #dc3545;
+            margin-top: 15px;
+            font-weight: bold;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 1;
         }
 
-        /* Exam History List inside Modal (re-use existing ul li styles) */
-        #allExamHistoryList ul {
-            margin-top: 20px;
-        }
-        #allExamHistoryList ul li {
-            margin-bottom: 10px; /* Tighter spacing for modal list */
-        }
-        #allExamHistoryList .item-title {
-            font-size: 1.05em; /* Slightly smaller in modal */
+        .error-message.hidden {
+            opacity: 0;
+            height: 0;
+            margin-top: 0;
+            padding: 0;
+            overflow: hidden;
         }
 
-        /* Account card specific styles for items */
-        .account-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0; /* Increased padding */
-            border-bottom: 1px solid var(--border-light);
-        }
-        .account-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0; /* No bottom padding for last item */
-        }
-        .account-item label {
-            font-weight: 500;
-            color: var(--text-light);
-            font-size: 1.1em; /* Slightly larger text */
-        }
-        body.dark-mode .account-item label {
-            color: var(--text-dark);
-        }
-        .account-item .info-value {
-            color: var(--secondary-color);
-            font-weight: 400;
-            font-size: 1.0em;
-        }
-        body.dark-mode .account-item .info-value {
-            color: #C0C0C0;
-        }
-        .account-item button {
-            margin-left: 15px; /* Space between label/value and button */
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 992px) {
-            /* Desktop sidebar toggle button hidden on smaller screens */
-            .sidebar-toggle {
-                display: none;
-            }
-
-            /* Tablet view (collapsed sidebar effect) */
-            .sidebar {
-                width: 80px; /* Collapse sidebar */
-                padding: 20px 10px;
-                margin-left: 10px; /* Smaller margin */
-                top: 10px; /* Smaller top offset */
-                height: calc(100vh - 20px);
-                position: fixed; /* For initial fixed positioning on smaller screens */
-                left: 0;
-            }
-            .sidebar .logo-text {
-                display: none; /* Hide full title */
-            }
-            .sidebar .logo-area {
-                justify-content: center;
-            }
-            .sidebar .logo-icon {
-                margin: 0;
-            }
-            .sidebar nav ul li a {
-                justify-content: center; /* Center icons */
-                padding: 10px;
-            }
-            .sidebar nav ul li a i {
-                margin-right: 0;
-            }
-            .sidebar nav ul li a span {
-                display: none; /* Hide text labels */
-            }
-            .main-content {
-                max-width: calc(100% - 80px - 20px); /* Adjust for collapsed sidebar and its margins */
-                padding: 20px;
-                margin-left: calc(80px + 20px); /* Account for collapsed sidebar */
-            }
-            .dashboard-header {
-                flex-direction: column;
-                align-items: flex-start;
-                /* REVISED: Increased margin for tablets to prevent overlap */
-                margin-bottom: 50px;
-                gap: 15px;
-            }
-            .dashboard-header h1 {
-                font-size: 2em;
-            }
-            .header-right {
-                width: 100%; /* Take full width on tablet */
-                /* REVISED: Explicitly column to stack elements */
-                flex-direction: column;
-                align-items: flex-end; /* Align user profile and time to the right */
-                gap: 10px; /* Add gap between time and user profile */
-            }
-            .current-time-display {
-                order: 2; /* Time below user profile */
-                flex-basis: auto; /* Reset flex-basis as it's column now */
-                text-align: right;
-            }
-            .user-profile {
-                order: 1; /* User profile first */
-                width: auto; /* Let content dictate width */
-                justify-content: flex-end;
-            }
-            .main-grid {
-                grid-template-columns: 1fr; /* Stack cards on smaller screens */
-                gap: 20px;
-            }
-            .card {
-                padding: 20px;
-            }
-            .chart-container {
-                height: 250px; /* Adjust chart height for smaller screens */
-            }
-        }
-
-        @media (max-width: 576px) {
-            .sidebar {
-                position: fixed;
-                top: -100vh; /* Hide by default, moves from top */
-                left: 0; /* Align to left edge */
-                width: 100%; /* Full width */
-                height: 100vh; /* Full height */
-                transition: top 0.3s ease-in-out; /* Animate 'top' property */
-                z-index: 102; /* Above hamburger and overlay */
-                margin-left: 0; /* No margin on mobile */
-                border-radius: 0; /* No border-radius on mobile */
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Adjust shadow for top appearance */
-                padding: 60px 20px 30px; /* Adjust padding for hamburger button space */
-                justify-content: center; /* Center items vertically */
-                align-items: center; /* Center items horizontally */
-                overflow-y: auto; /* Allow scrolling if menu content is too long */
-                flex-direction: column; /* Ensure vertical stacking for centering */
-            }
-            .sidebar.active {
-                top: 0; /* Show on active */
-            }
-            /* Adjustments within the sidebar when it's a top menu */
-            .sidebar-header {
-                width: 100%; /* Ensure header takes full width */
-                justify-content: center; /* Center logo in the header */
-                margin-bottom: 40px; /* More space below header */
-            }
-            .logo-area {
-                font-size: 2em; /* Slightly larger logo for mobile menu */
-            }
-            .sidebar .logo-text {
-                display: block; /* Always show full text in top mobile menu */
-            }
-            .sidebar .logo-icon {
-                margin-right: 10px; /* Add margin back for icon */
-            }
-            .sidebar nav {
-                width: 100%; /* Ensure nav takes full width for its children to center */
-            }
-            .sidebar nav ul {
-                width: 100%; /* Ensure ul takes full width */
-                text-align: center; /* Center list items if not using flex for child alignment */
-            }
-            .sidebar nav ul li {
-                margin-bottom: 20px; /* More vertical space between menu items */
-            }
-            .sidebar nav ul li a {
-                justify-content: center; /* Center icon and text within each link */
-                font-size: 1.2em; /* Slightly larger font for readability */
-                padding: 15px 20px; /* Increase padding for larger touch targets */
-                border-radius: var(--border-radius); /* Keep rounded corners */
-                display: flex; /* Ensure flexbox is used for alignment within link */
-                align-items: center; /* Vertically align icon and text */
-                gap: 15px; /* Space between icon and text */
-            }
-            .sidebar nav ul li a i {
-                margin-right: 0; /* Reset margin as gap handles spacing */
-                font-size: 1.4em; /* Larger icon */
-            }
-            .sidebar nav ul li a span {
-                display: inline; /* Show text labels */
-            }
-            .sidebar nav ul li a.active {
-                box-shadow: 0 6px 15px rgba(74, 144, 226, 0.4); /* Stronger shadow for active */
-            }
-
-            .main-content {
-                width: 100%;
-                max-width: 100%;
-                padding: 15px;
-                margin-left: 0; /* No margin for main content on mobile */
-            }
-            .dashboard-header {
-                /* REVISED: Increased margin for smartphones to prevent overlap */
-                margin-bottom: 40px;
-                flex-direction: column; /* Ensure stacking */
-                align-items: flex-start; /* Align content to the left */
-            }
-            .header-right {
-                width: 100%;
-                flex-direction: column; /* Stack children vertically */
-                align-items: flex-start; /* Align children to the left */
-                gap: 8px; /* Slightly less gap for very small screens */
-            }
-            .user-profile {
-                width: auto;
-                justify-content: flex-start;
-                order: 1; /* User profile first */
-            }
-            .current-time-display {
-                order: 2; /* Time below user profile */
-                text-align: left;
-                flex-basis: auto;
-            }
-            button {
-                width: 100%; /* Full width buttons on tiny screens */
-            }
-            .hamburger-menu {
-                display: block; /* Show hamburger */
-                top: 25px; /* Slightly adjust if needed based on new padding */
-                left: 25px;
-                font-size: 2.2em; /* Larger hamburger for easier tap */
-            }
-
-            /* Overlay for mobile sidebar */
-            .sidebar-overlay {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0,0,0,0.5);
-                z-index: 101; /* Below sidebar, above content */
-            }
-            .sidebar.active + .sidebar-overlay {
-                display: block;
-            }
-        }
-
-        /* Hamburger Menu for Mobile */
-        .hamburger-menu {
-            display: none; /* Hidden by default, shown in media queries */
-            background: none;
+        .dark-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #444;
+            color: white;
             border: none;
-            color: var(--primary-color);
-            font-size: 2em;
+            padding: 10px 15px;
+            border-radius: 5px;
             cursor: pointer;
-            position: fixed;
+            font-size: 0.9em;
+            transition: background 0.3s;
+        }
+        .dark-toggle:hover {
+            background: #555;
+        }
+
+        /* Fancy Alert Styles */
+        .alert-container {
+            position: absolute;
             top: 20px;
             left: 20px;
-            z-index: 103; /* Above sidebar, overlay, and main content */
-            transition: color 0.2s;
-        }
-        .hamburger-menu:hover {
-            color: #3A7BBF;
+            right: 20px;
+            z-index: 1000;
         }
 
+        .alert {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        .alert.alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+
+        .alert.alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border-color: #ffeeba;
+        }
+
+        .alert.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
-    <div class="dashboard-container">
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo-area">
-                    <i class="fas fa-graduation-cap logo-icon"></i> <span class="logo-text">Tsinda Dutsinde</span>
-                </div>
-                <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-chevron-left"></i></button>
+    <button class="dark-toggle" id="darkToggle">Toggle Dark Mode</button>
+    <div class="container">
+        <div id="alertContainer" class="alert-container"></div>
+        <h1 id="formTitle">Login</h1>
+        <div id="errorMessage" class="error-message hidden"></div>
+        <form id="authForm">
+            <div class="form-group" id="nameGroup" style="display:none;">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" placeholder="Your Name" />
             </div>
-            <nav>
-                <ul>
-                    <li><a href="#" class="active" id="dashboardNavLink"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
-                    <li><a href="exam.html"><i class="fas fa-pencil-alt"></i> <span>Take Exam</span></a></li>
-                    <li><a href="#"><i class="fas fa-book-open"></i> <span>Courses</span></a></li>
-                    <li><a href="#" id="statisticsNavLink"><i class="fas fa-chart-line"></i> <span>Statistics</span></a></li>
-                    <li><a href="#" id="accountNavLink"><i class="fas fa-user-circle"></i> <span>Account</span></a></li>
-                </ul>
-            </nav>
-        </aside>
-
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-        <main class="main-content">
-            <button class="hamburger-menu" id="hamburgerMenu"><i class="fas fa-bars"></i></button>
-
-            <header class="dashboard-header">
-                <h1>Dashboard</h1>
-                <div class="header-right">
-                    <div class="current-time-display" id="currentTimeDisplay"></div>
-                    <div class="user-profile">
-                        <div class="user-avatar" id="userAvatar">AN</div>
-                        <div class="user-info">
-                            Welcome, <span id="userName"></span>!
-                            <small>ID: <span id="userId"></span></small>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <section class="main-grid" id="dashboardContent" style="display: grid;">
-                <div class="card">
-                    <h2><i class="fas fa-tasks"></i> Overall Learning Progress</h2>
-                    <div class="card-content">
-                        <p>You've completed <strong id="completedCoursesCount">0</strong> out of <strong id="totalCoursesCount">0</strong> courses.</p>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar" id="overallProgressBar"></div>
-                        </div>
-                        <p style="text-align: right; font-size: 0.9em; margin-top: 10px;"><span id="overallProgressPercent">0</span>% Complete</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h2 style="display: flex; justify-content: space-between; align-items: center;"><i class="fas fa-chart-area"></i> Quiz Performance
-                    </h2>
-                    <div class="card-content chart-container">
-                        <canvas id="quizPerformanceGraph"></canvas>
-                        <p id="noQuizDataMessage" class="no-data-message" style="display: none;">No quiz data available yet. Take an exam to see your progress!</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h2 style="display: flex; justify-content: space-between; align-items: center;"><i class="fas fa-history"></i> Recent Exam History
-                    </h2>
-                    <div id="examHistory" class="card-content">Loading...</div>
-                </div>
-            </section>
-
-            <section class="main-grid" id="accountContent" style="display: none;">
-                <div class="card">
-                    <h2><i class="fas fa-user-circle"></i> Account</h2>
-                    <div class="card-content">
-                        <div class="account-item">
-                            <label>Name:</label>
-                            <span class="info-value" id="accountUserName"></span>
-                        </div>
-                        <div class="account-item">
-                            <label>Student ID:</label>
-                            <span class="info-value" id="accountUserId"></span>
-                        </div>
-                        <div class="account-item">
-                            <label for="darkToggle">Dark Mode:</label>
-                            <button class="dark-toggle" id="darkToggle"><i class="fas fa-moon"></i></button>
-                        </div>
-                        <div class="account-item">
-                            <label>Logout:</label>
-                            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                        </div>
-                        </div>
-                </div>
-            </section>
-
-            <div id="allStatisticsModal" class="modal" style="display: none;">
-                <div class="modal-content">
-                    <span class="close-button" onclick="closeAllStatisticsModal()">&times;</span>
-                    <h2><i class="fas fa-chart-bar"></i> All Statistics</h2>
-                    <div id="allStatisticsContent">
-                        <div class="card" style="margin-bottom: 20px;">
-                            <h2>Overall Quiz Performance Trend</h2>
-                            <div class="chart-container">
-                                <canvas id="overallQuizPerformanceGraph"></canvas>
-                                <p id="noOverallQuizDataMessage" class="no-data-message" style="display: none;">No quiz data available yet.</p>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <h2>Detailed Exam History</h2>
-                            <div id="fullExamHistoryList">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="identifier">Username:</label>
+                <input type="text" id="identifier" placeholder="username" required />
             </div>
-        </main>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" placeholder="********" required />
+            </div>
+            <button type="submit" id="submitButton">Login</button>
+        </form>
+        <div class="switch-mode">
+            <p id="switchText">Don't have an account? <a href="#" id="switchForm">Register here</a></p>
+        </div>
     </div>
 
     <script>
         // !! IMPORTANT: Replace this with your deployed Google Apps Script Web App URL !!
         const API_URL = "https://script.google.com/macros/s/AKfycbw_arkmcpwsGIRrV7gOuj84FFLqpwLVzWTSxrndHFlwerL-pUxATTZrhlYY8PAnyjbJ/exec";
-        const user = JSON.parse(localStorage.getItem("user"));
 
-        // Constants for quiz logic
-        const PASS_MARK = 12; // Out of 20
-        const TOTAL_QUESTIONS = 20; // Assuming quizzes are always out of 20 questions
+        const authForm = document.getElementById("authForm");
+        const formTitle = document.getElementById("formTitle");
+        const nameGroup = document.getElementById("nameGroup");
+        const nameInput = document.getElementById("name");
+        const identifierInput = document.getElementById("identifier");
+        const passwordInput = document.getElementById("password");
+        const submitButton = document.getElementById("submitButton");
+        const switchFormLink = document.getElementById("switchForm");
+        const switchText = document.getElementById("switchText");
+        const errorMessage = document.getElementById("errorMessage");
+        const darkToggle = document.getElementById("darkToggle");
+        const alertContainer = document.getElementById("alertContainer");
 
-        // Global Chart.js instances and all exam results data
-        let quizPerformanceChart; // For the dashboard card (last 2 exams graph)
-        let overallQuizPerformanceChart; // For the modal (all exams graph)
-        let allExamResults = []; // To store all results retrieved from the API
+        let isRegisterMode = false;
 
-        // Global variable for dark mode toggle button
-        let darkToggleBtn;
-
-        // --- Initial Load & User Check ---
-        if {
-            document.getElementById("userName").textContent = user.name;
-            document.getElementById("userId").textContent = user.identifier;
-            // Generate initials from user's full name
-            const userNameParts = user.name.split(' ');
-            let initials = userNameParts[0].substring(0, 1).toUpperCase();
-            if (userNameParts.length > 1) {
-                initials += userNameParts[userNameParts.length - 1].substring(0, 1).toUpperCase();
-            }
-            document.getElementById("userAvatar").textContent = initials;
-
-            loadDashboardData(); // Load all data for the dashboard
-            populateAccountDetails(); // Populate account details on load
-
-            // Ensure Dashboard is the default view on reload
-            showContent('dashboardContent');
-            document.getElementById('dashboardNavLink').classList.add('active'); // Ensure dashboard link is active
-            document.getElementById('allStatisticsModal').style.display = 'none'; // Make sure the modal is hidden
+        // Dark mode preference
+        if (localStorage.getItem("dark-mode") === "true") {
+            document.body.classList.add("dark-mode");
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize dark mode toggle button
-            darkToggleBtn = document.getElementById("darkToggle");
-            if (darkToggleBtn) {
-                darkToggleBtn.onclick = darkModeToggle;
-                if (localStorage.getItem("dark-mode") === "true") {
-                    document.body.classList.add("dark-mode");
-                    darkToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
-                } else {
-                    darkToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
-                }
-            }
-
-            // Initialize sidebar toggle (desktop)
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            if (sidebarToggle) {
-                sidebarToggle.addEventListener('click', () => {
-                    document.body.classList.toggle('sidebar-collapsed');
-                    // Store sidebar state in local storage
-                    const isCollapsed = document.body.classList.contains('sidebar-collapsed');
-                    localStorage.setItem('sidebar-collapsed', isCollapsed);
-                    // Re-render charts to adjust to new container size
-                    if (quizPerformanceChart) {
-                        quizPerformanceChart.resize();
-                    }
-                    if (overallQuizPerformanceChart) {
-                        overallQuizPerformanceChart.resize();
-                    }
-                });
-
-                // Apply saved sidebar state on load
-                if (localStorage.getItem('sidebar-collapsed') === 'true') {
-                    document.body.classList.add('sidebar-collapsed');
-                }
-            }
-
-            // Initialize current time display
-            updateCurrentTime();
-            setInterval(updateCurrentTime, 1000); // Update every second
-
-            // Ensure mobile sidebar is hidden by default and handles toggling
-            const hamburgerMenu = document.getElementById('hamburgerMenu');
-            const sidebar = document.getElementById('sidebar');
-            const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-            hamburgerMenu.addEventListener('click', () => {
-                sidebar.classList.toggle('active');
-                sidebarOverlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
-            });
-
-            sidebarOverlay.addEventListener('click', () => {
-                sidebar.classList.remove('active');
-                sidebarOverlay.style.display = 'none';
-            });
-
-            // Close sidebar when clicking a nav link on mobile
-            const navLinks = document.querySelectorAll('.sidebar nav ul li a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    // Check if the sidebar is active AND it's a mobile screen size
-                    // Using window.matchMedia for more robust responsive check than just innerWidth
-                    if (sidebar.classList.contains('active') && window.matchMedia('(max-width: 576px)').matches) {
-                        sidebar.classList.remove('active');
-                        sidebarOverlay.style.display = 'none';
-                    }
-                });
-            });
-        });
-
-
-        // --- Dark Mode Toggle ---
-        const darkModeToggle = () => {
+        darkToggle.onclick = () => {
             document.body.classList.toggle("dark-mode");
             localStorage.setItem("dark-mode", document.body.classList.contains("dark-mode"));
-
-            // Update chart colors if charts exist
-            if (quizPerformanceChart) {
-                updateChartColors(quizPerformanceChart);
-            }
-            if (overallQuizPerformanceChart) {
-                updateChartColors(overallQuizPerformanceChart);
-            }
-
-            // Update modal content colors if modal is open
-            const modalContent = document.querySelector('#allStatisticsModal .modal-content');
-            if (modalContent) {
-                modalContent.style.backgroundColor = document.body.classList.contains('dark-mode') ? 'var(--card-background-dark)' : 'var(--card-background-light)';
-                modalContent.style.borderColor = document.body.classList.contains('dark-mode') ? 'var(--border-dark)' : 'var(--border-light)';
-                if (document.getElementById('allStatisticsModal').style.display === 'flex') {
-                    renderFullExamHistoryList(allExamResults);
-                }
-            }
-            // Update icon on toggle button
-            if (darkToggleBtn) {
-                if (document.body.classList.contains("dark-mode")) {
-                    darkToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
-                } else {
-                    darkToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
-                }
-            }
         };
 
-        // --- Current Time Display ---
-        function updateCurrentTime() {
-            const now = new Date();
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false // 24-hour format
+        switchFormLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            isRegisterMode = !isRegisterMode;
+            if (isRegisterMode) {
+                formTitle.textContent = "Register";
+                nameGroup.style.display = "block";
+                nameInput.setAttribute("required", "true"); // Make name required for registration
+                submitButton.textContent = "Register";
+                switchText.innerHTML = "Already have an account? <a href='index.html' id='switchForm'>Login here</a>";
+            } else {
+                formTitle.textContent = "Login";
+                nameGroup.style.display = "none";
+                nameInput.removeAttribute("required"); // Name not required for login
+                submitButton.textContent = "Login";
+                switchText.innerHTML = "Don't have an account? <a href='#' id='switchForm'>Register here</a>";
+            }
+            errorMessage.classList.add("hidden"); // Hide error message on mode switch
+            // Re-attach event listener for the new anchor tag
+            document.getElementById("switchForm").addEventListener("click", arguments.callee);
+        });
+
+        function showAlert(message, type = 'success') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            alertContainer.appendChild(alertDiv);
+            setTimeout(() => {
+                alertDiv.classList.add('show');
+                setTimeout(() => {
+                    alertDiv.classList.remove('show');
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 300);
+                }, 3000); // Alert disappears after 3 seconds
+            }, 10); // Small delay to ensure transition works
+        }
+
+        authForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            errorMessage.classList.add("hidden"); // Hide previous errors
+
+            const identifier = identifierInput.value.trim();
+            const password = passwordInput.value.trim();
+            const name = nameInput.value.trim();
+
+            if (!identifier || !password || (isRegisterMode && !name)) {
+                errorMessage.textContent = "Please fill in all fields.";
+                errorMessage.classList.remove("hidden");
+                showAlert("Please fill in all required fields.", 'warning');
+                return;
+            }
+
+            // New validation: Check if identifier starts with '0' if it's a number
+            if (/^\d+$/.test(identifier) && identifier.startsWith('0')) {
+                errorMessage.textContent = "Student ID cannot start with '0'.";
+                errorMessage.classList.remove("hidden");
+                showAlert("Student ID cannot start with '0'.", 'danger');
+                return;
+            }
+
+
+            let action = isRegisterMode ? "register" : "login";
+            let payload = {
+                action: action,
+                identifier: identifier,
+                password: password
             };
-            // Set locale to 'en-GB' for consistent date format (e.g., DD/MM/YYYY or similar based on Poppins preference)
-            const formattedDateTime = now.toLocaleString('en-GB', options);
-            document.getElementById('currentTimeDisplay').textContent = formattedDateTime;
-        }
 
+            if (isRegisterMode) {
+                payload.name = name;
+            }
 
-        // --- Navigation Functions ---
-        function goToExam() {
-            window.location.href = "exam.html";
-        }
+            submitButton.disabled = true;
+            submitButton.classList.add("loading");
+            submitButton.innerHTML = 'Loading... <div class="loader"></div>';
 
-        function logout() {
-            localStorage.removeItem("user");
-            window.location.href = "index.html";
-        }
-
-        // Function to show/hide content sections
-        function showContent(sectionId) {
-            document.getElementById('dashboardContent').style.display = 'none';
-            document.getElementById('accountContent').style.display = 'none';
-
-            document.getElementById(sectionId).style.display = 'grid';
-        }
-
-        // Handle navigation clicks
-        document.getElementById('dashboardNavLink').addEventListener('click', (e) => {
-            e.preventDefault();
-            closeAllStatisticsModal(); // Ensure modal is closed
-            showContent('dashboardContent');
-            document.querySelector('.sidebar nav ul li a.active')?.classList.remove('active');
-            e.currentTarget.classList.add('active');
-        });
-
-        document.getElementById('accountNavLink').addEventListener('click', (e) => {
-            e.preventDefault();
-            closeAllStatisticsModal(); // Ensure modal is closed
-            showContent('accountContent');
-            document.querySelector('.sidebar nav ul li a.active')?.classList.remove('active');
-            e.currentTarget.classList.add('active');
-            populateAccountDetails();
-        });
-
-
-        // --- Data Loading & Rendering Functions ---
-        async function loadDashboardData() {
-            await loadExamResults();
-            loadExamHistoryCard();
-            renderQuizPerformanceGraph();
-            loadOverallProgress();
-        }
-
-        async function loadExamResults() {
             try {
                 const res = await fetch(API_URL, {
                     method: "POST",
-                    body: new URLSearchParams({
-                        action: "getResults",
-                        identifier: user.identifier
-                    })
+                    body: new URLSearchParams(payload)
                 });
+                const text = await res.text(); // Get raw text to check for JSON or plain string
 
-                const results = await res.json();
-
-                if (results.status === "error") {
-                    console.error("API error for getResults:", results.message);
-                    allExamResults = [];
-                    return;
-                }
-
-                results.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-                allExamResults = results;
-
-            } catch (error) {
-                console.error("Fetch error loading exam history:", error);
-                allExamResults = [];
-            }
-        }
-
-        function loadExamHistoryCard() {
-            const container = document.getElementById("examHistory");
-            if (allExamResults.length === 0) {
-                container.innerHTML = "<p class='no-data-message'>No exam submissions yet. Start an exam to see your history here!</p>";
-                return;
-            }
-
-            const examsToDisplay = allExamResults.slice(-2).reverse();
-            let html = "<ul>";
-            examsToDisplay.forEach(r => {
-                const date = new Date(r.timestamp);
-                const passed = (r.score >= PASS_MARK);
-                const tagClass = passed ? 'tag' : 'tag fail';
-                const tagText = passed ? 'Passed' : 'Failed';
-                html += `<li>
-                            <div class="item-details">
-                                <div class="item-title">Exam on ${date.toLocaleString()}</div>
-                                <small>Scored <strong>${r.score}</strong> out of ${TOTAL_QUESTIONS}</small>
-                            </div>
-                            <span class="${tagClass}">${tagText}</span>
-                        </li>`;
-            });
-            html += "</ul>";
-            container.innerHTML = html;
-        }
-
-        function renderQuizPerformanceGraph() {
-            const ctx = document.getElementById('quizPerformanceGraph').getContext('2d');
-            const noDataMessage = document.getElementById('noQuizDataMessage');
-
-            if (quizPerformanceChart) {
-                quizPerformanceChart.destroy();
-            }
-
-            if (allExamResults.length === 0) {
-                ctx.canvas.style.display = 'none';
-                noDataMessage.style.display = 'block';
-                return;
-            } else {
-                ctx.canvas.style.display = 'block';
-                noDataMessage.style.display = 'none';
-            }
-
-            const graphData = allExamResults.slice(-2);
-
-            const labels = graphData.map(r => {
-                const date = new Date(r.timestamp);
-                return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-            });
-            const scores = graphData.map(r => r.score);
-            const passMarks = graphData.map(() => PASS_MARK);
-
-            quizPerformanceChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Your Score',
-                        data: scores,
-                        borderColor: 'rgb(75, 192, 192)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        tension: 0.1,
-                        fill: true,
-                        pointBackgroundColor: 'rgb(75, 192, 192)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(75, 192, 192)'
-                    },
-                    {
-                        label: 'Pass Mark',
-                        data: passMarks,
-                        borderColor: 'rgb(255, 99, 132)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderDash: [5, 5],
-                        pointRadius: 0,
-                        tension: 0.1,
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: document.body.classList.contains('dark-mode') ? 'var(--text-dark)' : 'var(--text-light)'
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    label += context.parsed.y;
-                                    return label;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: TOTAL_QUESTIONS,
-                            ticks: {
-                                color: document.body.classList.contains('dark-mode') ? 'var(--text-dark)' : 'var(--text-light)'
-                            },
-                            grid: {
-                                color: document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                color: document.body.classList.contains('dark-mode') ? 'var(--text-dark)' : 'var(--text-light)'
-                            },
-                            grid: {
-                                color: document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
-                            }
+                if (action === "register") {
+                    if (text === "Registered") {
+                        showAlert("Registration successful! You can now log in.", 'success');
+                        // Switch to login mode automatically
+                        isRegisterMode = false;
+                        formTitle.textContent = "Login";
+                        nameGroup.style.display = "none";
+                        nameInput.removeAttribute("required");
+                        submitButton.textContent = "Login";
+                        switchText.innerHTML = "Don't have an account? <a href='#' id='switchForm'>Register here</a>";
+                        nameInput.value = ""; // Clear name field after registration
+                        identifierInput.value = ""; // Clear identifier
+                        passwordInput.value = ""; // Clear password
+                        document.getElementById("switchForm").addEventListener("click", arguments.callee); // Re-attach listener
+                    } else if (text === "Exists") {
+                        showAlert("User already exists. Please login or use a different username.", 'warning');
+                    } else {
+                        showAlert("Registration failed. Please try again.", 'danger');
+                    }
+                } else { // Login action
+                    try {
+                        const user = JSON.parse(text); // Try parsing as JSON
+                        localStorage.setItem("user", JSON.stringify(user));
+                        showAlert("Login successful! Redirecting to dashboard...", 'success');
+                        setTimeout(() => {
+                            window.location.href = "dashboard.html";
+                        }, 1500); // Give time for alert to be seen
+                    } catch (jsonError) {
+                        // If it's not JSON, it's likely "Invalid" from the script
+                        if (text === "Invalid") {
+                            showAlert("Invalid Student ID/Email or password.", 'danger');
+                        } else {
+                            showAlert("Login failed. An unexpected error occurred.", 'danger');
+                            console.error("Unexpected login response:", text);
                         }
                     }
                 }
-            });
-        }
-
-        async function loadOverallProgress() {
-            try {
-                const resCourses = await fetch(API_URL, {
-                    method: "POST",
-                    body: new URLSearchParams({
-                        action: "getCourses"
-                    })
-                });
-                const courses = await resCourses.json();
-
-                const resProgress = await fetch(API_URL, {
-                    method: "POST",
-                    body: new URLSearchParams({
-                        action: "getUserProgress",
-                        identifier: user.identifier
-                    })
-                });
-                const progress = await resProgress.json();
-
-                let completedCoursesCount = 0;
-                if (Array.isArray(courses) && courses.length > 0) {
-                   courses.forEach(course => {
-                        if (course.courseId && progress[course.courseId] === "yes") {
-                            completedCoursesCount++;
-                        }
-                    });
-                }
-
-                document.getElementById("completedCoursesCount").textContent = completedCoursesCount;
-                document.getElementById("totalCoursesCount").textContent = courses.length;
-                const progressPercent = courses.length > 0 ? (completedCoursesCount / courses.length) * 100 : 0;
-                document.getElementById("overallProgressBar").style.width = `${progressPercent}%`;
-                document.getElementById("overallProgressPercent").textContent = progressPercent.toFixed(0);
-
             } catch (error) {
-                console.error("Failed to load overall progress or courses data:", error);
-                document.getElementById("completedCoursesCount").textContent = "Error";
-                document.getElementById("totalCoursesCount").textContent = "Error";
+                
+                console.error("Fetch error:", error);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.classList.remove("loading");
+                submitButton.textContent = isRegisterMode ? "Register" : "Login";
             }
-        }
-
-        // --- Chart Color Update Function ---
-        function updateChartColors(chartInstance) {
-            if (!chartInstance) return;
-
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            const textColor = isDarkMode ? 'var(--text-dark)' : 'var(--text-light)';
-            const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-
-            chartInstance.options.plugins.legend.labels.color = textColor;
-            chartInstance.options.scales.y.ticks.color = textColor;
-            chartInstance.options.scales.y.grid.color = gridColor;
-            chartInstance.options.scales.x.ticks.color = textColor;
-            chartInstance.options.scales.x.grid.color = gridColor;
-
-            chartInstance.update();
-        }
-
-        // --- Modal Functions (for "All Statistics") ---
-        document.getElementById('statisticsNavLink').addEventListener('click', (e) => {
-            e.preventDefault();
-            document.getElementById('dashboardContent').style.display = 'none';
-            document.getElementById('accountContent').style.display = 'none';
-
-            openAllStatisticsModal();
-            document.querySelector('.sidebar nav ul li a.active')?.classList.remove('active');
-            e.currentTarget.classList.add('active');
         });
-
-
-        function openAllStatisticsModal() {
-            const modal = document.getElementById('allStatisticsModal');
-            modal.style.display = 'flex';
-
-            renderOverallQuizPerformanceGraph(allExamResults);
-            renderFullExamHistoryList(allExamResults);
-
-            const modalContent = document.querySelector('#allStatisticsModal .modal-content');
-            if (document.body.classList.contains('dark-mode')) {
-                modalContent.style.backgroundColor = 'var(--card-background-dark)';
-                modalContent.style.borderColor = 'var(--border-dark)';
-            } else {
-                modalContent.style.backgroundColor = 'var(--card-background-light)';
-                modalContent.style.borderColor = 'var(--border-light)';
-            }
-        }
-
-        function closeAllStatisticsModal() {
-            document.getElementById('allStatisticsModal').style.display = 'none';
-            showContent('dashboardContent');
-            document.querySelector('.sidebar nav ul li a.active')?.classList.remove('active');
-            document.getElementById('dashboardNavLink').classList.add('active');
-        }
-
-        function renderOverallQuizPerformanceGraph(results) {
-            const ctx = document.getElementById('overallQuizPerformanceGraph').getContext('2d');
-            const noDataMessage = document.getElementById('noOverallQuizDataMessage');
-
-            if (overallQuizPerformanceChart) {
-                overallQuizPerformanceChart.destroy();
-            }
-
-            if (results.length === 0) {
-                ctx.canvas.style.display = 'none';
-                noDataMessage.style.display = 'block';
-                return;
-            } else {
-                ctx.canvas.style.display = 'block';
-                noDataMessage.style.display = 'none';
-            }
-
-            const labels = results.map(r => {
-                const date = new Date(r.timestamp);
-                return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-            });
-            const scores = results.map(r => r.score);
-            const passMarks = results.map(() => PASS_MARK);
-
-            overallQuizPerformanceChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Your Score',
-                        data: scores,
-                        borderColor: 'rgb(75, 192, 192)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        tension: 0.1,
-                        fill: true,
-                        pointBackgroundColor: 'rgb(75, 192, 192)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(75, 192, 192)'
-                    },
-                    {
-                        label: 'Pass Mark',
-                        data: passMarks,
-                        borderColor: 'rgb(255, 99, 132)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderDash: [5, 5],
-                        pointRadius: 0,
-                        tension: 0.1,
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: document.body.classList.contains('dark-mode') ? 'var(--text-dark)' : 'var(--text-light)'
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    label += context.parsed.y;
-                                    return label;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: TOTAL_QUESTIONS,
-                            ticks: {
-                                color: document.body.classList.contains('dark-mode') ? 'var(--text-dark)' : 'var(--text-light)'
-                            },
-                            grid: {
-                                color: document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                color: document.body.classList.contains('dark-mode') ? 'var(--text-dark)' : 'var(--text-light)'
-                            },
-                            grid: {
-                                color: document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
-                            }
-                        }
-                    }
-                }
-            });
-
-             updateChartColors(overallQuizPerformanceChart);
-        }
-
-
-        function renderFullExamHistoryList(results) {
-            const container = document.getElementById("fullExamHistoryList");
-            if (results.length === 0) {
-                container.innerHTML = "<p class='no-data-message'>No exam submissions yet.</p>";
-                return;
-            }
-
-            const sortedResults = [...results].reverse();
-            let html = "<ul>";
-            sortedResults.forEach(r => {
-                const date = new Date(r.timestamp);
-                const passed = (r.score >= PASS_MARK);
-                const tagClass = passed ? 'tag' : 'tag fail';
-                const tagText = passed ? 'Passed' : 'Failed';
-                html += `<li>
-                            <div class="item-details">
-                                <div class="item-title">Exam on ${date.toLocaleString()}</div>
-                                <small>Scored <strong>${r.score}</strong> out of ${TOTAL_QUESTIONS}</small>
-                            </div>
-                            <span class="${tagClass}">${tagText}</span>
-                        </li>`;
-            });
-            html += "</ul>";
-            container.innerHTML = html;
-        }
-
-        // --- Account Details Function ---
-        function populateAccountDetails() {
-            if (user) {
-                document.getElementById('accountUserName').textContent = user.name;
-                document.getElementById('accountUserId').textContent = user.identifier;
-            }
-        }
     </script>
 </body>
 </html>
