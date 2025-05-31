@@ -1,196 +1,1451 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register New Account - TSINDA DUTSINDE</title>
-
+    <title>Tsinda Dutsinde - Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        :root {
+            --primary-color: #4A90E2; /* A vibrant blue */
+            --secondary-color: #6C7A89; /* Muted gray for secondary text */
+            --accent-color: #50B84D; /* A fresh green for success/completion */
+            --danger-color: #E74C3C; /* Red for warnings/logout */
+
+            /* Light Mode */
+            --background-light: #F8F9FA;
+            --card-background-light: #FFFFFF;
+            --text-light: #34495E; /* Darker text for readability */
+            --border-light: #E0E6EB;
+            --sidebar-background-light: #FFFFFF;
+            --sidebar-text-light: #34495E;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+
+            /* Dark Mode */
+            --background-dark: #2C3E50; /* Deep blue-gray */
+            --card-background-dark: #34495E;
+            --text-dark: #ECF0F1; /* Light text */
+            --border-dark: #4A6070;
+            --sidebar-background-dark: #253340;
+            --sidebar-text-dark: #ECF0F1;
+            --shadow-dark: rgba(0, 0, 0, 0.35);
+
+            --transition-speed: 0.3s ease-in-out;
+            --border-radius: 12px;
+        }
+
+        /* Base Styles */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background: var(--background-light);
+            color: var(--text-light);
+            margin: 0;
+            line-height: 1.6;
+            display: flex; /* Use flexbox for main layout */
+            min-height: 100vh; /* Full viewport height */
+            transition: background var(--transition-speed), color var(--transition-speed);
+        }
+
+        /* Dark Mode Toggle */
+        body.dark-mode {
+            background: var(--background-dark);
+            color: var(--text-dark);
+        }
+
+        /* Layout Container */
+        .dashboard-container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-background-light);
+            padding: 30px 20px;
+            box-shadow: 2px 0 10px var(--shadow-light);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: width var(--transition-speed), background var(--transition-speed), box-shadow var(--transition-speed); /* Added width transition */
+            position: sticky;
+            top: 20px; /* Pushed up slightly */
+            align-self: flex-start; /* Aligns to the start of the flex container */
+            height: calc(100vh - 40px); /* Adjust height for the top offset */
+            border-radius: var(--border-radius); /* Add border-radius to sidebar */
+            margin-left: 20px; /* Space from left edge */
+        }
+
+        body.dark-mode .sidebar {
+            background-color: var(--sidebar-background-dark);
+            box-shadow: 2px 0 10px var(--shadow-dark);
+        }
+
+        /* Collapsed Sidebar */
+        body.sidebar-collapsed .sidebar {
+            width: 80px;
+        }
+
+        body.sidebar-collapsed .sidebar h2 span {
+            display: none; /* Hide full title */
+        }
+        body.sidebar-collapsed .sidebar h2 {
+            font-size: 1.4em;
+        }
+
+        body.sidebar-collapsed .sidebar nav ul li a {
+            justify-content: center; /* Center icons */
+        }
+        body.sidebar-collapsed .sidebar nav ul li a i {
+            margin-right: 0;
+        }
+        body.sidebar-collapsed .sidebar nav ul li a span {
+            display: none; /* Hide text labels */
+        }
+
+        /* Sidebar Toggle Button */
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.5em;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 20px;
+            transition: transform var(--transition-speed);
+        }
+
+        body.sidebar-collapsed .sidebar-toggle {
+            transform: rotate(180deg); /* Rotate icon when collapsed */
+        }
+
+
+        .sidebar h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar nav ul li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar nav ul li a {
+            display: flex;
+            align-items: center;
+            color: var(--sidebar-text-light);
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            transition: background-color var(--transition-speed), color var(--transition-speed), transform 0.2s ease;
+            font-weight: 500;
+        }
+
+        body.dark-mode .sidebar nav ul li a {
+            color: var(--sidebar-text-dark);
+        }
+
+        .sidebar nav ul li a i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .sidebar nav ul li a:hover {
+            background-color: rgba(74, 144, 226, 0.1); /* Primary color with transparency */
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .sidebar nav ul li a.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1; /* Takes remaining space */
+            padding: 30px;
+            max-width: calc(100% - 250px - 40px); /* Adjust for sidebar width and its margins */
+            transition: max-width var(--transition-speed); /* Added max-width transition */
+        }
+        body.sidebar-collapsed .main-content {
+            max-width: calc(100% - 80px - 40px); /* Adjust for collapsed sidebar */
+        }
+
+
+        /* Dashboard Header */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-header h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 800;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar { /* Changed from img to div for custom content */
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--primary-color); /* Background for the text */
+            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background-color: #e0f2f7; /* Light blue background */
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
+            font-size: 1.2em;
+            font-weight: 600;
+            border: 2px solid var(--primary-color);
+            text-transform: uppercase;
         }
-        .register-container {
-            background-color: #ffffff;
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            width: 100%;
-            max-width: 450px;
-            text-align: center;
-            box-sizing: border-box;
-        }
-        h2 {
-            color: #007bff; /* Primary blue */
-            margin-bottom: 25px;
-            font-size: 2em;
-        }
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: bold;
-        }
-        .input-group input {
-            width: calc(100% - 20px); /* Adjust for padding */
-            padding: 12px 10px;
-            border: 1px solid #ced4da;
-            border-radius: 8px;
+
+        .user-info {
             font-size: 1em;
-            box-sizing: border-box;
+            font-weight: 600;
+            text-align: right;
         }
-        .input-group input:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-            outline: none;
+
+        .user-info small {
+            display: block;
+            font-size: 0.85em;
+            color: var(--secondary-color);
         }
+
+        body.dark-mode .user-info small {
+            color: #B0B0B0;
+        }
+
+        .current-time-header {
+            font-size: 0.9em;
+            color: var(--secondary-color);
+            margin-left: 20px; /* Space from hamburger */
+            flex-grow: 1; /* Pushes other elements to ends */
+            text-align: center;
+            white-space: nowrap; /* Prevent wrapping */
+        }
+        body.dark-mode .current-time-header {
+            color: #C0C0C0;
+        }
+
+
+        /* Main Grid for Cards */
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--card-background-light);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 25px var(--shadow-light);
+            transition: background var(--transition-speed), color var(--transition-speed), transform 0.2s ease-in-out, box-shadow var(--transition-speed);
+            border: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px var(--shadow-light);
+        }
+
+        body.dark-mode .card {
+            background: var(--card-background-dark);
+            color: var(--text-dark);
+            box-shadow: 0 8px 25px var(--shadow-dark);
+            border: 1px solid var(--border-dark);
+        }
+        body.dark-mode .card:hover {
+             box-shadow: 0 12px 35px var(--shadow-dark);
+        }
+
+
+        .card h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+
+        .card-content {
+            flex-grow: 1; /* Allows content to take available space */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Space out content within the card */
+        }
+
+        /* Buttons */
         button {
-            width: 100%;
-            padding: 14px;
-            background-color: #007bff; /* Primary blue */
+            cursor: pointer;
+            background: var(--primary-color);
             color: white;
             border: none;
+            padding: 12px 25px;
             border-radius: 8px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background var(--transition-speed), transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
         }
+
         button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
+            background: #3A7BBF; /* Slightly darker primary */
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
         }
-        .link-text {
-            margin-top: 20px;
-            font-size: 0.95em;
-            color: #666;
+
+        button i {
+            font-size: 1.1em;
         }
-        .link-text a {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
+
+        .logout-btn {
+            background: var(--danger-color);
         }
-        .link-text a:hover {
-            text-decoration: underline;
+        .logout-btn:hover {
+            background: #C0392B; /* Darker red */
         }
-        #message {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 8px;
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: auto; /* Pushes buttons to the bottom of the card */
+            padding-top: 20px; /* Space from content above */
+            border-top: 1px solid var(--border-light); /* Separator */
+            justify-content: flex-end;
+        }
+
+        body.dark-mode .action-buttons {
+            border-top: 1px solid var(--border-dark);
+        }
+
+        /* Lists (Exam History, etc.) */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul li {
+            background: var(--background-light);
+            margin-bottom: 15px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background var(--transition-speed), transform 0.2s ease;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        body.dark-mode ul li {
+            background: #3A5060; /* Slightly lighter than card background in dark mode */
+            border: 1px solid var(--border-dark);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        ul li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode ul li:hover {
+             box-shadow: 0 4px 12px var(--shadow-dark);
+        }
+
+        .item-details {
+            flex-grow: 1;
+        }
+
+        .item-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        body.dark-mode .item-title {
+            color: var(--primary-color);
+        }
+
+        small {
+            color: var(--secondary-color);
             font-size: 0.9em;
+        }
+
+        body.dark-mode small {
+            color: #C0C0C0;
+        }
+
+        .tag {
+            background: var(--accent-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+            white-space: nowrap;
+            margin-left: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .tag.fail {
+            background: var(--danger-color);
+        }
+
+        /* Progress Bar */
+        .progress-bar-container {
+            width: 100%;
+            background-color: var(--border-light);
+            border-radius: 8px;
+            height: 12px;
+            overflow: hidden;
+            margin-top: 15px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .progress-bar-container {
+            background-color: var(--border-dark);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent-color);
+            border-radius: 8px;
+            transition: width 0.7s ease-in-out;
+            background-image: linear-gradient(to right, var(--accent-color), #72C56F); /* Subtle gradient */
+        }
+
+        /* Chart Specific Styles */
+        .chart-container {
+            position: relative;
+            height: 320px; /* Defines the height for Chart.js to fill */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .no-data-message {
+            text-align: center;
+            color: var(--secondary-color);
+            padding: 20px;
+            font-style: italic;
+        }
+
+        /* Modal Styles */
+        .modal {
+            /* IMPORTANT: Set to display: none; by default in CSS */
             display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            background-color: rgba(0,0,0,0.5); /* Darker overlay */
+            backdrop-filter: blur(8px); /* More prominent blur */
+            -webkit-backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px; /* Padding for small screens */
         }
-        #message.success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+
+        .modal-content {
+            background-color: var(--card-background-light);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            width: 95%;
+            max-width: 700px; /* Slightly wider modal */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            position: relative;
+            animation: fadeIn 0.4s ease-out; /* Slightly longer animation */
+            max-height: 90vh; /* More height for content */
+            overflow-y: auto; /* Add scroll to modal content */
+            border: 1px solid var(--border-light);
         }
-        #message.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+
+        body.dark-mode .modal-content {
+            background-color: var(--card-background-dark);
+            border: 1px solid var(--border-dark);
         }
+
+        .close-button {
+            color: var(--secondary-color);
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 32px; /* Larger close button */
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--primary-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Exam History List inside Modal (re-use existing ul li styles) */
+        #allExamHistoryList ul {
+            margin-top: 20px;
+        }
+        #allExamHistoryList ul li {
+            margin-bottom: 10px; /* Tighter spacing for modal list */
+        }
+        #allExamHistoryList .item-title {
+            font-size: 1.05em; /* Slightly smaller in modal */
+        }
+
+        /* Account card specific styles for items */
+        .account-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0; /* Increased padding */
+            border-bottom: 1px solid var(--border-light);
+        }
+        .account-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0; /* No bottom padding for last item */
+        }
+        .account-item label {
+            font-weight: 500;
+            color: var(--text-light);
+            font-size: 1.1em; /* Slightly larger text */
+        }
+        body.dark-mode .account-item label {
+            color: var(--text-dark);
+        }
+        .account-item .info-value {
+            color: var(--secondary-color);
+            font-weight: 400;
+            font-size: 1.0em;
+        }
+        body.dark-mode .account-item .info-value {
+            color: #C0C0C0;
+        }
+        .account-item button {
+            margin-left: 15px; /* Space between label/value and button */
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            /* Collapsed Sidebar */
+            .sidebar {
+                width: 80px; /* Collapse sidebar by default on smaller screens */
+                padding: 20px 10px;
+                margin-left: 10px; /* Smaller margin */
+                top: 10px; /* Smaller top offset */
+                height: calc(100vh - 20px);
+            }
+            .sidebar h2 {
+                font-size: 1.4em;
+                margin-bottom: 20px;
+            }
+            .sidebar h2 span {
+                display: none; /* Hide full title */
+            }
+            .sidebar nav ul li a {
+                justify-content: center; /* Center icons */
+                padding: 10px;
+            }
+            .sidebar nav ul li a i {
+                margin-right: 0;
+            }
+            .sidebar nav ul li a span {
+                display: none; /* Hide text labels */
+            }
+            .main-content {
+                max-width: calc(100% - 80px - 20px); /* Adjust for collapsed sidebar and its margins */
+                padding: 20px;
+            }
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+                margin-bottom: 30px;
+            }
+            .dashboard-header h1 {
+                font-size: 2em;
+            }
+            .user-profile {
+                width: 100%;
+                justify-content: flex-end;
+            }
+            .main-grid {
+                grid-template-columns: 1fr; /* Stack cards on smaller screens */
+                gap: 20px;
+            }
+            .card {
+                padding: 20px;
+            }
+            .chart-container {
+                height: 250px; /* Adjust chart height for smaller screens */
+            }
+            /* Adjust current time header for smaller screens if needed */
+            .current-time-header {
+                margin-left: 0;
+                text-align: left;
+                width: 100%; /* Take full width */
+                font-size: 0.85em;
+            }
+
+            /* Sidebar toggle should be hidden when mobile hamburger is visible */
+            .sidebar-toggle {
+                display: none;
+            }
+
+            /* Ensure body class for collapsed sidebar is applied on load for smaller screens */
+            body:not(.mobile-menu-active) .sidebar {
+                transform: translateX(0); /* Make sure it's not off-screen initially */
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                position: fixed; /* Make sidebar fully sticky */
+                left: -250px; /* Hide by default, full width */
+                width: 250px; /* Set full width for mobile sidebar */
+                transition: left 0.3s ease-in-out;
+                z-index: 100;
+                top: 0; /* Reset top for mobile hamburger */
+                height: 100vh; /* Full height for mobile menu */
+                margin-left: 0; /* No margin on mobile */
+                border-radius: 0; /* No border-radius on mobile */
+            }
+            .sidebar.active { /* Renamed to .sidebar.active for mobile */
+                left: 0; /* Show on active */
+            }
+            .sidebar h2 span {
+                display: inline; /* Show full title on mobile expanded sidebar */
+            }
+            .sidebar nav ul li a {
+                justify-content: flex-start; /* Align items to start */
+            }
+            .sidebar nav ul li a i {
+                margin-right: 10px; /* Restore margin for icons */
+            }
+            .sidebar nav ul li a span {
+                display: inline; /* Show text labels on mobile expanded sidebar */
+            }
+
+            .main-content {
+                width: 100%;
+                max-width: 100%;
+                padding: 15px;
+            }
+            .dashboard-header {
+                margin-bottom: 20px;
+                flex-wrap: wrap; /* Allow header items to wrap */
+                justify-content: space-between;
+            }
+            .user-info {
+                text-align: left;
+            }
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            button {
+                width: 100%; /* Full width buttons on tiny screens */
+            }
+            .hamburger-menu {
+                display: block; /* Show hamburger */
+            }
+            .account-item {
+                flex-direction: column; /* Stack items vertically */
+                align-items: flex-start;
+                gap: 5px; /* Smaller gap for stacked items */
+            }
+            .account-item button {
+                margin-left: 0; /* Remove left margin for buttons */
+                margin-top: 10px; /* Add top margin for button */
+            }
+            .dashboard-header h1 {
+                order: 2; /* Change order to appear below hamburger */
+                width: 100%;
+                text-align: center;
+                margin-top: 10px;
+            }
+            .user-profile {
+                order: 3; /* Move user profile to bottom */
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            .current-time-header {
+                order: 1; /* Place current time at the top */
+                width: auto; /* Let it fit content */
+                text-align: left;
+                margin-right: auto; /* Push it to the left */
+            }
+
+            /* Hide default sidebar toggle button when hamburger is active */
+            .sidebar-toggle {
+                display: none;
+            }
+        }
+
+        /* Hamburger Menu for Mobile */
+        .hamburger-menu {
+            display: none; /* Hidden by default */
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 2em;
+            cursor: pointer;
+            position: fixed; /* Fixed position so it's always accessible */
+            top: 20px;
+            left: 20px;
+            z-index: 101; /* Above sidebar */
+            transition: color 0.2s;
+        }
+        .hamburger-menu:hover {
+            color: #3A7BBF;
+        }
+
     </style>
 </head>
 <body>
-    <div class="register-container">
-        <h2>Register New Account</h2>
-        <form id="registerForm">
-            <div class="input-group">
-                <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" name="fullName" required>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <h2>Tsinda<br><span>Dutsinde</span></h2>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active" id="dashboardNavLink"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+                    <li><a href="exam.html"><i class="fas fa-pencil-alt"></i> <span>Take Exam</span></a></li>
+                    <li><a href="#"><i class="fas fa-book-open"></i> <span>Courses</span></a></li>
+                    <li><a href="#" id="statisticsNavLink"><i class="fas fa-chart-line"></i> <span>Statistics</span></a></li>
+                    <li><a href="#" id="accountNavLink"><i class="fas fa-user-circle"></i> <span>Account</span></a></li>
+                </ul>
+            </nav>
+            <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-chevron-left"></i></button>
+        </aside>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <button class="hamburger-menu" id="hamburgerMenu"><i class="fas fa-bars"></i></button>
+                <div class="current-time-header" id="currentTimeHeader"></div>
+                <h1>Dashboard</h1>
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">AL</div>
+                    <div class="user-info">
+                        Welcome, <span id="userName"></span>!
+                        <small>ID: <span id="userId"></span></small>
+                    </div>
+                </div>
+            </header>
+
+            <section class="main-grid" id="dashboardContent" style="display: grid;">
+                <div class="card">
+                    <h2><i class="fas fa-tasks"></i> Overall Learning Progress</h2>
+                    <div class="card-content">
+                        <p>You've completed <strong id="completedCoursesCount">0</strong> out of <strong id="totalCoursesCount">0</strong> courses.</p>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="overallProgressBar"></div>
+                        </div>
+                        <p style="text-align: right; font-size: 0.9em; margin-top: 10px;"><span id="overallProgressPercent">0</span>% Complete</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 style="display: flex; justify-content: space-between; align-items: center;"><i class="fas fa-chart-area"></i> Quiz Performance
+                    </h2>
+                    <div class="card-content chart-container">
+                        <canvas id="quizPerformanceGraph"></canvas>
+                        <p id="noQuizDataMessage" class="no-data-message" style="display: none;">No quiz data available yet. Take an exam to see your progress!</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 style="display: flex; justify-content: space-between; align-items: center;"><i class="fas fa-history"></i> Recent Exam History
+                    </h2>
+                    <div id="examHistory" class="card-content">Loading...</div>
+                </div>
+            </section>
+
+            <section class="main-grid" id="accountContent" style="display: none;">
+                <div class="card">
+                    <h2><i class="fas fa-user-circle"></i> Account</h2>
+                    <div class="card-content">
+                        <div class="account-item">
+                            <label>Name:</label>
+                            <span class="info-value" id="accountUserName"></span>
+                        </div>
+                        <div class="account-item">
+                            <label>Student ID:</label>
+                            <span class="info-value" id="accountUserId"></span>
+                        </div>
+                        <div class="account-item">
+                            <label for="darkToggle">Dark Mode:</label>
+                            <button class="dark-toggle" id="darkToggle"><i class="fas fa-moon"></i></button>
+                        </div>
+                        <div class="account-item">
+                            <label>Logout:</label>
+                            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                        </div>
+                        </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="allStatisticsModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeAllStatisticsModal()">&times;</span>
+            <h2><i class="fas fa-chart-bar"></i> All Statistics</h2>
+            <div id="allStatisticsContent">
+                <div class="card" style="margin-bottom: 20px;">
+                    <h2>Overall Quiz Performance Trend</h2>
+                    <div class="chart-container">
+                        <canvas id="overallQuizPerformanceGraph"></canvas>
+                        <p id="noOverallQuizDataMessage" class="no-data-message" style="display: none;">No quiz data available yet.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Detailed Exam History</h2>
+                    <div id="fullExamHistoryList">
+                    </div>
+                </div>
             </div>
-            <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="input-group">
-                <label for="phoneNumber">Phone Number</label>
-                <input type="tel" id="phoneNumber" name="phoneNumber" required>
-            </div>
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Register</button>
-        </form>
-        <div id="message" class="message"></div>
-        <p class="link-text">Already have an account? <a href="login.html">Login here</a></p>
+        </div>
     </div>
 
     <script>
-        // IMPORTANT: Replace with your actual deployed Google Apps Script Web App URL
-        const API_URL = 'https://script.google.com/macros/s/AKfycbyye-iZlWavb4wLVi2yNTe8BI3-1TLn5MoHWwUay2cwQOpIPKsAr5zQyuGjfRzVpOr1vA/exec'; // e.g., 'https://script.google.com/macros/s/AKfycbzz.../exec'
+        // !! IMPORTANT: Replace this with your deployed Google Apps Script Web App URL !!
+        const API_URL = "https://script.google.com/macros/s/AKfycbw_arkmcpwsGIRrV7gOuj84FFLqpwLVzWTSxrndHFlwerL-pUxATTZrhlYY8PAnyjbJ/exec";
+        const user = JSON.parse(localStorage.getItem("user"));
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const registerForm = document.getElementById('registerForm');
-            const messageDiv = document.getElementById('message');
+        // Constants for quiz logic
+        const PASS_MARK = 12; // Out of 20
+        const TOTAL_QUESTIONS = 20; // Assuming quizzes are always out of 20 questions
 
-            function showMessage(msg, type) {
-                messageDiv.textContent = msg;
-                messageDiv.className = 'message ' + type; // Adds 'success' or 'error' class
-                messageDiv.style.display = 'block'; // Make it visible
+        // Global Chart.js instances and all exam results data
+        let quizPerformanceChart; // For the dashboard card (last 2 exams graph)
+        let overallQuizPerformanceChart; // For the modal (all exams graph)
+        let allExamResults = []; // To store all results retrieved from the API
+
+        // --- Initial Load & User Check ---
+        if (!user) {
+            alert("You must log in first.");
+            window.location.href = "index.html";
+        } else {
+            document.getElementById("userName").textContent = user.name;
+            document.getElementById("userId").textContent = user.identifier;
+            document.getElementById("userAvatar").textContent = "AL"; // Set fixed "AL" for user avatar
+            loadDashboardData(); // Load all data for the dashboard
+            populateAccountDetails(); // Populate account details on load
+
+            // --- IMPORTANT FIX: Ensure Dashboard is the default view on reload ---
+            showContent('dashboardContent');
+            document.getElementById('dashboardNavLink').classList.add('active'); // Ensure dashboard link is active
+            document.getElementById('allStatisticsModal').style.display = 'none'; // Make sure the modal is hidden
+        }
+
+        // --- Dark Mode Toggle ---
+        let darkToggleBtn; // Declare globally, assign in DOMContentLoaded or later
+
+        document.addEventListener('DOMContentLoaded', () => {
+            darkToggleBtn = document.getElementById("darkToggle");
+            if (darkToggleBtn) { // Ensure button exists before attaching listener
+                darkToggleBtn.onclick = darkModeToggle;
+                // Apply dark mode on initial load
+                if (localStorage.getItem("dark-mode") === "true") {
+                    document.body.classList.add("dark-mode");
+                    darkToggleBtn.innerHTML = '<i class="fas fa-sun"></i>'; // Set sun icon for dark mode
+                } else {
+                    darkToggleBtn.innerHTML = '<i class="fas fa-moon"></i>'; // Set moon icon for light mode
+                }
             }
 
-            registerForm.addEventListener('submit', async function(event) {
-                event.preventDefault(); // Prevent default form submission
+            // Initialize sidebar collapse state based on screen size or local storage
+            // For screens wider than 992px, check localStorage for sidebar state
+            if (window.innerWidth > 992) {
+                if (localStorage.getItem("sidebar-collapsed") === "true") {
+                    document.body.classList.add("sidebar-collapsed");
+                }
+            } else {
+                // On smaller screens, the sidebar is initially collapsed by CSS
+                // and controlled by the hamburger menu, so no explicit JS class needed on body.
+                // However, we might want to ensure the main content adjusts correctly.
+                 document.body.classList.remove("sidebar-collapsed"); // Ensure it's not collapsed from wider screen state
+            }
 
-                const fullName = document.getElementById('fullName').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const phoneNumber = document.getElementById('phoneNumber').value.trim();
-                const password = document.getElementById('password').value;
+            // Update current time on load and every second
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+        });
 
-                // Simple client-side validation
-                if (!fullName || !email || !phoneNumber || !password) {
-                    showMessage('Please fill in all fields.', 'error');
+
+        const darkModeToggle = () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("dark-mode", document.body.classList.contains("dark-mode"));
+
+            // Update chart colors if charts exist
+            if (quizPerformanceChart) {
+                updateChartColors(quizPerformanceChart);
+            }
+            if (overallQuizPerformanceChart) {
+                updateChartColors(overallQuizPerformanceChart);
+            }
+
+            // Update modal content colors if modal is open
+            const modalContent = document.querySelector('#allStatisticsModal .modal-content');
+            if (modalContent) {
+                modalContent.style.backgroundColor = document.body.classList.contains('dark-mode') ? 'var(--card-background-dark)' : 'var(--card-background-light)';
+                modalContent.style.borderColor = document.body.classList.contains('dark-mode') ? 'var(--border-dark)' : 'var(--border-light)';
+                // Re-render modal list if visible to apply dark mode styles to its list items
+                if (document.getElementById('allStatisticsModal').style.display === 'flex') {
+                    renderFullExamHistoryList(allExamResults); // Re-render the full list
+                }
+            }
+            // Update icon on toggle button
+            if (darkToggleBtn) { // Ensure button reference is valid
+                if (document.body.classList.contains("dark-mode")) {
+                    darkToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                } else {
+                    darkToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+                }
+            }
+        };
+
+
+        // --- Navigation Functions ---
+        function goToExam() {
+            window.location.href = "exam.html";
+        }
+
+        function logout() {
+            localStorage.removeItem("user");
+            window.location.href = "index.html";
+        }
+
+        // Function to show/hide content sections
+        function showContent(sectionId) {
+            // Hide all main content sections
+            document.getElementById('dashboardContent').style.display = 'none';
+            document.getElementById('accountContent').style.display = 'none';
+
+            // Show the requested section
+            document.getElementById(sectionId).style.display = 'grid'; // Use grid for main sections
+        }
+
+        // Handle navigation clicks
+        document.getElementById('dashboardNavLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            // Close the modal if it's open
+            closeAllStatisticsModal();
+            showContent('dashboardContent');
+            // Update active class for sidebar links
+            document.querySelector('.sidebar nav ul li a.active')?.classList.remove('active');
+            e.currentTarget.classList.add('active');
+            // Hide mobile sidebar if open
+            document.getElementById('sidebar').classList.remove('active');
+        });
+
+        document.getElementById('accountNavLink').addEventListener('click', (e) => { // Updated ID
+            e.preventDefault();
+            // Close the modal if it's open
+            closeAllStatisticsModal();
+            showContent('accountContent'); // Updated ID
+            // Update active class for sidebar links
+            document.querySelector('.sidebar nav ul li a.active')?.classList.remove('active');
+            e.currentTarget.classList.add('active');
+            populateAccountDetails(); // Ensure details are up-to-date when showing account
+            // Hide mobile sidebar if open
+            document.getElementById('sidebar').classList.remove('active');
+        });
+
+
+        // --- Data Loading & Rendering Functions ---
+        async function loadDashboardData() {
+            await loadExamResults(); // Load all exam results first
+            loadExamHistoryCard(); // Render recent exams on dashboard
+            renderQuizPerformanceGraph(); // Render graph on dashboard (last 2 exams)
+            loadOverallProgress();
+        }
+
+        async function loadExamResults() {
+            try {
+                const res = await fetch(API_URL, {
+                    method: "POST",
+                    body: new URLSearchParams({
+                        action: "getResults",
+                        identifier: user.identifier
+                    })
+                });
+
+                const results = await res.json();
+
+                if (results.status === "error") {
+                    console.error("API error for getResults:", results.message);
+                    allExamResults = []; // Ensure it's empty on error
                     return;
                 }
 
-                showMessage('Registering...', ''); // Clear previous message, display loading
+                // Sort results by timestamp in ascending order for graph consistency
+                results.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                allExamResults = results; // Store all results globally
 
-                try {
-                    const response = await fetch(API_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
+            } catch (error) {
+                console.error("Fetch error loading exam history:", error);
+                allExamResults = []; // Ensure it's empty on error
+            }
+        }
+
+        function loadExamHistoryCard() {
+            const container = document.getElementById("examHistory");
+            if (allExamResults.length === 0) {
+                container.innerHTML = "<p class='no-data-message'>No exam submissions yet. Start an exam to see your history here!</p>";
+                return;
+            }
+
+            // Display only the last 2 exams in the main card
+            const examsToDisplay = allExamResults.slice(-2).reverse(); // Get last 2 and reverse for newest first
+            let html = "<ul>";
+            examsToDisplay.forEach(r => {
+                const date = new Date(r.timestamp);
+                const passed = (r.score >= PASS_MARK);
+                const tagClass = passed ? 'tag' : 'tag fail';
+                const tagText = passed ? 'Passed' : 'Failed';
+                html += `<li>
+                            <div class="item-details">
+                                <div class="item-title">Exam on ${date.toLocaleString()}</div>
+                                <small>Scored <strong>${r.score}</strong> out of ${TOTAL_QUESTIONS}</small>
+                            </div>
+                            <span class="${tagClass}">${tagText}</span>
+                        </li>`;
+            });
+            html += "</ul>";
+            container.innerHTML = html;
+        }
+
+        function renderQuizPerformanceGraph() {
+            const ctx = document.getElementById('quizPerformanceGraph').getContext('2d');
+            const noDataMessage = document.getElementById('noQuizDataMessage');
+
+            // Destroy previous chart instance if it exists
+            if (quizPerformanceChart) {
+                quizPerformanceChart.destroy();
+            }
+
+            if (allExamResults.length === 0) {
+                ctx.canvas.style.display = 'none';
+                noDataMessage.style.display = 'block';
+                return;
+            } else {
+                ctx.canvas.style.display = 'block';
+                noDataMessage.style.display = 'none';
+            }
+
+            // Get the last 2 exam results for the dashboard graph
+            const graphData = allExamResults.slice(-2);
+
+            // Use formatted dates for labels
+            const labels = graphData.map(r => {
+                const date = new Date(r.timestamp);
+                return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            });
+            const scores = graphData.map(r => r.score);
+            const passMarks = graphData.map(() => PASS_MARK);
+
+            quizPerformanceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Your Score',
+                        data: scores,
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.1,
+                        fill: true,
+                        pointBackgroundColor: 'rgb(75, 192, 192)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(75, 192, 192)'
+                    },
+                    {
+                        label: 'Pass Mark',
+                        data: passMarks,
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderDash: [5, 5],
+                        pointRadius: 0,
+                        tension: 0.1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: document.body.classList.contains('dark-mode') ? 'var(--text-dark)' : 'var(--text-light)'
+                            }
                         },
-                        body: JSON.stringify({
-                            action: 'register', // Tell Apps Script what action to perform
-                            fullName: fullName,
-                            email: email,
-                            phoneNumber: phoneNumber,
-                            password: password
-                        })
-                    });
-
-                    const data = await response.json(); // Parse the JSON response
-
-                    if (data.status === 'success') {
-                        showMessage(data.message + ' Redirecting to login...', 'success');
-                        // Optionally, store UserID if needed immediately, though login page will handle it.
-                        // localStorage.setItem('userId', data.userId);
-                        setTimeout(() => {
-                            window.location.href = 'login.html'; // Redirect to login page
-                        }, 2000); // Redirect after 2 seconds
-                    } else {
-                        showMessage('Registration failed: ' + data.message, 'error');
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.parsed.y;
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: TOTAL_QUESTIONS,
+                            ticks: {
+                                color: document.body.classList.contains('dark-mode') ? 'var(--text-dark)' : 'var(--text-light)'
+                            },
+                            grid: {
+                                color: document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: document.body.classList.contains('dark-mode') ? 'var(--text-dark)' : 'var(--text-light)'
+                            },
+                            grid: {
+                                color: document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+                            }
+                        }
                     }
-                } catch (error) {
-                    console.error('Network or server error during registration:', error);
-                    showMessage('An unexpected error occurred. Please try again later.', 'error');
                 }
             });
+        }
+
+        async function loadOverallProgress() {
+            try {
+                const resCourses = await fetch(API_URL, {
+                    method: "POST",
+                    body: new URLSearchParams({
+                        action: "getCourses"
+                    })
+                });
+                const courses = await resCourses.json();
+
+                const resProgress = await fetch(API_URL, {
+                    method: "POST",
+                    body: new URLSearchParams({
+                        action: "getUserProgress",
+                        identifier: user.identifier
+                    })
+                });
+                const progress = await resProgress.json();
+
+                let completedCoursesCount = 0;
+                if (Array.isArray(courses) && courses.length > 0) {
+                   courses.forEach(course => {
+                        if (course.courseId && progress[course.courseId] === "yes") {
+                            completedCoursesCount++;
+                        }
+                    });
+                }
+
+                document.getElementById("completedCoursesCount").textContent = completedCoursesCount;
+                document.getElementById("totalCoursesCount").textContent = courses.length;
+                const progressPercent = courses.length > 0 ? (completedCoursesCount / courses.length) * 100 : 0;
+                document.getElementById("overallProgressBar").style.width = `${progressPercent}%`;
+                document.getElementById("overallProgressPercent").textContent = progressPercent.toFixed(0);
+
+            } catch (error) {
+                console.error("Failed to load overall progress or courses data:", error);
+                document.getElementById("completedCoursesCount").textContent = "Error";
+                document.getElementById("totalCoursesCount").textContent = "Error";
+            }
+        }
+
+        // --- Chart Color Update Function ---
+        function updateChartColors(chartInstance) {
+            if (!chartInstance) return;
+
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const textColor = isDarkMode ? 'var(--text-dark)' : 'var(--text-light)';
+            const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+
+            chartInstance.options.plugins.legend.labels.color = textColor;
+            chartInstance.options.scales.y.ticks.color = textColor;
+            chartInstance.options.scales.y.grid.color = gridColor;
+            chartInstance.options.scales.x.ticks.color = textColor;
+            chartInstance.options.scales.x.grid.color = gridColor;
+
+            chartInstance.update(); // Redraw chart with new colors
+        }
+
+        // --- Modal Functions (for "All Statistics") ---
+        document.getElementById('statisticsNavLink').addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default link behavior
+            // Close other content sections
+            document.getElementById('dashboardContent').style.display = 'none';
+            document.getElementById('accountContent').style.display = 'none';
+
+            openAllStatisticsModal();
+            // Optional: Remove active class from other nav links if you want only one active at a time
+            document.querySelector('.sidebar nav ul li a.active')?.classList.remove('active'); // Use optional chaining
+            e.currentTarget.classList.add('active');
+            // Hide mobile sidebar if open
+            document.getElementById('sidebar').classList.remove('active');
         });
+
+
+        function openAllStatisticsModal() {
+            const modal = document.getElementById('allStatisticsModal');
+            modal.style.display = 'flex'; // Show the modal
+
+            // Render the graph for all exams in the modal
+            renderOverallQuizPerformanceGraph(allExamResults);
+            // Render the full exam history list in the modal
+            renderFullExamHistoryList(allExamResults);
+
+            // Apply dark mode styles if needed after rendering modal content
+            const modalContent = document.querySelector('#allStatisticsModal .modal-content');
+            if (document.body.classList.contains('dark-mode')) {
+                modalContent.style.backgroundColor = 'var(--card-background-dark)';
+                modalContent.style.borderColor = 'var(--border-dark)';
+            } else {
+                modalContent.style.backgroundColor = 'var(--card-background-light)';
+                modalContent.style.borderColor = 'var(--border-light)';
+            }
+        }
+
+        function closeAllStatisticsModal() {
+            document.getElementById('allStatisticsModal').style.display = 'none';
+            // When closing the modal, ensure the dashboard content is visible again
+            showContent('dashboardContent');
+            // Re-activate dashboard link in sidebar (or whichever was active before)
+            document.querySelector('.sidebar nav ul li a.active')?.classList.remove('active'); // Use optional chaining
+            document.getElementById('dashboardNavLink').classList.add('active');
+        }
+
+        function renderOverallQuizPerformanceGraph(results) {
+            const ctx = document.getElementById('overallQuizPerformanceGraph').getContext('2d');
+            const noDataMessage = document.getElementById('noOverallQuizDataMessage');
+
+            if (overallQuizPerformanceChart) {
+                overallQuizPerformanceChart.destroy(); // Destroy existing chart
+            }
+
+            if (results.length === 0) {
+                ctx.canvas.style.display = 'none';
+                noDataMessage.style.display = 'block';
+                return;
+            } else {
+                ctx.canvas.style.display = 'block';
+                noDataMessage.style.display = 'none';
+            }
+
+            // Use formatted dates for labels for ALL exams
+            const labels = results.map(r => {
+                const date = new Date(r.timestamp);
+                return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            });
+            const scores = results.map(r => r.score);
+            const passMarks = results.map(() => PASS_MARK);
+
+            overallQuizPerformanceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Your Score',
+                        data: scores,
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.1,
+                        fill: true,
+                        pointBackgroundColor: 'rgb(75, 192, 192)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(75, 192, 192)'
+                    },
+                    {
+                        label: 'Pass Mark',
+                        data: passMarks,
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderDash: [5, 5],
+                        pointRadius: 0,
+                        tension: 0.1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: document.body.classList.contains('dark-mode') ? 'var(--text-dark)' : 'var(--text-light)'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.parsed.y;
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: TOTAL_QUESTIONS,
+                            ticks: {
+                                color: document.body.classList.contains('dark-mode') ? 'var(--text-dark)' : 'var(--text-light)'
+                            },
+                            grid: {
+                                color: document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: document.body.classList.contains('dark-mode') ? 'var(--text-dark)' : 'var(--text-light)'
+                            },
+                            grid: {
+                                color: document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+
+             updateChartColors(overallQuizPerformanceChart); // Apply dark mode colors if applicable
+        }
+
+
+        function renderFullExamHistoryList(results) {
+            const container = document.getElementById("fullExamHistoryList");
+            if (results.length === 0) {
+                container.innerHTML = "<p class='no-data-message'>No exam submissions yet.</p>";
+                return;
+            }
+
+            // Display all exams, newest first
+            const sortedResults = [...results].reverse(); // Create a shallow copy and reverse
+            let html = "<ul>";
+            sortedResults.forEach(r => {
+                const date = new Date(r.timestamp);
+                const passed = (r.score >= PASS_MARK);
+                const tagClass = passed ? 'tag' : 'tag fail';
+                const tagText = passed ? 'Passed' : 'Failed';
+                html += `<li>
+                            <div class="item-details">
+                                <div class="item-title">Exam on ${date.toLocaleString()}</div>
+                                <small>Scored <strong>${r.score}</strong> out of ${TOTAL_QUESTIONS}</small>
+                            </div>
+                            <span class="${tagClass}">${tagText}</span>
+                        </li>`;
+            });
+            html += "</ul>";
+            container.innerHTML = html;
+        }
+
+        // --- Account Details Function ---
+        function populateAccountDetails() {
+            if (user) {
+                document.getElementById('accountUserName').textContent = user.name;
+                document.getElementById('accountUserId').textContent = user.identifier;
+            }
+        }
+
+        // --- Sidebar Toggle (for larger screens) ---
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        if (sidebarToggle) { // Check if the element exists
+            sidebarToggle.addEventListener('click', () => {
+                document.body.classList.toggle('sidebar-collapsed');
+                // Save state to local storage
+                localStorage.setItem("sidebar-collapsed", document.body.classList.contains("sidebar-collapsed"));
+            });
+        }
+
+
+        // --- Hamburger Menu for Mobile ---
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const sidebar = document.getElementById('sidebar');
+
+        if (hamburgerMenu) {
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('active'); // Toggles the 'active' class on the sidebar
+            });
+        }
+
+        // Close sidebar when clicking outside (on overlay effect)
+        document.addEventListener('click', (event) => {
+            if (sidebar.classList.contains('active') && !sidebar.contains(event.target) && !hamburgerMenu.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // --- Current Time Display ---
+        function updateCurrentTime() {
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            };
+            const formattedTime = now.toLocaleDateString('en-US', options); // Using en-US for typical date format
+            document.getElementById('currentTimeHeader').textContent = formattedTime;
+        }
+
     </script>
 </body>
 </html>
