@@ -867,9 +867,6 @@
 
         // --- Initial Load & User Check ---
         if (!user) {
-            alert("You must log in first.");
-           
-        } else {
             document.getElementById("userName").textContent = user.name;
             document.getElementById("userId").textContent = user.identifier;
             document.getElementById("userAvatar").textContent = "AL"; // Set fixed "AL" for user avatar
